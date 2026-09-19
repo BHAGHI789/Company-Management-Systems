@@ -1,0 +1,911 @@
+{% extends "base.html" %}
+
+{% block title %}Employees · OrgNexus{% endblock %}
+
+{% block extra_css %}
+<style>
+    body:has(.employee-layout) {
+        overflow: hidden;
+    }
+
+    body:has(.employee-layout) .site-main {
+        max-width: none;
+        padding: 0;
+    }
+
+    .employee-layout {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(12, 1fr);
+        height: calc(100vh - 96px);
+        min-height: 0;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .side-nav-panel {
+        background: var(--surface-secondary);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 4px 18px var(--shadow);
+        grid-column: span 3;
+        height: 100%;
+        max-height: none;
+        overflow: hidden;
+        padding: 18px 14px;
+        position: static;
+    }
+
+    .side-nav-header {
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+
+    .side-nav-header h2 {
+        color: var(--accent-dark);
+        display: flex;
+        flex-direction: column;
+        font-weight: 700;
+
+    .side-nav-panel > div:last-child { margin-top: auto !important; }
+        margin: 0;
+    }
+
+    .count-badge {
+        background: var(--accent);
+        border-radius: 999px;
+        color: #fff;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 3px 9px;
+    }
+
+    .team-tree, .team-tree ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .team-tree ul {
+        border-left: 2px solid var(--line);
+        padding-left: 18px;
+    }
+
+    .tree-item { margin: 4px 0; }
+
+    .tree-node {
+        align-items: center;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        gap: 8px;
+        padding: 8px 10px;
+        transition: background 0.18s ease, transform 0.15s ease;
+    }
+
+    .tree-node:hover {
+        background: var(--field);
+        border-color: var(--line);
+        transform: translateX(2px);
+    }
+
+    .tree-node.active {
+        background: color-mix(in srgb, var(--accent) 18%, transparent);
+        border-color: var(--accent);
+        font-weight: 600;
+    }
+
+    .role-dot {
+        border-radius: 50%;
+        flex-shrink: 0;
+        height: 10px;
+        width: 10px;
+    }
+
+    .role-manager { background: #9b59b6; }
+    .role-reporting-manager { background: #3498db; }
+    .role-team-lead { background: #1abc9c; }
+    .role-sr-developer { background: #f39c12; }
+    .role-developer { background: #27ae60; }
+    .role-jr-developer { background: #95a5a6; }
+
+    .node-label {
+        color: var(--text);
+        font-size: 0.88rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .node-role {
+        color: var(--muted);
+        font-size: 0.68rem;
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    .level-0 .tree-node { font-weight: 700; }
+    .level-1 .tree-node { font-weight: 600; }
+    .level-2 .tree-node { font-weight: 500; }
+
+    .team-summary {
+        align-items: stretch;
+        background: var(--surface-secondary);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 16px 24px;
+    }
+
+    .team-summary-title {
+        color: var(--accent-dark);
+        font-size: 0.82rem;
+        font-weight: 700;
+        margin: 0;
+        padding: 10px 4px 10px 0;
+        text-transform: uppercase;
+    }
+
+    .team-person {
+        align-items: center;
+        background: var(--field);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        display: flex;
+        gap: 9px;
+        min-width: 190px;
+        padding: 8px 12px;
+    }
+
+    .team-person-name { color: var(--text); font-size: 0.85rem; font-weight: 700; }
+    .team-person-role { color: var(--muted); display: block; font-size: 0.7rem; margin-top: 2px; }
+    .team-person-dot { background: var(--accent); border-radius: 50%; height: 9px; width: 9px; }
+
+    .datatable-panel {
+        background: var(--surface-secondary);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--line);
+        grid-column: span 9;
+        height: 100%;
+        min-height: 0;
+        padding: 24px;
+        overflow: hidden;
+    }
+
+    /* ===== DataTable panel ===== */
+    .datatable-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .datatable-header h2 {
+        margin: 0;
+        font-size: 1.15rem;
+        color: var(--accent-dark);
+    }
+
+    .datatable-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .import-input { display: none; }
+
+    .table-footer {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-top: 14px;
+    }
+
+    .table-info { color: var(--muted); font-size: 0.82rem; }
+
+    .pagination {
+        align-items: center;
+        display: flex;
+        gap: 4px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .pagination button {
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        color: var(--text);
+        cursor: pointer;
+        min-width: 34px;
+        padding: 7px 9px;
+    }
+
+    .pagination button:hover:not(:disabled),
+    .pagination button.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+    }
+
+    .pagination button:disabled { color: var(--muted); cursor: not-allowed; opacity: 0.5; }
+
+    .filter-card {
+        align-items: end;
+        background: var(--field);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: minmax(150px, 1fr) minmax(140px, 0.8fr) minmax(180px, 1.5fr) auto auto;
+        margin-bottom: 16px;
+        padding: 12px;
+    }
+
+    .filter-field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .filter-field label {
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .filter-field select,
+    .filter-field input {
+        background: var(--surface-secondary);
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        color: var(--text);
+        font-size: 0.85rem;
+        min-height: 36px;
+        padding: 7px 9px;
+        width: 100%;
+    }
+
+    .filter-card .btn { min-height: 36px; white-space: nowrap; }
+
+    .btn {
+        border: none;
+        border-radius: 7px;
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-primary {
+        background: var(--accent);
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background: var(--accent-dark);
+        transform: translateY(-1px);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text);
+    }
+    .btn-outline:hover {
+        background: var(--field);
+    }
+
+    /* Simple table styling (works with DataTables too) */
+    .table-wrap {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+    }
+
+    table.data-table {
+        height: 100%;
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8rem;
+    }
+
+    table.data-table thead {
+        background: var(--field);
+    }
+
+    table.data-table th {
+        text-align: left;
+        overflow-wrap: anywhere;
+        padding: 9px 8px;
+        font-weight: 700;
+        color: var(--accent-dark);
+        border-bottom: 2px solid var(--line);
+    }
+
+    table.data-table td {
+        overflow-wrap: anywhere;
+        padding: 8px;
+        border-bottom: 1px solid var(--line);
+        color: var(--text);
+    }
+
+    table.data-table tbody tr:hover {
+        background: color-mix(in srgb, var(--accent) 8%, transparent);
+    }
+
+    .status-pill {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+    }
+    .status-active   { background: #d4edda; color: #155724; }
+    .status-inactive { background: #f8d7da; color: #721c24; }
+    .status-onleave  { background: #fff3cd; color: #856404; }
+
+    .role-badge {
+        display: inline-block;
+        padding: 3px 9px;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        background: var(--field);
+        color: var(--accent-dark);
+        border: 1px solid var(--line);
+    }
+
+    @media (max-width: 760px) {
+        body:has(.employee-layout) {
+            overflow: auto;
+        }
+
+        .employee-layout {
+            height: auto;
+            grid-template-columns: 1fr;
+            overflow: visible;
+        }
+
+        .side-nav-panel,
+        .datatable-panel,
+        .team-summary {
+            grid-column: span 12;
+        }
+
+        .side-nav-panel {
+            height: auto;
+            max-height: none;
+            overflow: visible;
+            position: static;
+        }
+
+        .datatable-panel {
+            max-height: none;
+            padding: 16px;
+        }
+
+        .filter-card {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .filter-field:nth-child(3) { grid-column: span 2; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="employee-layout">
+
+    <!-- ===================== LEFT SIDE NAV (3 grids) ===================== -->
+    <aside class="side-nav-panel" aria-label="Team hierarchy">
+        <div class="side-nav-header">
+            <h2>Team Structure</h2>
+            <span class="count-badge" id="team-count">12</span>
+        </div>
+
+        <ul class="team-tree">
+            <li class="tree-item level-0">
+                <div class="tree-node active" data-role="manager" data-id="mgr-01">
+                    <span class="role-dot role-manager"></span>
+                    <span class="node-label">Priya Sharma</span>
+                    <span class="node-role">Manager</span>
+                </div>
+
+                <ul>
+                    <li class="tree-item level-1">
+                        <div class="tree-node" data-role="reporting_manager" data-id="rm-01">
+                            <span class="role-dot role-reporting-manager"></span>
+                            <span class="node-label">Rahul Verma</span>
+                            <span class="node-role">Reporting Manager</span>
+                        </div>
+
+                        <ul>
+                            <li class="tree-item level-2">
+                                <div class="tree-node" data-role="team_lead" data-id="tl-01">
+                                    <span class="role-dot role-team-lead"></span>
+                                    <span class="node-label">Ananya Patel</span>
+                                    <span class="node-role">Team Lead</span>
+                                </div>
+
+                                <ul>
+                                    <li class="tree-item level-3">
+                                        <div class="tree-node" data-role="sr_developer" data-id="sd-01">
+                                            <span class="role-dot role-sr-developer"></span>
+                                            <span class="node-label">Vikram Singh</span>
+                                            <span class="node-role">Sr. Developer</span>
+                                        </div>
+                                    </li>
+                                    <li class="tree-item level-3">
+                                        <div class="tree-node" data-role="sr_developer" data-id="sd-02">
+                                            <span class="role-dot role-sr-developer"></span>
+                                            <span class="node-label">Sneha Reddy</span>
+                                            <span class="node-role">Sr. Developer</span>
+                                        </div>
+                                    </li>
+                                    <li class="tree-item level-3">
+                                        <div class="tree-node" data-role="developer" data-id="dev-01">
+                                            <span class="role-dot role-developer"></span>
+                                            <span class="node-label">Arjun Mehta</span>
+                                            <span class="node-role">Developer</span>
+                                        </div>
+                                    </li>
+                                    <li class="tree-item level-3">
+                                        <div class="tree-node" data-role="jr_developer" data-id="jd-01">
+                                            <span class="role-dot role-jr-developer"></span>
+                                            <span class="node-label">Kavya Nair</span>
+                                            <span class="node-role">Jr. Developer</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="tree-item level-2">
+                                <div class="tree-node" data-role="team_lead" data-id="tl-02">
+                                    <span class="role-dot role-team-lead"></span>
+                                    <span class="node-label">Mohammed Irfan</span>
+                                    <span class="node-role">Team Lead</span>
+                                </div>
+                                <ul>
+                                    <li class="tree-item level-3">
+                                        <div class="tree-node" data-role="developer" data-id="dev-02">
+                                            <span class="role-dot role-developer"></span>
+                                            <span class="node-label">Neha Gupta</span>
+                                            <span class="node-role">Developer</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="tree-item level-1">
+                        <div class="tree-node" data-role="reporting_manager" data-id="rm-02">
+                            <span class="role-dot role-reporting-manager"></span>
+                            <span class="node-label">Suresh Iyer</span>
+                            <span class="node-role">Reporting Manager</span>
+                        </div>
+                        <ul>
+                            <li class="tree-item level-2">
+                                <div class="tree-node" data-role="sr_developer" data-id="sd-03">
+                                    <span class="role-dot role-sr-developer"></span>
+                                    <span class="node-label">Deepak Rao</span>
+                                    <span class="node-role">Sr. Developer</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div style="border-top: 1px solid var(--line); margin-top: 22px; padding-top: 14px;">
+            <div style="color: var(--muted); font-size: 0.75rem; font-weight: 700; margin-bottom: 8px;">ROLE COLORS</div>
+            <div style="color: var(--muted); display: flex; flex-wrap: wrap; font-size: 0.72rem; gap: 8px 12px;">
+                <span><i class="role-dot role-manager" style="display:inline-block;vertical-align:middle;"></i> Manager</span>
+                <span><i class="role-dot role-reporting-manager" style="display:inline-block;vertical-align:middle;"></i> Reporting Mgr</span>
+                <span><i class="role-dot role-team-lead" style="display:inline-block;vertical-align:middle;"></i> Team Lead</span>
+                <span><i class="role-dot role-sr-developer" style="display:inline-block;vertical-align:middle;"></i> Sr. Dev</span>
+                <span><i class="role-dot role-developer" style="display:inline-block;vertical-align:middle;"></i> Developer</span>
+                <span><i class="role-dot role-jr-developer" style="display:inline-block;vertical-align:middle;"></i> Jr. Dev</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===================== RIGHT DATATABLE (9 grids) ===================== -->
+    <section class="datatable-panel">
+        <div class="datatable-header">
+            <h2>Employee Directory</h2>
+            <div class="datatable-actions">
+                <button class="btn btn-outline" type="button" id="btn-refresh">Refresh</button>
+                <button class="btn btn-outline" type="button" id="btn-import">Import CSV</button>
+                <input class="import-input" id="employeeImport" type="file" accept=".csv,text/csv">
+                <button class="btn btn-outline" type="button" id="btn-export">Export CSV</button>
+                <button class="btn btn-primary" type="button" id="btn-add-employee">+ Add Employee</button>
+            </div>
+        </div>
+
+        <form class="filter-card" id="employeeFilterForm">
+            <div class="filter-field">
+                <label for="filterField">Field name</label>
+                <select id="filterField" name="field">
+                    <option value="all">All fields</option>
+                    <option value="emp-id">Emp ID</option>
+                    <option value="name">Name</option>
+                    <option value="role">Role</option>
+                    <option value="department">Department</option>
+                    <option value="reporting-to">Reporting To</option>
+                    <option value="status">Status</option>
+                </select>
+            </div>
+            <div class="filter-field">
+                <label for="filterOperator">Operator</label>
+                <select id="filterOperator" name="operator">
+                    <option value="contains">Contains</option>
+                    <option value="equals">Equals</option>
+                    <option value="starts-with">Starts with</option>
+                </select>
+            </div>
+            <div class="filter-field">
+                <label for="filterValue">Value</label>
+                <input id="filterValue" name="value" type="search" placeholder="Type a value to filter..." autocomplete="off">
+            </div>
+            <button class="btn btn-primary" type="submit">Filter</button>
+            <button class="btn btn-outline" type="button" id="clearEmployeeFilter">Clear</button>
+        </form>
+
+        <div class="table-wrap">
+            <table class="data-table" id="employeeTable" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Emp ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Department</th>
+                        <th>Reporting To</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample static rows – replace with real data via Django loop or AJAX -->
+                    <tr>
+                        <td>EMP-1001</td>
+                        <td>Priya Sharma</td>
+                        <td><span class="role-badge">Manager</span></td>
+                        <td>Engineering</td>
+                        <td>—</td>
+                        <td><span class="status-pill status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1002</td>
+                        <td>Rahul Verma</td>
+                        <td><span class="role-badge">Reporting Manager</span></td>
+                        <td>Engineering</td>
+                        <td>Priya Sharma</td>
+                        <td><span class="status-pill status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1003</td>
+                        <td>Ananya Patel</td>
+                        <td><span class="role-badge">Team Lead</span></td>
+                        <td>Engineering</td>
+                        <td>Rahul Verma</td>
+                        <td><span class="status-pill status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1004</td>
+                        <td>Vikram Singh</td>
+                        <td><span class="role-badge">Sr. Developer</span></td>
+                        <td>Engineering</td>
+                        <td>Ananya Patel</td>
+                        <td><span class="status-pill status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1005</td>
+                        <td>Sneha Reddy</td>
+                        <td><span class="role-badge">Sr. Developer</span></td>
+                        <td>Engineering</td>
+                        <td>Ananya Patel</td>
+                        <td><span class="status-pill status-onleave">On Leave</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1006</td>
+                        <td>Arjun Mehta</td>
+                        <td><span class="role-badge">Developer</span></td>
+                        <td>Engineering</td>
+                        <td>Ananya Patel</td>
+                        <td><span class="status-pill status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1007</td>
+                        <td>Kavya Nair</td>
+                        <td><span class="role-badge">Jr. Developer</span></td>
+                        <td>Engineering</td>
+                        <td>Ananya Patel</td>
+                        <td><span class="status-pill status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1008</td>
+                        <td>Mohammed Irfan</td>
+                        <td><span class="role-badge">Team Lead</span></td>
+                        <td>Engineering</td>
+                        <td>Rahul Verma</td>
+                        <td><span class="status-pill status-active">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EMP-1009</td>
+                        <td>Neha Gupta</td>
+                        <td><span class="role-badge">Developer</span></td>
+                        <td>Engineering</td>
+                        <td>Mohammed Irfan</td>
+                        <td><span class="status-pill status-inactive">Inactive</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-footer">
+            <span class="table-info" id="tableInfo">Showing 0 to 0 of 0 employees</span>
+            <nav aria-label="Employee table pagination">
+                <ul class="pagination" id="employeePagination"></ul>
+            </nav>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const filterForm = document.getElementById('employeeFilterForm');
+    const filterField = document.getElementById('filterField');
+    const filterOperator = document.getElementById('filterOperator');
+    const filterValue = document.getElementById('filterValue');
+    const clearEmployeeFilter = document.getElementById('clearEmployeeFilter');
+    const employeeTable = document.getElementById('employeeTable');
+    const tableBody = employeeTable.querySelector('tbody');
+    const employeeImport = document.getElementById('employeeImport');
+    const tableInfo = document.getElementById('tableInfo');
+    const employeePagination = document.getElementById('employeePagination');
+    const pageSize = 10;
+    let currentPage = 1;
+    let employeeRows = Array.from(tableBody.querySelectorAll('tr'));
+
+    const fieldIndexes = {
+        'emp-id': 0,
+        name: 1,
+        role: 2,
+        department: 3,
+        'reporting-to': 4,
+        status: 5
+    };
+
+    function getFilteredRows() {
+        const field = filterField.value;
+        const operator = filterOperator.value;
+        const query = filterValue.value.trim().toLowerCase();
+
+        if (!query) return employeeRows;
+
+        return employeeRows.filter(function (row) {
+            const cells = Array.from(row.cells);
+            const values = field === 'all'
+                ? cells.map(cell => cell.textContent.trim().toLowerCase())
+                : [cells[fieldIndexes[field]].textContent.trim().toLowerCase()];
+
+            return values.some(function (value) {
+                if (operator === 'equals') return value === query;
+                if (operator === 'starts-with') return value.startsWith(query);
+                return value.includes(query);
+            });
+        });
+    }
+
+    function renderPagination() {
+        const filteredRows = getFilteredRows();
+        const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+        currentPage = Math.min(currentPage, totalPages);
+        const start = (currentPage - 1) * pageSize;
+        const end = Math.min(start + pageSize, filteredRows.length);
+
+        employeeRows.forEach(row => { row.hidden = true; });
+        filteredRows.slice(start, end).forEach(row => { row.hidden = false; });
+
+        tableInfo.textContent = filteredRows.length
+            ? `Showing ${start + 1} to ${end} of ${filteredRows.length} employees`
+            : 'Showing 0 to 0 of 0 employees';
+
+        employeePagination.innerHTML = '';
+        addPageButton('Previous', currentPage - 1, currentPage === 1);
+        for (let page = 1; page <= totalPages; page += 1) addPageButton(page, page, false, page === currentPage);
+        addPageButton('Next', currentPage + 1, currentPage === totalPages);
+    }
+
+    function addPageButton(label, page, disabled, active) {
+        const item = document.createElement('li');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = label;
+        button.disabled = disabled;
+        if (active) button.classList.add('active');
+        button.addEventListener('click', function () {
+            currentPage = page;
+            renderPagination();
+        });
+        item.appendChild(button);
+        employeePagination.appendChild(item);
+    }
+
+    function filterEmployeeRows() {
+        currentPage = 1;
+        renderPagination();
+    }
+
+    filterForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        filterEmployeeRows();
+    });
+
+    filterValue.addEventListener('input', filterEmployeeRows);
+
+    clearEmployeeFilter.addEventListener('click', function () {
+        filterForm.reset();
+        filterEmployeeRows();
+        filterValue.focus();
+    });
+
+    document.getElementById('btn-refresh').addEventListener('click', function () {
+        filterForm.reset();
+        filterEmployeeRows();
+    });
+
+    document.getElementById('btn-import').addEventListener('click', function () {
+        employeeImport.click();
+    });
+
+    employeeImport.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function () {
+            const lines = reader.result.trim().split(/\r?\n/).filter(Boolean);
+            if (lines.length < 2) return;
+
+            const rows = lines.slice(1).map(line => parseCsvLine(line));
+            tableBody.innerHTML = rows.map(row => `
+                <tr>
+                    ${row.slice(0, 7).map(cell => `<td>${escapeHtml(cell)}</td>`).join('')}
+                </tr>
+            `).join('');
+            employeeRows = Array.from(tableBody.querySelectorAll('tr'));
+            filterEmployeeRows();
+            event.target.value = '';
+        };
+        reader.readAsText(file);
+    });
+
+    document.getElementById('btn-export').addEventListener('click', function () {
+        const visibleRows = employeeRows.filter(row => !row.hidden);
+        const header = Array.from(employeeTable.querySelectorAll('thead th')).map(cell => cell.textContent.trim());
+        const csv = [header, ...visibleRows.map(row => Array.from(row.cells).map(cell => cell.textContent.trim()))]
+            .map(row => row.map(value => `"${value.replace(/"/g, '""')}"`).join(','))
+            .join('\n');
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+        link.download = 'employees.csv';
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    function parseCsvLine(line) {
+        return line.match(/("(?:[^"]|"")*"|[^,]*)/g)
+            .slice(0, -1)
+            .filter((_, index, values) => index < values.length - 1)
+            .map(value => value.replace(/^"|"$/g, '').replace(/""/g, '"').trim());
+    }
+
+    function escapeHtml(value) {
+        return value.replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
+    }
+
+    renderPagination();
+</script>
+{% endblock %}
