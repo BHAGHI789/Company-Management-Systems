@@ -1,0 +1,7 @@
+# RSA keys
+keys/private_key.pem
+keys/public_key.pem
+
+# Environment files
+.env
+.env.*
