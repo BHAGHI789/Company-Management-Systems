@@ -7,36 +7,45 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application1', '0006_analysis_reportsdetails'),
+        ("application1", "0006_analysis_reportsdetails"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='roles',
-            name='designation',
+            model_name="roles",
+            name="designation",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='userRole',
+            model_name="user",
+            name="userRole",
         ),
         migrations.AddField(
-            model_name='user',
-            name='role',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='users', to='application1.roles', verbose_name='Role'),
+            model_name="user",
+            name="role",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="users",
+                to="application1.roles",
+                verbose_name="Role",
+            ),
         ),
         migrations.AlterField(
-            model_name='reportsdetails',
-            name='fallTime',
+            model_name="reportsdetails",
+            name="fallTime",
             field=models.DateTimeField(),
         ),
         migrations.AlterField(
-            model_name='reportsdetails',
-            name='raiseTime',
+            model_name="reportsdetails",
+            name="raiseTime",
             field=models.DateTimeField(),
         ),
         migrations.AlterField(
-            model_name='roles',
-            name='roleName',
-            field=models.CharField(max_length=100, unique=True, verbose_name='Role Name'),
+            model_name="roles",
+            name="roleName",
+            field=models.CharField(
+                max_length=100, unique=True, verbose_name="Role Name"
+            ),
         ),
     ]

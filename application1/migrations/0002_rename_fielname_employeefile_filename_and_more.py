@@ -6,38 +6,54 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application1', '0001_initial'),
+        ("application1", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='employeefile',
-            old_name='fielName',
-            new_name='fileName',
+            model_name="employeefile",
+            old_name="fielName",
+            new_name="fileName",
         ),
         migrations.RenameField(
-            model_name='roles',
-            old_name='rolename',
-            new_name='roleName',
+            model_name="roles",
+            old_name="rolename",
+            new_name="roleName",
         ),
         migrations.AlterField(
-            model_name='employees',
-            name='employeeEmail',
-            field=models.EmailField(max_length=254, unique=True, verbose_name='Employee Email'),
+            model_name="employees",
+            name="employeeEmail",
+            field=models.EmailField(
+                max_length=254, unique=True, verbose_name="Employee Email"
+            ),
         ),
         migrations.AlterField(
-            model_name='employees',
-            name='employeeID',
-            field=models.CharField(max_length=100, unique=True, verbose_name='Employee ID'),
+            model_name="employees",
+            name="employeeID",
+            field=models.CharField(
+                max_length=100, unique=True, verbose_name="Employee ID"
+            ),
         ),
         migrations.AlterField(
-            model_name='employees',
-            name='employeePanNumber',
-            field=models.CharField(max_length=100, unique=True, verbose_name='Employee PanCard Number'),
+            model_name="employees",
+            name="employeePanNumber",
+            field=models.CharField(
+                max_length=100, unique=True, verbose_name="Employee PanCard Number"
+            ),
         ),
         migrations.AlterField(
-            model_name='employees',
-            name='employeeStatus',
-            field=models.CharField(choices=[('Active', 'Active'), ('Pending', 'Pending'), ('Terminated', 'Terminated')], default='Active', max_length=100, unique=True, verbose_name='Employee Status '),
+            model_name="employees",
+            name="employeeStatus",
+            field=models.CharField(
+                choices=[
+                    ("Active", "Active"),
+                    ("Pending", "Pending"),
+                    ("Terminated", "Terminated"),
+                ],
+                default="Active",
+                max_length=100,
+                unique=True,
+                verbose_name="Employee Status ",
+            ),
         ),
     ]

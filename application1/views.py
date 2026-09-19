@@ -1,200 +1,321 @@
-import logging
-
-log = logging.getLogger(__name__)
-import json
+import base64
 import hashlib
+import json
 import logging
 import secrets
-from datetime import  timedelta
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
+from datetime import timedelta
+from pathlib import Path
+
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.utils.decorators import method_decorator
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import View
-from .models import *
-from django.conf import settings as django_settings
-import pandas as pd
-import base64
-from pathlib import Path
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.asymmetric import padding, rsa
-from cryptography.hazmat.primitives import serialization
+
+from .models import OTPValues
 
 
-KEYS_DIR = Path(__file__).resolve().parent.parent / "keys"   # adjust path if needed
-print("KEYS_DIR", KEYS_DIR)
+log = logging.getLogger(__name__)
+
+KEYS_DIR = Path(__file__).resolve().parent.parent / "keys"
+
 with open(KEYS_DIR / "private_key.pem", "rb") as f:
-    PRIVATE_KEY = serialization.load_pem_private_key(f.read(), password=None)
+    PRIVATE_KEY = serialization.load_pem_private_key(
+        f.read(),
+        password=None,
+    )
 
 with open(KEYS_DIR / "public_key.pem", "rb") as f:
-    PUBLIC_KEY_PEM = f.read()          # we will send the DER form to frontend
+    PUBLIC_KEY_PEM = f.read()
 
 
 def get_public_key_der_b64():
-    """Return pure Base64 DER of the public key (what Web Crypto wants)."""
+    """Return Base64 DER of the public key for Web Crypto."""
     public_key = PRIVATE_KEY.public_key()
+
     der = public_key.public_bytes(
         encoding=serialization.Encoding.DER,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
+        format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
+
     return base64.b64encode(der).decode("ascii")
 
 
 def decrypt_value(encrypted_b64: str) -> str:
-    """Decrypt a value that was encrypted with the public key on the frontend."""
+    """Decrypt a value encrypted with the public key on the frontend."""
     if not encrypted_b64:
         raise ValueError("Empty encrypted value")
 
-    # Frontend sometimes replaces + with space in transit
+    # Frontend sometimes replaces + with space in transit.
     encrypted_b64 = encrypted_b64.replace(" ", "+")
+
     encrypted_bytes = base64.b64decode(encrypted_b64)
 
-    # Web Crypto uses RSA-OAEP with SHA-256
+    # Web Crypto uses RSA-OAEP with SHA-256.
     decrypted = PRIVATE_KEY.decrypt(
         encrypted_bytes,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
-            label=None
-        )
+            label=None,
+        ),
     )
+
     return decrypted.decode("utf-8")
 
 
-# -------------------------------------------------
-# Views
-# -------------------------------------------------
 def get_public_key(request):
-    return JsonResponse({
-        "public_key": get_public_key_der_b64()
-    })
-
-
+    return JsonResponse(
+        {
+            "public_key": get_public_key_der_b64(),
+        }
+    )
 
 
 class Login(View):
     @method_decorator(ensure_csrf_cookie)
-    def get(self,request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         logout(request)
-        return render(request, 'login.html')
+        return render(request, "login.html")
+
+    @staticmethod
+    def json_response(data, status=200):
+        return HttpResponse(
+            json.dumps(data),
+            content_type="application/json",
+            status=status,
+        )
 
     def post(self, request, *args, **kwargs):
-        contenttype = request.META.get('CONTENT_TYPE', None)
-        data_dict = None
-        if 'json' in contenttype:
-            #log.debug("json request body is %s", request.body)
-            try:
-                data_dict = json.loads(request.body.decode('utf-8'))
-            except Exception as e:
-                log.exception(e)
-        elif contenttype == 'application/x-www-form-urlencoded':
-            log.debug("content type is application/x-www-form-urlencoded ")
-            data_dict = request.POST
-        else:
-            log.debug('Unknown ContentType: %s', contenttype)
-            pdr = HttpResponse(status=400)
-            pdr.write('Unknown HTTP ContentTye')
-            return pdr
         try:
-            if data_dict.get("status") == "credentials_verified":
-                print("credentials")
-                email = decrypt_value(data_dict.get("email"))
-                password = decrypt_value(data_dict.get("password"))
-                
+            data_dict = self.get_request_data(request)
 
-                user = get_user_model().objects.filter(email__iexact=email).first()
-                authenticated_user = (
-                    authenticate(request, username=user.username, password=password)
-                    if user is not None else None
-                )
+            status = data_dict.get("status")
 
-                if authenticated_user:
+            if status == "credentials_verified":
+                return self.handle_credentials(request, data_dict)
 
+            if status == "otp_verify_testing":
+                return self.handle_otp_testing(request, data_dict)
 
-                    otp = secrets.randbelow(900000) + 100000
-                    print("Generated OTP:", otp)
-                    OTPValues.objects.update_or_create(
-                        email=authenticated_user.email,
-                        defaults={
-                            "otp": str(otp),
-                            "createdBy": authenticated_user,
-                            "updatedBy": authenticated_user,
-                        }
-                    )
-                    request.session['login_otp'] = {
-                        "user_id": str(authenticated_user.pk),
-                        "otp_hash": hashlib.sha256(str(otp).encode()).hexdigest(),
-                        "expires_at": (timezone.now() + timedelta(minutes=10)).isoformat(),
-                    }
-                    resp = HttpResponse(content_type="application/json", status=200)
-                    resp.write(json.dumps({"success": True, "status": "otp_sent"}))
-                    return resp
+            if status == "otp_verify":
+                return self.handle_otp_verification(request, data_dict)
 
+            return self.json_response(
+                {
+                    "znid": "znobj.id",
+                    "details": data_dict,
+                }
+            )
 
-                resp = HttpResponse(content_type="application/json", status=401)
-                resp.write(json.dumps({"success": False, "message": "Invalid email or password."}))
-                return resp
-            if data_dict.get("status") == "otp_verify_testing":
+        except Exception:
+            log.exception("Exception occurred while processing login request")
 
-                login_otp = request.session.get('login_otp')
-                otp = str(data_dict.get("otp", "")).strip()
-                if not login_otp:
-                    resp = HttpResponse(content_type="application/json", status=400)
-                    resp.write(json.dumps({"success": False, "message": "Request a new OTP first."}))
-                    return resp
+            return self.json_response(
+                {
+                    "success": False,
+                    "message": "An unexpected error occurred.",
+                },
+                status=400,
+            )
 
+    @staticmethod
+    def get_request_data(request):
+        content_type = request.META.get("CONTENT_TYPE", "")
 
+        if "json" in content_type:
+            try:
+                return json.loads(request.body.decode("utf-8"))
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                log.exception("Invalid JSON request body")
 
-                
-            if data_dict.get("status") == "otp_verify":
-                login_otp = request.session.get('login_otp')
-                otp = str(data_dict.get("otp", "")).strip()
+                raise ValueError("Invalid JSON request.")
 
-                if not login_otp:
-                    resp = HttpResponse(content_type="application/json", status=400)
-                    resp.write(json.dumps({"success": False, "message": "Request a new OTP first."}))
-                    return resp
+        if content_type == "application/x-www-form-urlencoded":
+            log.debug("Content type is application/x-www-form-urlencoded")
+            return request.POST
 
-                if timezone.now() > timezone.datetime.fromisoformat(login_otp["expires_at"]):
-                    request.session.pop('login_otp', None)
-                    resp = HttpResponse(content_type="application/json", status=400)
-                    resp.write(json.dumps({"success": False, "message": "This OTP has expired."}))
-                    return resp
+        log.debug("Unknown Content-Type: %s", content_type)
+        raise ValueError("Unknown HTTP Content-Type")
 
-                if not secrets.compare_digest(hashlib.sha256(otp.encode()).hexdigest(), login_otp["otp_hash"]):
-                    resp = HttpResponse(content_type="application/json", status=400)
-                    resp.write(json.dumps({"success": False, "message": "Invalid OTP."}))
-                    return resp
+    def handle_credentials(self, request, data_dict):
+        email = decrypt_value(data_dict.get("email"))
+        password = decrypt_value(data_dict.get("password"))
 
-                otp_user = get_user_model().objects.filter(pk=login_otp["user_id"]).first()
-                request.session.pop('login_otp', None)
-                if otp_user is None:
-                    resp = HttpResponse(content_type="application/json", status=400)
-                    resp.write(json.dumps({"success": False, "message": "Account was not found."}))
-                    return resp
+        user = (
+            get_user_model()
+            .objects.filter(email__iexact=email)
+            .first()
+        )
 
-                # login() creates the session; Django sends the sessionid cookie with this response
-                login(request, otp_user)
-                resp = HttpResponse(content_type="application/json", status=200)
-                resp.write(json.dumps({"success": True, "status": "signed_in"}))
-                return resp
+        if user is None:
+            return self.invalid_credentials_response()
 
-            resp = HttpResponse(content_type="application/json", status=200)
-            resp.write(json.dumps({"znid": "znobj.id", "details": data_dict}))
-            return resp
-        except Exception as e:
-            print(f"Exception occurred: {e}")
-            resp = HttpResponse(json.dumps(data_dict), content_type='application/json', status=400)
-            return resp
+        authenticated_user = authenticate(
+            request,
+            username=user.username,
+            password=password,
+        )
+
+        if authenticated_user is None:
+            return self.invalid_credentials_response()
+
+        otp = self.generate_otp(authenticated_user)
+
+        self.store_login_otp(
+            request,
+            authenticated_user,
+            otp,
+        )
+
+        return self.json_response(
+            {
+                "success": True,
+                "status": "otp_sent",
+            }
+        )
+
+    def generate_otp(self, user):
+        otp = secrets.randbelow(900000) + 100000
+
+        OTPValues.objects.update_or_create(
+            email=user.email,
+            defaults={
+                "otp": str(otp),
+                "createdBy": user,
+                "updatedBy": user,
+            },
+        )
+
+        return otp
+
+    @staticmethod
+    def store_login_otp(request, user, otp):
+        request.session["login_otp"] = {
+            "user_id": str(user.pk),
+            "otp_hash": hashlib.sha256(
+                str(otp).encode()
+            ).hexdigest(),
+            "expires_at": (
+                timezone.now() + timedelta(minutes=10)
+            ).isoformat(),
+        }
+
+    def invalid_credentials_response(self):
+        return self.json_response(
+            {
+                "success": False,
+                "message": "Invalid email or password.",
+            },
+            status=401,
+        )
+
+    def handle_otp_testing(self, request, data_dict):
+        login_otp = request.session.get("login_otp")
+        otp = str(data_dict.get("otp", "")).strip()
+
+        if not login_otp:
+            return self.otp_required_response()
+
+        return self.json_response(
+            {
+                "success": True,
+                "status": "otp_verify_testing",
+                "otp": otp,
+            }
+        )
+
+    def handle_otp_verification(self, request, data_dict):
+        login_otp = request.session.get("login_otp")
+        otp = str(data_dict.get("otp", "")).strip()
+
+        if not login_otp:
+            return self.otp_required_response()
+
+        if self.is_otp_expired(login_otp):
+            request.session.pop("login_otp", None)
+
+            return self.json_response(
+                {
+                    "success": False,
+                    "message": "This OTP has expired.",
+                },
+                status=400,
+            )
+
+        if not self.is_valid_otp(otp, login_otp):
+            return self.json_response(
+                {
+                    "success": False,
+                    "message": "Invalid OTP.",
+                },
+                status=400,
+            )
+
+        return self.login_otp_user(request, login_otp)
+
+    def otp_required_response(self):
+        return self.json_response(
+            {
+                "success": False,
+                "message": "Request a new OTP first.",
+            },
+            status=400,
+        )
+
+    @staticmethod
+    def is_otp_expired(login_otp):
+        expires_at = timezone.datetime.fromisoformat(
+            login_otp["expires_at"]
+        )
+
+        return timezone.now() > expires_at
+
+    @staticmethod
+    def is_valid_otp(otp, login_otp):
+        otp_hash = hashlib.sha256(otp.encode()).hexdigest()
+
+        return secrets.compare_digest(
+            otp_hash,
+            login_otp["otp_hash"],
+        )
+
+    def login_otp_user(self, request, login_otp):
+        otp_user = (
+            get_user_model()
+            .objects.filter(pk=login_otp["user_id"])
+            .first()
+        )
+
+        request.session.pop("login_otp", None)
+
+        if otp_user is None:
+            return self.json_response(
+                {
+                    "success": False,
+                    "message": "Account was not found.",
+                },
+                status=400,
+            )
+
+        login(request, otp_user)
+
+        return self.json_response(
+            {
+                "success": True,
+                "status": "signed_in",
+            }
+        )
 
 
 class EmployeeList(View):
     def get(self, request, *args, **kwargs):
-        # import pdb;pdb.set_trace()
-        # employeesDf = pd.DataFrame(Employees.objects.all().values("employeeName", "employeeId", "employeeEmail", "employeePhone", "employeeAddress", "employeeDepartment", "employeeDesignation", "employeeSalary", "employeeJoiningDate", "employeeStatus", "employeeCreatedAt", "employeeUpdatedAt"))
-        
-        return render(request, 'employeeList.html', locals())
+        return render(
+            request,
+            "employeeList.html",
+            locals(),
+        )

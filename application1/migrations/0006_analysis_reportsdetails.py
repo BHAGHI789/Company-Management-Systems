@@ -7,41 +7,64 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application1', '0005_alter_roles_createdby_alter_roles_updatedby'),
+        ("application1", "0005_alter_roles_createdby_alter_roles_updatedby"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Analysis',
+            name="Analysis",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200)),
-                ('description', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=200)),
+                ("description", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='ReportsDetails',
+            name="ReportsDetails",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('report_name', models.CharField(max_length=200)),
-                ('frequency', models.CharField(max_length=100)),
-                ('frequencyMin', models.CharField(max_length=100)),
-                ('frequencyMax', models.CharField(max_length=100)),
-                ('frequencyAvg', models.CharField(max_length=100)),
-                ('pri', models.CharField(max_length=100)),
-                ('priMin', models.CharField(max_length=100)),
-                ('priMax', models.CharField(max_length=100)),
-                ('priAvg', models.CharField(max_length=100)),
-                ('pw', models.CharField(max_length=100)),
-                ('pwMin', models.CharField(max_length=100)),
-                ('pwMax', models.CharField(max_length=100)),
-                ('pwAvg', models.CharField(max_length=100)),
-                ('raiseTime', models.CharField(max_length=100)),
-                ('fallTime', models.CharField(max_length=100)),
-                ('report_description', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('analysis', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reports', to='application1.analysis')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("report_name", models.CharField(max_length=200)),
+                ("frequency", models.CharField(max_length=100)),
+                ("frequencyMin", models.CharField(max_length=100)),
+                ("frequencyMax", models.CharField(max_length=100)),
+                ("frequencyAvg", models.CharField(max_length=100)),
+                ("pri", models.CharField(max_length=100)),
+                ("priMin", models.CharField(max_length=100)),
+                ("priMax", models.CharField(max_length=100)),
+                ("priAvg", models.CharField(max_length=100)),
+                ("pw", models.CharField(max_length=100)),
+                ("pwMin", models.CharField(max_length=100)),
+                ("pwMax", models.CharField(max_length=100)),
+                ("pwAvg", models.CharField(max_length=100)),
+                ("raiseTime", models.CharField(max_length=100)),
+                ("fallTime", models.CharField(max_length=100)),
+                ("report_description", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "analysis",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reports",
+                        to="application1.analysis",
+                    ),
+                ),
             ],
         ),
     ]

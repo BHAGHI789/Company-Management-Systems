@@ -1,7 +1,9 @@
 # generate_keys.py  (run once)
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives import serialization
 from pathlib import Path
+
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+
 KEYS_DIR = Path("keys")          # create a folder named "keys"
 KEYS_DIR.mkdir(exist_ok=True)
 

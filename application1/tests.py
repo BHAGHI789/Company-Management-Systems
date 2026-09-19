@@ -1,11 +1,10 @@
-
 import base64
 import hashlib
+import uuid
 from datetime import timedelta
 from unittest.mock import patch
-import uuid
+
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -78,9 +77,7 @@ class LoginViewTests(TestCase):
             "otp_sent",
         )
 
-        otp_record = OTPValues.objects.filter(
-            email="test@example.com"
-        ).first()
+        otp_record = OTPValues.objects.filter(email="test@example.com").first()
 
         self.assertIsNotNone(otp_record)
         self.assertEqual(otp_record.createdBy, self.user)
@@ -165,13 +162,8 @@ class LoginViewTests(TestCase):
 
         session["login_otp"] = {
             "user_id": str(self.user.pk),
-            "otp_hash": hashlib.sha256(
-                otp.encode()
-            ).hexdigest(),
-            "expires_at": (
-                timezone.now()
-                + timedelta(minutes=minutes)
-            ).isoformat(),
+            "otp_hash": hashlib.sha256(otp.encode()).hexdigest(),
+            "expires_at": (timezone.now() + timedelta(minutes=minutes)).isoformat(),
         }
 
         session.save()
@@ -199,9 +191,7 @@ class LoginViewTests(TestCase):
 
     def test_otp_verification_with_invalid_otp(self):
 
-        self.create_otp_session(
-            otp="123456"
-        )
+        self.create_otp_session(otp="123456")
 
         response = self.client.post(
             self.login_url,
@@ -257,9 +247,7 @@ class LoginViewTests(TestCase):
 
     def test_otp_verification_with_valid_otp(self):
 
-        self.create_otp_session(
-            otp="123456"
-        )
+        self.create_otp_session(otp="123456")
 
         response = self.client.post(
             self.login_url,
@@ -298,9 +286,7 @@ class LoginViewTests(TestCase):
         session["login_otp"] = {
             "user_id": str(uuid.uuid4()),
             "otp_hash": hashlib.sha256(b"123456").hexdigest(),
-            "expires_at": (
-                timezone.now() + timedelta(minutes=10)
-            ).isoformat(),
+            "expires_at": (timezone.now() + timedelta(minutes=10)).isoformat(),
         }
 
         session.save()
@@ -322,15 +308,14 @@ class LoginViewTests(TestCase):
         self.assertEqual(
             response_data["message"],
             "Account was not found.",
-        )# ---------------------------------------------------------
+        )  # ---------------------------------------------------------
         # PUBLIC KEY
+
     # ---------------------------------------------------------
 
     def test_get_public_key(self):
 
-        response = self.client.get(
-            reverse("get_public_key")
-        )
+        response = self.client.get(reverse("get_public_key"))
 
         self.assertEqual(response.status_code, 200)
 
@@ -341,18 +326,12 @@ class LoginViewTests(TestCase):
             response_data,
         )
 
-        self.assertTrue(
-            len(response_data["public_key"]) > 0
-        )
+        self.assertTrue(len(response_data["public_key"]) > 0)
 
         # Verify it is valid Base64
-        decoded_key = base64.b64decode(
-            response_data["public_key"]
-        )
+        decoded_key = base64.b64decode(response_data["public_key"])
 
-        self.assertTrue(
-            len(decoded_key) > 0
-        )
+        self.assertTrue(len(decoded_key) > 0)
 
     # ---------------------------------------------------------
     # EMPLOYEE LIST
@@ -360,9 +339,7 @@ class LoginViewTests(TestCase):
 
     def test_employee_list(self):
 
-        response = self.client.get(
-            reverse("employee_list")
-        )
+        response = self.client.get(reverse("employee_list"))
 
         self.assertEqual(
             response.status_code,

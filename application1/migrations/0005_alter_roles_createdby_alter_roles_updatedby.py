@@ -8,18 +8,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application1', '0004_alter_employees_employeestatus_and_more'),
+        ("application1", "0004_alter_employees_employeestatus_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='roles',
-            name='createdBy',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='roles_created', to=settings.AUTH_USER_MODEL, verbose_name='Created By'),
+            model_name="roles",
+            name="createdBy",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="roles_created",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Created By",
+            ),
         ),
         migrations.AlterField(
-            model_name='roles',
-            name='updatedBy',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='roles_updated', to=settings.AUTH_USER_MODEL, verbose_name='Updated By'),
+            model_name="roles",
+            name="updatedBy",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="roles_updated",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Updated By",
+            ),
         ),
     ]

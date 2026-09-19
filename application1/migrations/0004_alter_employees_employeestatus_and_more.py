@@ -6,23 +6,45 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application1', '0003_remove_projecttask_spintcount_and_more'),
+        ("application1", "0003_remove_projecttask_spintcount_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='employees',
-            name='employeeStatus',
-            field=models.CharField(choices=[('Active', 'Active'), ('Pending', 'Pending'), ('Terminated', 'Terminated')], default='Active', max_length=20, verbose_name='Employee Status'),
+            model_name="employees",
+            name="employeeStatus",
+            field=models.CharField(
+                choices=[
+                    ("Active", "Active"),
+                    ("Pending", "Pending"),
+                    ("Terminated", "Terminated"),
+                ],
+                default="Active",
+                max_length=20,
+                verbose_name="Employee Status",
+            ),
         ),
         migrations.AlterField(
-            model_name='projecttask',
-            name='taskStatus',
-            field=models.CharField(choices=[('New', 'New'), ('IN_PROGRESS', 'In Progress'), ('TESTING', 'Testing'), ('ON_HOLD', 'On Hold'), ('CANCELLED', 'Cancelled'), ('RESOLVED', 'Resolved'), ('COMPLETED', 'Completed')], default='New', max_length=20, verbose_name='Task Status'),
+            model_name="projecttask",
+            name="taskStatus",
+            field=models.CharField(
+                choices=[
+                    ("New", "New"),
+                    ("IN_PROGRESS", "In Progress"),
+                    ("TESTING", "Testing"),
+                    ("ON_HOLD", "On Hold"),
+                    ("CANCELLED", "Cancelled"),
+                    ("RESOLVED", "Resolved"),
+                    ("COMPLETED", "Completed"),
+                ],
+                default="New",
+                max_length=20,
+                verbose_name="Task Status",
+            ),
         ),
         migrations.AlterField(
-            model_name='roles',
-            name='updatedBy',
-            field=models.CharField(verbose_name='Updated By'),
+            model_name="roles",
+            name="updatedBy",
+            field=models.CharField(verbose_name="Updated By"),
         ),
     ]
