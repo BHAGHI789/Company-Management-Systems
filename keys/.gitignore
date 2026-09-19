@@ -1,7 +1,46 @@
-# RSA keys
-keys/private_key.pem
-keys/public_key.pem
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
 
-# Environment files
+# Virtual environments
+venv/
+.venv/
+cms/
+env/
+
+# Django
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Environment variables
 .env
 .env.*
+
+# Secret keys
+keys/
+private_key.pem
+public_key.pem
+public_key.py
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+.coverage
+htmlcov/
+
+# Build
+dist/
+build/
+*.egg-info/
