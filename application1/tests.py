@@ -332,4 +332,3 @@ class LoginViewTests(TestCase):
         decoded_key = base64.b64decode(response_data["public_key"])
 
         self.assertTrue(len(decoded_key) > 0)
-
