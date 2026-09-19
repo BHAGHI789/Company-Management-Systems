@@ -18,7 +18,6 @@ from django.views.generic import View
 
 from .models import OTPValues
 
-
 log = logging.getLogger(__name__)
 
 KEYS_DIR = Path(__file__).resolve().parent.parent / "keys"
@@ -146,11 +145,7 @@ class Login(View):
         email = decrypt_value(data_dict.get("email"))
         password = decrypt_value(data_dict.get("password"))
 
-        user = (
-            get_user_model()
-            .objects.filter(email__iexact=email)
-            .first()
-        )
+        user = get_user_model().objects.filter(email__iexact=email).first()
 
         if user is None:
             return self.invalid_credentials_response()
@@ -197,12 +192,8 @@ class Login(View):
     def store_login_otp(request, user, otp):
         request.session["login_otp"] = {
             "user_id": str(user.pk),
-            "otp_hash": hashlib.sha256(
-                str(otp).encode()
-            ).hexdigest(),
-            "expires_at": (
-                timezone.now() + timedelta(minutes=10)
-            ).isoformat(),
+            "otp_hash": hashlib.sha256(str(otp).encode()).hexdigest(),
+            "expires_at": (timezone.now() + timedelta(minutes=10)).isoformat(),
         }
 
     def invalid_credentials_response(self):
@@ -269,9 +260,7 @@ class Login(View):
 
     @staticmethod
     def is_otp_expired(login_otp):
-        expires_at = timezone.datetime.fromisoformat(
-            login_otp["expires_at"]
-        )
+        expires_at = timezone.datetime.fromisoformat(login_otp["expires_at"])
 
         return timezone.now() > expires_at
 
@@ -285,11 +274,7 @@ class Login(View):
         )
 
     def login_otp_user(self, request, login_otp):
-        otp_user = (
-            get_user_model()
-            .objects.filter(pk=login_otp["user_id"])
-            .first()
-        )
+        otp_user = get_user_model().objects.filter(pk=login_otp["user_id"]).first()
 
         request.session.pop("login_otp", None)
 
