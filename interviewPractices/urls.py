@@ -22,15 +22,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',Login.as_view(),name="Login"),
-
-
-
-    path('employeeList/', EmployeeList.as_view(), name="employee_list"),
-    path('staticAnalysis/', StaticAnalysis.as_view(), name="static_analysis"),
-    path('staticAnalysis/<int:analysis_id>/', StaticAnalysis.as_view(), name="static_analysis_selected"),
-
-    path("get-public-key/", get_public_key, name="get_public_key"),
+    path('login/',Login.as_view(),name="login"),
+    path('employees/', EmployeeList.as_view(), name="employee_list"),
+    path("public-key/", get_public_key, name="get_public_key"),
 ]
 urlpatterns  += static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS[0])
 urlpatterns  += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -361,13 +361,13 @@
     <div class="site-shell">
         <header class="site-header">
             <nav class="navbar" aria-label="Primary navigation">
-                <a class="brand" href="{% url 'static_analysis' %}">OrgNexus</a>
+                <a class="brand" href="#">OrgNexus</a>
                 <div class="nav-tabs">
                     {% if request.user.is_authenticated %}
                         <div class="nav-menu">
                              <a class="nav-tab" href="#">Home</a>
-                            <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
-                            <a class="nav-tab" href="/employeeList/">Employees</a>
+                            <a class="nav-tab active" href="#">Dashboard</a>
+                            <a class="nav-tab" href="/employee/">Employees</a>
                             <a class="nav-tab" href="#">Departments</a>
                             <a class="nav-tab" href="#">Projects</a>
                             <a class="nav-tab" href="#">All Tasks</a>
@@ -382,7 +382,7 @@
                             <a class="nav-tab" href="#">Profile</a>
                             {% if request.user.userRole == 'DIRECTOR' or request.user.userRole == 'Director' or request.user.userRole == 'GLOBAL_ADMIN' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">Employees</a>
                                 <a class="nav-tab" href="#">Departments</a>
                                 <a class="nav-tab" href="#">Projects</a>
@@ -398,7 +398,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'MANAGER' or request.user.userRole == 'Manager' or request.user.userRole == 'ADMIN' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard (Team)</a>
+                                <a class="nav-tab active" href="#">Dashboard (Team)</a>
                                 <a class="nav-tab" href="#">My Team</a>
                                 <a class="nav-tab" href="#">Projects</a>
                                 <a class="nav-tab" href="#">Task List</a>
@@ -410,7 +410,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'REPORTING_MANAGER' or request.user.userRole == 'Reporting Manager' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">My Team</a>
                                 <a class="nav-tab" href="#">Task List</a>
                                 <a class="nav-tab" href="#">Assign Tasks</a>
@@ -421,7 +421,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'SR_DEVELOPER' or request.user.userRole == 'Sr. Developer' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">Task List</a>
                                 <a class="nav-tab" href="#">My Projects</a>
                                 <a class="nav-tab" href="#">Code Reviews</a>
@@ -431,7 +431,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'DEVELOPER' or request.user.userRole == 'Developer' or request.user.userRole == 'EMPLOYEE' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">Task List</a>
                                 <a class="nav-tab" href="#">My Projects</a>
                                 <a class="nav-tab" href="#">Timesheet</a>
@@ -439,7 +439,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'JR_DEVELOPER' or request.user.userRole == 'Jr. Developer' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">Task List (Assigned only)</a>
                                 <a class="nav-tab" href="#">Learning Resources</a>
                                 <a class="nav-tab" href="#">Timesheet</a>
@@ -447,7 +447,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'QA_MANAGER' or request.user.userRole == 'QA Manager' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard (QA)</a>
+                                <a class="nav-tab active" href="#">Dashboard (QA)</a>
                                 <a class="nav-tab" href="#">Test Cases</a>
                                 <a class="nav-tab" href="#">Bug Tracker</a>
                                 <a class="nav-tab" href="#">Test Plans</a>
@@ -458,7 +458,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'QA_REPORTING_MANAGER' or request.user.userRole == 'QA Reporting Manager' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">My QA Team</a>
                                 <a class="nav-tab" href="#">Test Cases</a>
                                 <a class="nav-tab" href="#">Bug Tracker</a>
@@ -468,7 +468,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'SR_QA_TESTER' or request.user.userRole == 'Sr. QA Tester' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">Test Cases</a>
                                 <a class="nav-tab" href="#">Bug Tracker</a>
                                 <a class="nav-tab" href="#">Test Execution</a>
@@ -477,7 +477,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% elif request.user.userRole == 'QA_TESTER' or request.user.userRole == 'QA Tester' %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">My Test Cases</a>
                                 <a class="nav-tab" href="#">Bug Tracker</a>
                                 <a class="nav-tab" href="#">Test Execution</a>
@@ -485,7 +485,7 @@
                                 <a class="nav-tab" href="#">Profile</a>
                             {% else %}
                                 <a class="nav-tab" href="#">Home</a>
-                                <a class="nav-tab active" href="{% url 'static_analysis' %}">Dashboard</a>
+                                <a class="nav-tab active" href="#">Dashboard</a>
                                 <a class="nav-tab" href="#">Profile</a>
                             {% endif %}
                         </div>
@@ -500,14 +500,14 @@
                             <a href="#">Profile</a>
                             <a href="#">Change password</a>
                             {% if request.user.is_authenticated %}
-                                <a href="{% url 'Login' %}">Sign out</a>
+                                <a href="{% url 'login' %}">Sign out</a>
                             {% else %}
-                                <a href="{% url 'Login' %}">Sign in</a>
+                                <a href="{% url 'login' %}">Sign in</a>
                             {% endif %}
                         </div>
                     </div>
                     {% if not request.user.is_authenticated %}
-                        <a class="nav-action" href="{% url 'Login' %}">Sign in</a>
+                        <a class="nav-action" href="{% url 'login' %}">Sign in</a>
                     {% endif %}
                 </div>
             </nav>
