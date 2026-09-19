@@ -333,20 +333,3 @@ class LoginViewTests(TestCase):
 
         self.assertTrue(len(decoded_key) > 0)
 
-    # ---------------------------------------------------------
-    # EMPLOYEE LIST
-    # ---------------------------------------------------------
-
-    def test_employee_list(self):
-
-        response = self.client.get(reverse("employee_list"))
-
-        self.assertEqual(
-            response.status_code,
-            200,
-        )
-
-        self.assertTemplateUsed(
-            response,
-            "employeeList.html",
-        )

@@ -1,5 +1,10 @@
-{% extends "base.html" %} {% block title %}Employees · OrgNexus{% endblock %} {%
-block extra_css %}
+{% extends "base.html" %}
+
+{% block title %}
+  Employees · OrgNexus
+{% endblock %}
+
+{% block extra_css %}
 <style>
   body:has(.employee-layout) {
     overflow: hidden;
@@ -47,11 +52,11 @@ block extra_css %}
     display: flex;
     flex-direction: column;
     font-weight: 700;
-
-    .side-nav-panel > div:last-child {
-      margin-top: auto !important;
-    }
     margin: 0;
+  }
+
+  .side-nav-panel > div:last-child {
+    margin-top: auto !important;
   }
 
   .count-badge {
@@ -114,18 +119,23 @@ block extra_css %}
   .role-manager {
     background: #9b59b6;
   }
+
   .role-reporting-manager {
     background: #3498db;
   }
+
   .role-team-lead {
     background: #1abc9c;
   }
+
   .role-sr-developer {
     background: #f39c12;
   }
+
   .role-developer {
     background: #27ae60;
   }
+
   .role-jr-developer {
     background: #95a5a6;
   }
@@ -148,9 +158,11 @@ block extra_css %}
   .level-0 .tree-node {
     font-weight: 700;
   }
+
   .level-1 .tree-node {
     font-weight: 600;
   }
+
   .level-2 .tree-node {
     font-weight: 500;
   }
@@ -190,12 +202,14 @@ block extra_css %}
     font-size: 0.85rem;
     font-weight: 700;
   }
+
   .team-person-role {
     color: var(--muted);
     display: block;
     font-size: 0.7rem;
     margin-top: 2px;
   }
+
   .team-person-dot {
     background: var(--accent);
     border-radius: 50%;
@@ -206,36 +220,35 @@ block extra_css %}
   .datatable-panel {
     background: var(--surface-secondary);
     border-bottom: 1px solid var(--line);
+    border-top: 1px solid var(--line);
     display: flex;
     flex-direction: column;
-    border-top: 1px solid var(--line);
     grid-column: span 9;
     height: 100%;
     min-height: 0;
-    padding: 24px;
     overflow: hidden;
+    padding: 24px;
   }
 
-  /* ===== DataTable panel ===== */
   .datatable-header {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    justify-content: space-between;
     margin-bottom: 16px;
   }
 
   .datatable-header h2 {
-    margin: 0;
-    font-size: 1.15rem;
     color: var(--accent-dark);
+    font-size: 1.15rem;
+    margin: 0;
   }
 
   .datatable-actions {
     display: flex;
-    gap: 8px;
     flex-wrap: wrap;
+    gap: 8px;
   }
 
   .import-input {
@@ -245,8 +258,8 @@ block extra_css %}
   .table-footer {
     align-items: center;
     display: flex;
-    justify-content: space-between;
     gap: 16px;
+    justify-content: space-between;
     padding-top: 14px;
   }
 
@@ -294,10 +307,9 @@ block extra_css %}
     border-radius: 8px;
     display: grid;
     gap: 10px;
-    grid-template-columns: minmax(150px, 1fr) minmax(140px, 0.8fr) minmax(
-        180px,
-        1.5fr
-      ) auto auto;
+    grid-template-columns:
+      minmax(150px, 1fr) minmax(140px, 0.8fr) minmax(180px, 1.5fr)
+      auto auto;
     margin-bottom: 16px;
     padding: 12px;
   }
@@ -335,10 +347,10 @@ block extra_css %}
   .btn {
     border: none;
     border-radius: 7px;
-    padding: 8px 14px;
+    cursor: pointer;
     font-size: 0.85rem;
     font-weight: 600;
-    cursor: pointer;
+    padding: 8px 14px;
     transition:
       background 0.2s ease,
       transform 0.15s ease;
@@ -348,6 +360,7 @@ block extra_css %}
     background: var(--accent);
     color: #fff;
   }
+
   .btn-primary:hover {
     background: var(--accent-dark);
     transform: translateY(-1px);
@@ -358,25 +371,25 @@ block extra_css %}
     border: 1px solid var(--line);
     color: var(--text);
   }
+
   .btn-outline:hover {
     background: var(--field);
   }
 
-  /* Simple table styling (works with DataTables too) */
   .table-wrap {
+    border: 1px solid var(--line);
+    border-radius: 8px;
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid var(--line);
   }
 
   table.data-table {
+    border-collapse: collapse;
+    font-size: 0.8rem;
     height: 100%;
     table-layout: fixed;
     width: 100%;
-    border-collapse: collapse;
-    font-size: 0.8rem;
   }
 
   table.data-table thead {
@@ -384,19 +397,19 @@ block extra_css %}
   }
 
   table.data-table th {
-    text-align: left;
+    border-bottom: 2px solid var(--line);
+    color: var(--accent-dark);
+    font-weight: 700;
     overflow-wrap: anywhere;
     padding: 9px 8px;
-    font-weight: 700;
-    color: var(--accent-dark);
-    border-bottom: 2px solid var(--line);
+    text-align: left;
   }
 
   table.data-table td {
-    overflow-wrap: anywhere;
-    padding: 8px;
     border-bottom: 1px solid var(--line);
     color: var(--text);
+    overflow-wrap: anywhere;
+    padding: 8px;
   }
 
   table.data-table tbody tr:hover {
@@ -404,34 +417,37 @@ block extra_css %}
   }
 
   .status-pill {
-    display: inline-block;
-    padding: 3px 10px;
     border-radius: 999px;
+    display: inline-block;
     font-size: 0.72rem;
     font-weight: 700;
+    padding: 3px 10px;
   }
+
   .status-active {
     background: #d4edda;
     color: #155724;
   }
+
   .status-inactive {
     background: #f8d7da;
     color: #721c24;
   }
+
   .status-onleave {
     background: #fff3cd;
     color: #856404;
   }
 
   .role-badge {
-    display: inline-block;
-    padding: 3px 9px;
+    background: var(--field);
+    border: 1px solid var(--line);
     border-radius: 6px;
+    color: var(--accent-dark);
+    display: inline-block;
     font-size: 0.72rem;
     font-weight: 600;
-    background: var(--field);
-    color: var(--accent-dark);
-    border: 1px solid var(--line);
+    padding: 3px 9px;
   }
 
   @media (max-width: 760px) {
@@ -440,8 +456,8 @@ block extra_css %}
     }
 
     .employee-layout {
-      height: auto;
       grid-template-columns: 1fr;
+      height: auto;
       overflow: visible;
     }
 
@@ -472,9 +488,10 @@ block extra_css %}
     }
   }
 </style>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <div class="employee-layout">
-  <!-- ===================== LEFT SIDE NAV (3 grids) ===================== -->
   <aside class="side-nav-panel" aria-label="Team hierarchy">
     <div class="side-nav-header">
       <h2>Team Structure</h2>
@@ -521,6 +538,7 @@ block extra_css %}
                       <span class="node-role">Sr. Developer</span>
                     </div>
                   </li>
+
                   <li class="tree-item level-3">
                     <div
                       class="tree-node"
@@ -532,6 +550,7 @@ block extra_css %}
                       <span class="node-role">Sr. Developer</span>
                     </div>
                   </li>
+
                   <li class="tree-item level-3">
                     <div
                       class="tree-node"
@@ -543,6 +562,7 @@ block extra_css %}
                       <span class="node-role">Developer</span>
                     </div>
                   </li>
+
                   <li class="tree-item level-3">
                     <div
                       class="tree-node"
@@ -563,6 +583,7 @@ block extra_css %}
                   <span class="node-label">Mohammed Irfan</span>
                   <span class="node-role">Team Lead</span>
                 </div>
+
                 <ul>
                   <li class="tree-item level-3">
                     <div
@@ -590,6 +611,7 @@ block extra_css %}
               <span class="node-label">Suresh Iyer</span>
               <span class="node-role">Reporting Manager</span>
             </div>
+
             <ul>
               <li class="tree-item level-2">
                 <div class="tree-node" data-role="sr_developer" data-id="sd-03">
@@ -621,6 +643,7 @@ block extra_css %}
       >
         ROLE COLORS
       </div>
+
       <div
         style="
           color: var(--muted);
@@ -630,72 +653,81 @@ block extra_css %}
           gap: 8px 12px;
         "
       >
-        <span
-          ><i
+        <span>
+          <i
             class="role-dot role-manager"
             style="display: inline-block; vertical-align: middle"
           ></i>
-          Manager</span
-        >
-        <span
-          ><i
+          Manager
+        </span>
+
+        <span>
+          <i
             class="role-dot role-reporting-manager"
             style="display: inline-block; vertical-align: middle"
           ></i>
-          Reporting Mgr</span
-        >
-        <span
-          ><i
+          Reporting Mgr
+        </span>
+
+        <span>
+          <i
             class="role-dot role-team-lead"
             style="display: inline-block; vertical-align: middle"
           ></i>
-          Team Lead</span
-        >
-        <span
-          ><i
+          Team Lead
+        </span>
+
+        <span>
+          <i
             class="role-dot role-sr-developer"
             style="display: inline-block; vertical-align: middle"
           ></i>
-          Sr. Dev</span
-        >
-        <span
-          ><i
+          Sr. Dev
+        </span>
+
+        <span>
+          <i
             class="role-dot role-developer"
             style="display: inline-block; vertical-align: middle"
           ></i>
-          Developer</span
-        >
-        <span
-          ><i
+          Developer
+        </span>
+
+        <span>
+          <i
             class="role-dot role-jr-developer"
             style="display: inline-block; vertical-align: middle"
           ></i>
-          Jr. Dev</span
-        >
+          Jr. Dev
+        </span>
       </div>
     </div>
   </aside>
 
-  <!-- ===================== RIGHT DATATABLE (9 grids) ===================== -->
   <section class="datatable-panel">
     <div class="datatable-header">
       <h2>Employee Directory</h2>
+
       <div class="datatable-actions">
         <button class="btn btn-outline" type="button" id="btn-refresh">
           Refresh
         </button>
+
         <button class="btn btn-outline" type="button" id="btn-import">
           Import CSV
         </button>
+
         <input
           class="import-input"
           id="employeeImport"
           type="file"
           accept=".csv,text/csv"
         />
+
         <button class="btn btn-outline" type="button" id="btn-export">
           Export CSV
         </button>
+
         <button class="btn btn-primary" type="button" id="btn-add-employee">
           + Add Employee
         </button>
@@ -705,6 +737,7 @@ block extra_css %}
     <form class="filter-card" id="employeeFilterForm">
       <div class="filter-field">
         <label for="filterField">Field name</label>
+
         <select id="filterField" name="field">
           <option value="all">All fields</option>
           <option value="emp-id">Emp ID</option>
@@ -715,16 +748,20 @@ block extra_css %}
           <option value="status">Status</option>
         </select>
       </div>
+
       <div class="filter-field">
         <label for="filterOperator">Operator</label>
+
         <select id="filterOperator" name="operator">
           <option value="contains">Contains</option>
           <option value="equals">Equals</option>
           <option value="starts-with">Starts with</option>
         </select>
       </div>
+
       <div class="filter-field">
         <label for="filterValue">Value</label>
+
         <input
           id="filterValue"
           name="value"
@@ -733,7 +770,9 @@ block extra_css %}
           autocomplete="off"
         />
       </div>
+
       <button class="btn btn-primary" type="submit">Filter</button>
+
       <button class="btn btn-outline" type="button" id="clearEmployeeFilter">
         Clear
       </button>
@@ -752,137 +791,181 @@ block extra_css %}
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
-          <!-- Sample static rows – replace with real data via Django loop or AJAX -->
           <tr>
             <td>EMP-1001</td>
             <td>Priya Sharma</td>
             <td><span class="role-badge">Manager</span></td>
             <td>Engineering</td>
             <td>—</td>
-            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-active">Active</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1002</td>
             <td>Rahul Verma</td>
             <td><span class="role-badge">Reporting Manager</span></td>
             <td>Engineering</td>
             <td>Priya Sharma</td>
-            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-active">Active</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1003</td>
             <td>Ananya Patel</td>
             <td><span class="role-badge">Team Lead</span></td>
             <td>Engineering</td>
             <td>Rahul Verma</td>
-            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-active">Active</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1004</td>
             <td>Vikram Singh</td>
             <td><span class="role-badge">Sr. Developer</span></td>
             <td>Engineering</td>
             <td>Ananya Patel</td>
-            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-active">Active</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1005</td>
             <td>Sneha Reddy</td>
             <td><span class="role-badge">Sr. Developer</span></td>
             <td>Engineering</td>
             <td>Ananya Patel</td>
-            <td><span class="status-pill status-onleave">On Leave</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-onleave">On Leave</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1006</td>
             <td>Arjun Mehta</td>
             <td><span class="role-badge">Developer</span></td>
             <td>Engineering</td>
             <td>Ananya Patel</td>
-            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-active">Active</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1007</td>
             <td>Kavya Nair</td>
             <td><span class="role-badge">Jr. Developer</span></td>
             <td>Engineering</td>
             <td>Ananya Patel</td>
-            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-active">Active</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1008</td>
             <td>Mohammed Irfan</td>
             <td><span class="role-badge">Team Lead</span></td>
             <td>Engineering</td>
             <td>Rahul Verma</td>
-            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-active">Active</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
               </button>
             </td>
           </tr>
+
           <tr>
             <td>EMP-1009</td>
             <td>Neha Gupta</td>
             <td><span class="role-badge">Developer</span></td>
             <td>Engineering</td>
             <td>Mohammed Irfan</td>
-            <td><span class="status-pill status-inactive">Inactive</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
+              <span class="status-pill status-inactive">Inactive</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                Edit
+              </button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -894,28 +977,34 @@ block extra_css %}
     </div>
 
     <div class="table-footer">
-      <span class="table-info" id="tableInfo"
-        >Showing 0 to 0 of 0 employees</span
-      >
+      <span class="table-info" id="tableInfo">
+        Showing 0 to 0 of 0 employees
+      </span>
+
       <nav aria-label="Employee table pagination">
         <ul class="pagination" id="employeePagination"></ul>
       </nav>
     </div>
   </section>
 </div>
-{% endblock %} {% block extra_js %}
+{% endblock %}
+
+{% block extra_js %}
 <script>
   const filterForm = document.getElementById("employeeFilterForm");
   const filterField = document.getElementById("filterField");
   const filterOperator = document.getElementById("filterOperator");
   const filterValue = document.getElementById("filterValue");
-  const clearEmployeeFilter = document.getElementById("clearEmployeeFilter");
+  const clearEmployeeFilter = document.getElementById(
+    "clearEmployeeFilter",
+  );
   const employeeTable = document.getElementById("employeeTable");
   const tableBody = employeeTable.querySelector("tbody");
   const employeeImport = document.getElementById("employeeImport");
   const tableInfo = document.getElementById("tableInfo");
   const employeePagination = document.getElementById("employeePagination");
   const pageSize = 10;
+
   let currentPage = 1;
   let employeeRows = Array.from(tableBody.querySelectorAll("tr"));
 
@@ -933,18 +1022,27 @@ block extra_css %}
     const operator = filterOperator.value;
     const query = filterValue.value.trim().toLowerCase();
 
-    if (!query) return employeeRows;
+    if (!query) {
+      return employeeRows;
+    }
 
     return employeeRows.filter(function (row) {
       const cells = Array.from(row.cells);
+
       const values =
         field === "all"
           ? cells.map((cell) => cell.textContent.trim().toLowerCase())
           : [cells[fieldIndexes[field]].textContent.trim().toLowerCase()];
 
       return values.some(function (value) {
-        if (operator === "equals") return value === query;
-        if (operator === "starts-with") return value.startsWith(query);
+        if (operator === "equals") {
+          return value === query;
+        }
+
+        if (operator === "starts-with") {
+          return value.startsWith(query);
+        }
+
         return value.includes(query);
       });
     });
@@ -952,14 +1050,20 @@ block extra_css %}
 
   function renderPagination() {
     const filteredRows = getFilteredRows();
-    const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+    const totalPages = Math.max(
+      1,
+      Math.ceil(filteredRows.length / pageSize),
+    );
+
     currentPage = Math.min(currentPage, totalPages);
+
     const start = (currentPage - 1) * pageSize;
     const end = Math.min(start + pageSize, filteredRows.length);
 
     employeeRows.forEach((row) => {
       row.hidden = true;
     });
+
     filteredRows.slice(start, end).forEach((row) => {
       row.hidden = false;
     });
@@ -969,23 +1073,46 @@ block extra_css %}
       : "Showing 0 to 0 of 0 employees";
 
     employeePagination.innerHTML = "";
-    addPageButton("Previous", currentPage - 1, currentPage === 1);
-    for (let page = 1; page <= totalPages; page += 1)
-      addPageButton(page, page, false, page === currentPage);
-    addPageButton("Next", currentPage + 1, currentPage === totalPages);
+
+    addPageButton(
+      "Previous",
+      currentPage - 1,
+      currentPage === 1,
+    );
+
+    for (let page = 1; page <= totalPages; page += 1) {
+      addPageButton(
+        page,
+        page,
+        false,
+        page === currentPage,
+      );
+    }
+
+    addPageButton(
+      "Next",
+      currentPage + 1,
+      currentPage === totalPages,
+    );
   }
 
   function addPageButton(label, page, disabled, active) {
     const item = document.createElement("li");
     const button = document.createElement("button");
+
     button.type = "button";
     button.textContent = label;
     button.disabled = disabled;
-    if (active) button.classList.add("active");
+
+    if (active) {
+      button.classList.add("active");
+    }
+
     button.addEventListener("click", function () {
       currentPage = page;
       renderPagination();
     });
+
     item.appendChild(button);
     employeePagination.appendChild(item);
   }
@@ -1008,73 +1135,121 @@ block extra_css %}
     filterValue.focus();
   });
 
-  document.getElementById("btn-refresh").addEventListener("click", function () {
-    filterForm.reset();
-    filterEmployeeRows();
-  });
+  document
+    .getElementById("btn-refresh")
+    .addEventListener("click", function () {
+      filterForm.reset();
+      filterEmployeeRows();
+    });
 
-  document.getElementById("btn-import").addEventListener("click", function () {
-    employeeImport.click();
-  });
+  document
+    .getElementById("btn-import")
+    .addEventListener("click", function () {
+      employeeImport.click();
+    });
 
   employeeImport.addEventListener("change", function (event) {
     const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function () {
-      const lines = reader.result.trim().split(/\r?\n/).filter(Boolean);
-      if (lines.length < 2) return;
 
-      const rows = lines.slice(1).map((line) => parseCsvLine(line));
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      const lines = reader.result
+        .trim()
+        .split(/\r?\n/)
+        .filter(Boolean);
+
+      if (lines.length < 2) {
+        return;
+      }
+
+      const rows = lines
+        .slice(1)
+        .map((line) => parseCsvLine(line));
+
       tableBody.innerHTML = rows
         .map(
           (row) => `
-                <tr>
-                    ${row
-                      .slice(0, 7)
-                      .map((cell) => `<td>${escapeHtml(cell)}</td>`)
-                      .join("")}
-                </tr>
-            `,
+            <tr>
+              ${row
+                .slice(0, 7)
+                .map((cell) => `<td>${escapeHtml(cell)}</td>`)
+                .join("")}
+            </tr>
+          `,
         )
         .join("");
-      employeeRows = Array.from(tableBody.querySelectorAll("tr"));
+
+      employeeRows = Array.from(
+        tableBody.querySelectorAll("tr"),
+      );
+
       filterEmployeeRows();
       event.target.value = "";
     };
+
     reader.readAsText(file);
   });
 
-  document.getElementById("btn-export").addEventListener("click", function () {
-    const visibleRows = employeeRows.filter((row) => !row.hidden);
-    const header = Array.from(employeeTable.querySelectorAll("thead th")).map(
-      (cell) => cell.textContent.trim(),
-    );
-    const csv = [
-      header,
-      ...visibleRows.map((row) =>
-        Array.from(row.cells).map((cell) => cell.textContent.trim()),
-      ),
-    ]
-      .map((row) =>
-        row.map((value) => `"${value.replace(/"/g, '""')}"`).join(","),
-      )
-      .join("\n");
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(
-      new Blob([csv], { type: "text/csv;charset=utf-8;" }),
-    );
-    link.download = "employees.csv";
-    link.click();
-    URL.revokeObjectURL(link.href);
-  });
+  document
+    .getElementById("btn-export")
+    .addEventListener("click", function () {
+      const visibleRows = employeeRows.filter(
+        (row) => !row.hidden,
+      );
+
+      const header = Array.from(
+        employeeTable.querySelectorAll("thead th"),
+      ).map((cell) => cell.textContent.trim());
+
+      const csv = [
+        header,
+        ...visibleRows.map((row) =>
+          Array.from(row.cells).map(
+            (cell) => cell.textContent.trim(),
+          ),
+        ),
+      ]
+        .map((row) =>
+          row
+            .map((value) =>
+              `"${value.replace(/"/g, '""')}"`,
+            )
+            .join(","),
+        )
+        .join("\n");
+
+      const link = document.createElement("a");
+
+      link.href = URL.createObjectURL(
+        new Blob([csv], {
+          type: "text/csv;charset=utf-8;",
+        }),
+      );
+
+      link.download = "employees.csv";
+      link.click();
+
+      URL.revokeObjectURL(link.href);
+    });
 
   function parseCsvLine(line) {
     return line
       .match(/("(?:[^"]|"")*"|[^,]*)/g)
       .slice(0, -1)
-      .filter((_, index, values) => index < values.length - 1)
-      .map((value) => value.replace(/^"|"$/g, "").replace(/""/g, '"').trim());
+      .filter(
+        (_, index, values) => index < values.length - 1,
+      )
+      .map((value) =>
+        value
+          .replace(/^"|"$/g, "")
+          .replace(/""/g, '"')
+          .trim(),
+      );
   }
 
   function escapeHtml(value) {
