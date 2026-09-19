@@ -89,8 +89,7 @@ jobs:
 
       # -------------------- Prettier --------------------
       - name: Check formatting with Prettier
-        run: |
-          npx prettier --check .
+        run: ./node_modules/.bin/prettier --check .
 
       # ==========================================================
       # DJANGO
