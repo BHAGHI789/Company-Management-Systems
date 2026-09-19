@@ -11,7 +11,6 @@ env:
   IMAGE_NAME: company-management-systems
 
 jobs:
-
   # ==========================================================
   # CI - TEST, LINT & FORMAT
   # ==========================================================
@@ -20,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       # -------------------- Checkout --------------------
       - name: Checkout code
         uses: actions/checkout@v4
@@ -116,7 +114,6 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: interviewPractices.settings
 
-
   # ==========================================================
   # BUILD & PUSH DOCKER IMAGE
   # ==========================================================
@@ -131,7 +128,6 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
 
     steps:
-
       # -------------------- Checkout --------------------
       - name: Checkout code
         uses: actions/checkout@v4

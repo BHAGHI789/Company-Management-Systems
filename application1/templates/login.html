@@ -1,2017 +1,2085 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>OrgNexus - Sign In</title>
 
-
     <style>
-
-        /* =====================================================
+      /* =====================================================
            GLOBAL
         ===================================================== */
 
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
 
-        body {
+      body {
+        font-family: Arial, sans-serif;
 
-            font-family: Arial, sans-serif;
+        --accent: #247ba0;
+        --accent-dark: #18566f;
+        --surface: #f4f9fb;
+        --surface-secondary: #ffffff;
+        --field: #eaf3f6;
+        --line: #c5dce4;
+        --text: #1f2933;
+        --muted: #667085;
+        --left-start: #18566f;
+        --left-end: #247ba0;
+        --left-overlay: rgba(15, 56, 75, 0.42);
+        --shadow: rgba(0, 0, 0, 0.1);
 
-            --accent: #247ba0;
-            --accent-dark: #18566f;
-            --surface: #f4f9fb;
-            --surface-secondary: #ffffff;
-            --field: #eaf3f6;
-            --line: #c5dce4;
-            --text: #1f2933;
-            --muted: #667085;
-            --left-start: #18566f;
-            --left-end: #247ba0;
-            --left-overlay: rgba(15, 56, 75, 0.42);
-            --shadow: rgba(0, 0, 0, 0.10);
+        background: var(--surface);
 
-            background: var(--surface);
+        color: var(--text);
 
-            color: var(--text);
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
 
-            transition:
-                background 0.3s ease,
-                color 0.3s ease;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            THEME 1 - OCEAN
         ===================================================== */
 
-        body[data-theme="ocean"][data-mode="light"] {
+      body[data-theme="ocean"][data-mode="light"] {
+        --accent: #247ba0;
+        --accent-dark: #18566f;
 
-            --accent: #247ba0;
-            --accent-dark: #18566f;
+        --surface: #f4f9fb;
+        --surface-secondary: #ffffff;
 
-            --surface: #f4f9fb;
-            --surface-secondary: #ffffff;
+        --field: #eaf3f6;
+        --line: #c5dce4;
 
-            --field: #eaf3f6;
-            --line: #c5dce4;
+        --text: #1f2933;
+        --muted: #667085;
 
-            --text: #1f2933;
-            --muted: #667085;
+        --left-start: #18566f;
+        --left-end: #247ba0;
 
-            --left-start: #18566f;
-            --left-end: #247ba0;
+        --left-overlay: rgba(15, 56, 75, 0.42);
 
-            --left-overlay: rgba(15, 56, 75, 0.42);
+        --shadow: rgba(36, 123, 160, 0.15);
+      }
 
-            --shadow: rgba(36, 123, 160, 0.15);
-        }
+      body[data-theme="ocean"][data-mode="dark"] {
+        --accent: #38bdf8;
+        --accent-dark: #0284c7;
 
-        body[data-theme="ocean"][data-mode="dark"] {
+        --surface: #071923;
+        --surface-secondary: #0c2532;
 
-            --accent: #38bdf8;
-            --accent-dark: #0284c7;
+        --field: #102f3d;
+        --line: #245468;
 
-            --surface: #071923;
-            --surface-secondary: #0c2532;
+        --text: #e6f7ff;
+        --muted: #9bb7c4;
 
-            --field: #102f3d;
-            --line: #245468;
+        --left-start: #031923;
+        --left-end: #075985;
 
-            --text: #e6f7ff;
-            --muted: #9bb7c4;
+        --left-overlay: rgba(0, 0, 0, 0.25);
 
-            --left-start: #031923;
-            --left-end: #075985;
+        --shadow: rgba(0, 0, 0, 0.35);
+      }
 
-            --left-overlay: rgba(0, 0, 0, 0.25);
-
-            --shadow: rgba(0, 0, 0, 0.35);
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            THEME 2 - FOREST
         ===================================================== */
 
-        body[data-theme="forest"][data-mode="light"] {
+      body[data-theme="forest"][data-mode="light"] {
+        --accent: #48745a;
+        --accent-dark: #31513e;
 
-            --accent: #48745a;
-            --accent-dark: #31513e;
+        --surface: #f6f8f1;
+        --surface-secondary: #ffffff;
 
-            --surface: #f6f8f1;
-            --surface-secondary: #ffffff;
+        --field: #edf2e6;
+        --line: #ced9c5;
 
-            --field: #edf2e6;
-            --line: #ced9c5;
+        --text: #26352b;
+        --muted: #68756d;
 
-            --text: #26352b;
-            --muted: #68756d;
+        --left-start: #31513e;
+        --left-end: #48745a;
 
-            --left-start: #31513e;
-            --left-end: #48745a;
+        --left-overlay: rgba(35, 65, 45, 0.44);
 
-            --left-overlay: rgba(35, 65, 45, 0.44);
+        --shadow: rgba(72, 116, 90, 0.15);
+      }
 
-            --shadow: rgba(72, 116, 90, 0.15);
-        }
+      body[data-theme="forest"][data-mode="dark"] {
+        --accent: #6ee7a0;
+        --accent-dark: #22a55a;
 
-        body[data-theme="forest"][data-mode="dark"] {
+        --surface: #07160e;
+        --surface-secondary: #0c2115;
 
-            --accent: #6ee7a0;
-            --accent-dark: #22a55a;
+        --field: #112d1d;
+        --line: #285339;
 
-            --surface: #07160e;
-            --surface-secondary: #0c2115;
+        --text: #e5f9eb;
+        --muted: #9db9a5;
 
-            --field: #112d1d;
-            --line: #285339;
+        --left-start: #06130b;
+        --left-end: #14532d;
 
-            --text: #e5f9eb;
-            --muted: #9db9a5;
+        --left-overlay: rgba(0, 0, 0, 0.3);
 
-            --left-start: #06130b;
-            --left-end: #14532d;
+        --shadow: rgba(0, 0, 0, 0.35);
+      }
 
-            --left-overlay: rgba(0, 0, 0, 0.30);
-
-            --shadow: rgba(0, 0, 0, 0.35);
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            THEME 3 - PURPLE
         ===================================================== */
 
-        body[data-theme="purple"][data-mode="light"] {
+      body[data-theme="purple"][data-mode="light"] {
+        --accent: #8d597c;
+        --accent-dark: #633d57;
 
-            --accent: #8d597c;
-            --accent-dark: #633d57;
+        --surface: #faf6fa;
+        --surface-secondary: #ffffff;
 
-            --surface: #faf6fa;
-            --surface-secondary: #ffffff;
+        --field: #f3eaf1;
+        --line: #dfcddd;
 
-            --field: #f3eaf1;
-            --line: #dfcddd;
+        --text: #332532;
+        --muted: #746574;
 
-            --text: #332532;
-            --muted: #746574;
+        --left-start: #633d57;
+        --left-end: #8d597c;
 
-            --left-start: #633d57;
-            --left-end: #8d597c;
+        --left-overlay: rgba(66, 38, 61, 0.43);
 
-            --left-overlay: rgba(66, 38, 61, 0.43);
+        --shadow: rgba(141, 89, 124, 0.15);
+      }
 
-            --shadow: rgba(141, 89, 124, 0.15);
-        }
+      body[data-theme="purple"][data-mode="dark"] {
+        --accent: #d8a4d0;
+        --accent-dark: #a8559c;
 
-        body[data-theme="purple"][data-mode="dark"] {
+        --surface: #160c16;
+        --surface-secondary: #241324;
 
-            --accent: #d8a4d0;
-            --accent-dark: #a8559c;
+        --field: #321d32;
+        --line: #593b57;
 
-            --surface: #160c16;
-            --surface-secondary: #241324;
+        --text: #f9eafa;
+        --muted: #c1a8c0;
 
-            --field: #321d32;
-            --line: #593b57;
+        --left-start: #140a14;
+        --left-end: #6b2462;
 
-            --text: #f9eafa;
-            --muted: #c1a8c0;
+        --left-overlay: rgba(0, 0, 0, 0.3);
 
-            --left-start: #140a14;
-            --left-end: #6b2462;
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-            --left-overlay: rgba(0, 0, 0, 0.30);
-
-            --shadow: rgba(0, 0, 0, 0.40);
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            THEME 4 - SUNSET
         ===================================================== */
 
-        body[data-theme="sunset"][data-mode="light"] {
+      body[data-theme="sunset"][data-mode="light"] {
+        --accent: #e76f51;
+        --accent-dark: #c45135;
 
-            --accent: #e76f51;
-            --accent-dark: #c45135;
+        --surface: #fff8f4;
+        --surface-secondary: #ffffff;
 
-            --surface: #fff8f4;
-            --surface-secondary: #ffffff;
+        --field: #fff0e9;
+        --line: #f1cfc1;
 
-            --field: #fff0e9;
-            --line: #f1cfc1;
+        --text: #3d2924;
+        --muted: #796761;
 
-            --text: #3d2924;
-            --muted: #796761;
+        --left-start: #c45135;
+        --left-end: #e76f51;
 
-            --left-start: #c45135;
-            --left-end: #e76f51;
+        --left-overlay: rgba(90, 40, 25, 0.35);
 
-            --left-overlay: rgba(90, 40, 25, 0.35);
+        --shadow: rgba(231, 111, 81, 0.15);
+      }
 
-            --shadow: rgba(231, 111, 81, 0.15);
-        }
+      body[data-theme="sunset"][data-mode="dark"] {
+        --accent: #ff9f7a;
+        --accent-dark: #e76f51;
 
-        body[data-theme="sunset"][data-mode="dark"] {
+        --surface: #1b0d09;
+        --surface-secondary: #2a1510;
 
-            --accent: #ff9f7a;
-            --accent-dark: #e76f51;
+        --field: #3a1d15;
+        --line: #654035;
 
-            --surface: #1b0d09;
-            --surface-secondary: #2a1510;
+        --text: #fff1ea;
+        --muted: #c7aaa0;
 
-            --field: #3a1d15;
-            --line: #654035;
+        --left-start: #170906;
+        --left-end: #9a3412;
 
-            --text: #fff1ea;
-            --muted: #c7aaa0;
+        --left-overlay: rgba(0, 0, 0, 0.3);
 
-            --left-start: #170906;
-            --left-end: #9a3412;
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-            --left-overlay: rgba(0, 0, 0, 0.30);
-
-            --shadow: rgba(0, 0, 0, 0.40);
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            THEME 5 - TEAL
         ===================================================== */
 
-        body[data-theme="teal"][data-mode="light"] {
+      body[data-theme="teal"][data-mode="light"] {
+        --accent: #0f8b8d;
+        --accent-dark: #096b6d;
 
-            --accent: #0f8b8d;
-            --accent-dark: #096b6d;
+        --surface: #f2fbfa;
+        --surface-secondary: #ffffff;
 
-            --surface: #f2fbfa;
-            --surface-secondary: #ffffff;
+        --field: #e5f5f4;
+        --line: #c1dddd;
 
-            --field: #e5f5f4;
-            --line: #c1dddd;
+        --text: #183334;
+        --muted: #657878;
 
-            --text: #183334;
-            --muted: #657878;
+        --left-start: #096b6d;
+        --left-end: #0f8b8d;
 
-            --left-start: #096b6d;
-            --left-end: #0f8b8d;
+        --left-overlay: rgba(8, 70, 72, 0.4);
 
-            --left-overlay: rgba(8, 70, 72, 0.40);
+        --shadow: rgba(15, 139, 141, 0.15);
+      }
 
-            --shadow: rgba(15, 139, 141, 0.15);
-        }
+      body[data-theme="teal"][data-mode="dark"] {
+        --accent: #2dd4bf;
+        --accent-dark: #0f766e;
 
-        body[data-theme="teal"][data-mode="dark"] {
+        --surface: #061716;
+        --surface-secondary: #0b2523;
 
-            --accent: #2dd4bf;
-            --accent-dark: #0f766e;
+        --field: #103432;
+        --line: #245a56;
 
-            --surface: #061716;
-            --surface-secondary: #0b2523;
+        --text: #e4fffb;
+        --muted: #9bbdb9;
 
-            --field: #103432;
-            --line: #245a56;
+        --left-start: #04100f;
+        --left-end: #115e59;
 
-            --text: #e4fffb;
-            --muted: #9bbdb9;
+        --left-overlay: rgba(0, 0, 0, 0.3);
 
-            --left-start: #04100f;
-            --left-end: #115e59;
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-            --left-overlay: rgba(0, 0, 0, 0.30);
+      body[data-theme="rose"][data-mode="light"] {
+        --accent: #c44569;
+        --accent-dark: #8f2d4b;
+        --surface: #fff6f8;
+        --surface-secondary: #ffffff;
+        --field: #fff0f3;
+        --line: #efc7d2;
+        --text: #3b2029;
+        --muted: #80636c;
+        --left-start: #8f2d4b;
+        --left-end: #c44569;
+        --left-overlay: rgba(83, 21, 43, 0.28);
+        --shadow: rgba(196, 69, 105, 0.18);
+      }
 
-            --shadow: rgba(0, 0, 0, 0.40);
-        }
+      body[data-theme="rose"][data-mode="dark"] {
+        --accent: #fb7185;
+        --accent-dark: #be123c;
+        --surface: #1d0b11;
+        --surface-secondary: #30121c;
+        --field: #421b28;
+        --line: #6b2a3d;
+        --text: #ffe7ec;
+        --muted: #cda1ad;
+        --left-start: #260b15;
+        --left-end: #9f1239;
+        --left-overlay: rgba(0, 0, 0, 0.28);
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-        body[data-theme="rose"][data-mode="light"] {
-            --accent: #c44569; --accent-dark: #8f2d4b;
-            --surface: #fff6f8; --surface-secondary: #ffffff;
-            --field: #fff0f3; --line: #efc7d2;
-            --text: #3b2029; --muted: #80636c;
-            --left-start: #8f2d4b; --left-end: #c44569;
-            --left-overlay: rgba(83, 21, 43, 0.28); --shadow: rgba(196, 69, 105, 0.18);
-        }
+      body[data-theme="amber"][data-mode="light"] {
+        --accent: #c47f17;
+        --accent-dark: #85530d;
+        --surface: #fffaf0;
+        --surface-secondary: #ffffff;
+        --field: #fff4d8;
+        --line: #eed7a0;
+        --text: #392b14;
+        --muted: #806e4d;
+        --left-start: #85530d;
+        --left-end: #d99a21;
+        --left-overlay: rgba(83, 49, 5, 0.25);
+        --shadow: rgba(196, 127, 23, 0.18);
+      }
 
-        body[data-theme="rose"][data-mode="dark"] {
-            --accent: #fb7185; --accent-dark: #be123c;
-            --surface: #1d0b11; --surface-secondary: #30121c;
-            --field: #421b28; --line: #6b2a3d;
-            --text: #ffe7ec; --muted: #cda1ad;
-            --left-start: #260b15; --left-end: #9f1239;
-            --left-overlay: rgba(0, 0, 0, 0.28); --shadow: rgba(0, 0, 0, 0.4);
-        }
+      body[data-theme="amber"][data-mode="dark"] {
+        --accent: #fbbf24;
+        --accent-dark: #b45309;
+        --surface: #1c1305;
+        --surface-secondary: #302108;
+        --field: #45300c;
+        --line: #6e4d17;
+        --text: #fff4cf;
+        --muted: #cdbb8b;
+        --left-start: #251503;
+        --left-end: #a16207;
+        --left-overlay: rgba(0, 0, 0, 0.3);
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-        body[data-theme="amber"][data-mode="light"] {
-            --accent: #c47f17; --accent-dark: #85530d;
-            --surface: #fffaf0; --surface-secondary: #ffffff;
-            --field: #fff4d8; --line: #eed7a0;
-            --text: #392b14; --muted: #806e4d;
-            --left-start: #85530d; --left-end: #d99a21;
-            --left-overlay: rgba(83, 49, 5, 0.25); --shadow: rgba(196, 127, 23, 0.18);
-        }
+      body[data-theme="indigo"][data-mode="light"] {
+        --accent: #536dfe;
+        --accent-dark: #303f9f;
+        --surface: #f5f7ff;
+        --surface-secondary: #ffffff;
+        --field: #edf0ff;
+        --line: #ccd3f5;
+        --text: #20264a;
+        --muted: #687092;
+        --left-start: #303f9f;
+        --left-end: #536dfe;
+        --left-overlay: rgba(28, 35, 98, 0.25);
+        --shadow: rgba(83, 109, 254, 0.18);
+      }
 
-        body[data-theme="amber"][data-mode="dark"] {
-            --accent: #fbbf24; --accent-dark: #b45309;
-            --surface: #1c1305; --surface-secondary: #302108;
-            --field: #45300c; --line: #6e4d17;
-            --text: #fff4cf; --muted: #cdbb8b;
-            --left-start: #251503; --left-end: #a16207;
-            --left-overlay: rgba(0, 0, 0, 0.3); --shadow: rgba(0, 0, 0, 0.4);
-        }
+      body[data-theme="indigo"][data-mode="dark"] {
+        --accent: #a5b4fc;
+        --accent-dark: #4f46e5;
+        --surface: #0e1025;
+        --surface-secondary: #191d3d;
+        --field: #252b58;
+        --line: #3d4788;
+        --text: #eef0ff;
+        --muted: #aeb5db;
+        --left-start: #11133d;
+        --left-end: #4338ca;
+        --left-overlay: rgba(0, 0, 0, 0.3);
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-        body[data-theme="indigo"][data-mode="light"] {
-            --accent: #536dfe; --accent-dark: #303f9f;
-            --surface: #f5f7ff; --surface-secondary: #ffffff;
-            --field: #edf0ff; --line: #ccd3f5;
-            --text: #20264a; --muted: #687092;
-            --left-start: #303f9f; --left-end: #536dfe;
-            --left-overlay: rgba(28, 35, 98, 0.25); --shadow: rgba(83, 109, 254, 0.18);
-        }
+      body[data-theme="graphite"][data-mode="light"] {
+        --accent: #4b5563;
+        --accent-dark: #1f2937;
+        --surface: #f5f6f7;
+        --surface-secondary: #ffffff;
+        --field: #eceff1;
+        --line: #d1d5db;
+        --text: #20252b;
+        --muted: #6b7280;
+        --left-start: #1f2937;
+        --left-end: #4b5563;
+        --left-overlay: rgba(17, 24, 39, 0.27);
+        --shadow: rgba(75, 85, 99, 0.18);
+      }
 
-        body[data-theme="indigo"][data-mode="dark"] {
-            --accent: #a5b4fc; --accent-dark: #4f46e5;
-            --surface: #0e1025; --surface-secondary: #191d3d;
-            --field: #252b58; --line: #3d4788;
-            --text: #eef0ff; --muted: #aeb5db;
-            --left-start: #11133d; --left-end: #4338ca;
-            --left-overlay: rgba(0, 0, 0, 0.3); --shadow: rgba(0, 0, 0, 0.4);
-        }
+      body[data-theme="graphite"][data-mode="dark"] {
+        --accent: #d1d5db;
+        --accent-dark: #6b7280;
+        --surface: #111315;
+        --surface-secondary: #1c1f22;
+        --field: #292d32;
+        --line: #464c54;
+        --text: #f3f4f6;
+        --muted: #a5abb4;
+        --left-start: #090a0b;
+        --left-end: #374151;
+        --left-overlay: rgba(0, 0, 0, 0.3);
+        --shadow: rgba(0, 0, 0, 0.45);
+      }
 
-        body[data-theme="graphite"][data-mode="light"] {
-            --accent: #4b5563; --accent-dark: #1f2937;
-            --surface: #f5f6f7; --surface-secondary: #ffffff;
-            --field: #eceff1; --line: #d1d5db;
-            --text: #20252b; --muted: #6b7280;
-            --left-start: #1f2937; --left-end: #4b5563;
-            --left-overlay: rgba(17, 24, 39, 0.27); --shadow: rgba(75, 85, 99, 0.18);
-        }
+      body[data-theme="coral"][data-mode="light"] {
+        --accent: #ef6351;
+        --accent-dark: #b9382c;
+        --surface: #fff7f5;
+        --surface-secondary: #ffffff;
+        --field: #ffedea;
+        --line: #f3c8c1;
+        --text: #3e2420;
+        --muted: #80615b;
+        --left-start: #b9382c;
+        --left-end: #ef6351;
+        --left-overlay: rgba(94, 29, 22, 0.25);
+        --shadow: rgba(239, 99, 81, 0.18);
+      }
 
-        body[data-theme="graphite"][data-mode="dark"] {
-            --accent: #d1d5db; --accent-dark: #6b7280;
-            --surface: #111315; --surface-secondary: #1c1f22;
-            --field: #292d32; --line: #464c54;
-            --text: #f3f4f6; --muted: #a5abb4;
-            --left-start: #090a0b; --left-end: #374151;
-            --left-overlay: rgba(0, 0, 0, 0.3); --shadow: rgba(0, 0, 0, 0.45);
-        }
+      body[data-theme="coral"][data-mode="dark"] {
+        --accent: #fb8b7d;
+        --accent-dark: #dc4c3d;
+        --surface: #1e0d0a;
+        --surface-secondary: #321612;
+        --field: #48211b;
+        --line: #71372e;
+        --text: #ffebe8;
+        --muted: #d1aaa4;
+        --left-start: #260b08;
+        --left-end: #9f2d22;
+        --left-overlay: rgba(0, 0, 0, 0.3);
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-        body[data-theme="coral"][data-mode="light"] {
-            --accent: #ef6351; --accent-dark: #b9382c;
-            --surface: #fff7f5; --surface-secondary: #ffffff;
-            --field: #ffedea; --line: #f3c8c1;
-            --text: #3e2420; --muted: #80615b;
-            --left-start: #b9382c; --left-end: #ef6351;
-            --left-overlay: rgba(94, 29, 22, 0.25); --shadow: rgba(239, 99, 81, 0.18);
-        }
-
-        body[data-theme="coral"][data-mode="dark"] {
-            --accent: #fb8b7d; --accent-dark: #dc4c3d;
-            --surface: #1e0d0a; --surface-secondary: #321612;
-            --field: #48211b; --line: #71372e;
-            --text: #ffebe8; --muted: #d1aaa4;
-            --left-start: #260b08; --left-end: #9f2d22;
-            --left-overlay: rgba(0, 0, 0, 0.3); --shadow: rgba(0, 0, 0, 0.4);
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            MAIN LOGIN PAGE
         ===================================================== */
 
-        .login-page {
+      .login-page {
+        min-height: 100vh;
 
-            min-height: 100vh;
+        display: grid;
 
-            display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
 
-            grid-template-columns: 1fr 1fr;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            LEFT PANEL
         ===================================================== */
 
-        .image-panel {
+      .image-panel {
+        min-height: 100vh;
 
-            min-height: 100vh;
+        display: flex;
 
-            display: flex;
+        align-items: flex-end;
 
-            align-items: flex-end;
+        padding: 60px;
 
-            padding: 60px;
+        position: relative;
 
-            position: relative;
+        overflow: hidden;
 
-            overflow: hidden;
+        background:
+          linear-gradient(var(--left-overlay), var(--left-overlay)),
+          linear-gradient(135deg, var(--left-start), var(--left-end));
 
-            background:
-                linear-gradient(var(--left-overlay), var(--left-overlay)),
-                linear-gradient(135deg, var(--left-start), var(--left-end));
+        color: white;
 
-            color: white;
+        transition: background 0.35s ease;
+      }
 
-            transition:
-                background 0.35s ease;
-        }
+      /* Decorative circles */
 
+      .image-panel::before {
+        content: "";
 
-        /* Decorative circles */
+        position: absolute;
 
-        .image-panel::before {
+        width: 420px;
+        height: 420px;
 
-            content: "";
+        border-radius: 50%;
 
-            position: absolute;
+        background: rgba(255, 255, 255, 0.08);
 
-            width: 420px;
-            height: 420px;
+        top: -150px;
+        right: -120px;
+      }
 
-            border-radius: 50%;
+      .image-panel::after {
+        content: "";
 
-            background: rgba(255, 255, 255, 0.08);
+        position: absolute;
 
-            top: -150px;
-            right: -120px;
-        }
+        width: 300px;
+        height: 300px;
 
+        border-radius: 50%;
 
-        .image-panel::after {
+        background: rgba(255, 255, 255, 0.06);
 
-            content: "";
+        bottom: -130px;
+        left: -100px;
+      }
 
-            position: absolute;
+      .image-copy {
+        max-width: 550px;
 
-            width: 300px;
-            height: 300px;
+        position: relative;
 
-            border-radius: 50%;
+        z-index: 2;
+      }
 
-            background: rgba(255, 255, 255, 0.06);
+      .eyebrow {
+        font-size: 14px;
 
-            bottom: -130px;
-            left: -100px;
-        }
+        text-transform: uppercase;
 
+        letter-spacing: 2px;
 
-        .image-copy {
+        margin-bottom: 20px;
 
-            max-width: 550px;
+        opacity: 0.85;
+      }
 
-            position: relative;
+      .image-copy h2 {
+        font-size: 52px;
 
-            z-index: 2;
-        }
+        line-height: 1.05;
 
+        margin: 0 0 20px;
+      }
 
-        .eyebrow {
+      .image-copy p:last-child {
+        font-size: 18px;
 
-            font-size: 14px;
+        line-height: 1.6;
 
-            text-transform: uppercase;
+        margin: 0;
 
-            letter-spacing: 2px;
+        max-width: 500px;
 
-            margin-bottom: 20px;
+        opacity: 0.9;
+      }
 
-            opacity: 0.85;
-        }
-
-
-        .image-copy h2 {
-
-            font-size: 52px;
-
-            line-height: 1.05;
-
-            margin: 0 0 20px;
-        }
-
-
-        .image-copy p:last-child {
-
-            font-size: 18px;
-
-            line-height: 1.6;
-
-            margin: 0;
-
-            max-width: 500px;
-
-            opacity: 0.9;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            RIGHT PANEL
         ===================================================== */
 
-        .form-panel {
+      .form-panel {
+        background: var(--surface);
 
-            background: var(--surface);
+        padding: 50px 70px;
 
-            padding: 50px 70px;
+        display: flex;
 
-            display: flex;
+        flex-direction: column;
 
-            flex-direction: column;
+        transition: background 0.3s ease;
+      }
 
-            transition:
-                background 0.3s ease;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            TOP BAR
         ===================================================== */
 
-        .topbar {
+      .topbar {
+        display: flex;
 
-            display: flex;
+        justify-content: space-between;
 
-            justify-content: space-between;
+        align-items: center;
 
-            align-items: center;
+        margin-bottom: 70px;
+      }
 
-            margin-bottom: 70px;
-        }
+      .brand {
+        font-size: 22px;
 
+        font-weight: bold;
 
-        .brand {
+        color: var(--accent-dark);
 
-            font-size: 22px;
+        margin: 0;
 
-            font-weight: bold;
+        transition: color 0.3s ease;
+      }
 
-            color: var(--accent-dark);
-
-            margin: 0;
-
-            transition: color 0.3s ease;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            THEME CONTROLS
         ===================================================== */
 
-        .theme-controls {
+      .theme-controls {
+        display: flex;
 
-            display: flex;
+        align-items: center;
 
-            align-items: center;
+        gap: 14px;
+      }
 
-            gap: 14px;
-        }
+      .theme-picker {
+        display: flex;
 
+        gap: 8px;
 
-        .theme-picker {
+        align-items: center;
+      }
 
-            display: flex;
+      .theme-button {
+        width: 22px;
 
-            gap: 8px;
+        height: 22px;
 
-            align-items: center;
-        }
+        border-radius: 50%;
 
+        border: 2px solid transparent;
 
-        .theme-button {
+        cursor: pointer;
 
-            width: 22px;
+        transition:
+          transform 0.2s ease,
+          border 0.2s ease;
 
-            height: 22px;
+        padding: 0;
+      }
 
-            border-radius: 50%;
+      .theme-button:hover {
+        transform: scale(1.15);
+      }
 
-            border: 2px solid transparent;
+      .theme-button.active {
+        border-color: var(--text);
 
-            cursor: pointer;
+        transform: scale(1.15);
+      }
 
-            transition:
-                transform 0.2s ease,
-                border 0.2s ease;
+      /* Theme button colors */
 
-            padding: 0;
-        }
+      .theme-button[data-theme="ocean"] {
+        background: #247ba0;
+      }
 
+      .theme-button[data-theme="forest"] {
+        background: #48745a;
+      }
 
-        .theme-button:hover {
+      .theme-button[data-theme="purple"] {
+        background: #8d597c;
+      }
 
-            transform: scale(1.15);
-        }
+      .theme-button[data-theme="sunset"] {
+        background: #e76f51;
+      }
 
+      .theme-button[data-theme="teal"] {
+        background: #0f8b8d;
+      }
 
-        .theme-button.active {
+      .theme-button[data-theme="rose"] {
+        background: #c44569;
+      }
+      .theme-button[data-theme="amber"] {
+        background: #c47f17;
+      }
+      .theme-button[data-theme="indigo"] {
+        background: #536dfe;
+      }
+      .theme-button[data-theme="graphite"] {
+        background: #4b5563;
+      }
+      .theme-button[data-theme="coral"] {
+        background: #ef6351;
+      }
 
-            border-color: var(--text);
-
-            transform: scale(1.15);
-        }
-
-
-        /* Theme button colors */
-
-        .theme-button[data-theme="ocean"] {
-            background: #247ba0;
-        }
-
-        .theme-button[data-theme="forest"] {
-            background: #48745a;
-        }
-
-        .theme-button[data-theme="purple"] {
-            background: #8d597c;
-        }
-
-        .theme-button[data-theme="sunset"] {
-            background: #e76f51;
-        }
-
-        .theme-button[data-theme="teal"] {
-            background: #0f8b8d;
-        }
-
-        .theme-button[data-theme="rose"] { background: #c44569; }
-        .theme-button[data-theme="amber"] { background: #c47f17; }
-        .theme-button[data-theme="indigo"] { background: #536dfe; }
-        .theme-button[data-theme="graphite"] { background: #4b5563; }
-        .theme-button[data-theme="coral"] { background: #ef6351; }
-
-
-        /* =====================================================
+      /* =====================================================
            DARK / LIGHT BUTTON
         ===================================================== */
 
-        .mode-button {
+      .mode-button {
+        width: 42px;
 
-            width: 42px;
+        height: 42px;
 
-            height: 42px;
+        border-radius: 50%;
 
-            border-radius: 50%;
+        border: 1px solid var(--line);
 
-            border: 1px solid var(--line);
+        background: var(--surface-secondary);
 
-            background: var(--surface-secondary);
+        color: var(--text);
 
-            color: var(--text);
+        cursor: pointer;
 
-            cursor: pointer;
+        display: flex;
 
-            display: flex;
+        justify-content: center;
 
-            justify-content: center;
+        align-items: center;
 
-            align-items: center;
+        font-size: 18px;
 
-            font-size: 18px;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease,
+          border 0.3s ease,
+          transform 0.2s ease;
+      }
 
-            transition:
-                background 0.3s ease,
-                color 0.3s ease,
-                border 0.3s ease,
-                transform 0.2s ease;
-        }
+      .mode-button:hover {
+        transform: rotate(15deg);
 
+        border-color: var(--accent);
+      }
 
-        .mode-button:hover {
-
-            transform: rotate(15deg);
-
-            border-color: var(--accent);
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            LOGIN CARD
         ===================================================== */
 
-        .login-card {
+      .login-card {
+        width: 100%;
 
-            width: 100%;
+        max-width: 500px;
 
-            max-width: 500px;
+        margin: auto;
+      }
 
-            margin: auto;
-        }
+      .login-card h1 {
+        font-size: 42px;
 
+        margin: 0 0 12px;
 
-        .login-card h1 {
+        color: var(--text);
 
-            font-size: 42px;
+        transition: color 0.3s ease;
+      }
 
-            margin: 0 0 12px;
+      .intro {
+        color: var(--muted);
 
-            color: var(--text);
+        margin-bottom: 35px;
 
-            transition: color 0.3s ease;
-        }
+        transition: color 0.3s ease;
+      }
 
-
-        .intro {
-
-            color: var(--muted);
-
-            margin-bottom: 35px;
-
-            transition: color 0.3s ease;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            FORM
         ===================================================== */
 
-        #login-form {
+      #login-form {
+        display: flex;
 
-            display: flex;
+        flex-direction: column;
+      }
 
-            flex-direction: column;
-        }
+      #login-form label {
+        font-size: 14px;
 
+        font-weight: bold;
 
-        #login-form label {
+        margin-bottom: 8px;
 
-            font-size: 14px;
+        color: var(--text);
+      }
 
-            font-weight: bold;
+      #login-form input {
+        width: 100%;
 
-            margin-bottom: 8px;
+        padding: 13px 14px;
 
-            color: var(--text);
-        }
+        margin-bottom: 20px;
 
+        border: 1px solid var(--line);
 
-        #login-form input {
+        border-radius: 8px;
 
-            width: 100%;
+        background: var(--field);
 
-            padding: 13px 14px;
+        color: var(--text);
 
-            margin-bottom: 20px;
+        font-size: 16px;
 
-            border: 1px solid var(--line);
+        outline: none;
 
-            border-radius: 8px;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease,
+          border 0.3s ease,
+          box-shadow 0.3s ease;
+      }
 
-            background: var(--field);
+      #login-form input::placeholder {
+        color: var(--muted);
+      }
 
-            color: var(--text);
+      #login-form input:focus {
+        border-color: var(--accent);
 
-            font-size: 16px;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+      }
 
-            outline: none;
+      #request-otp-form {
+        display: flex;
+        flex-direction: column;
+      }
+      #reset-password-form {
+        flex-direction: column;
+      }
 
-            transition:
-                background 0.3s ease,
-                color 0.3s ease,
-                border 0.3s ease,
-                box-shadow 0.3s ease;
-        }
+      #request-otp-form label,
+      #reset-password-form label {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
 
+      #request-otp-form input,
+      #reset-password-form input {
+        width: 100%;
+        padding: 13px 14px;
+        margin-bottom: 20px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--field);
+        color: var(--text);
+        font-size: 16px;
+        outline: none;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease,
+          border 0.3s ease,
+          box-shadow 0.3s ease;
+      }
 
-        #login-form input::placeholder {
+      #request-otp-form input::placeholder,
+      #reset-password-form input::placeholder {
+        color: var(--muted);
+      }
 
-            color: var(--muted);
-        }
+      #request-otp-form input:focus,
+      #reset-password-form input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+      }
 
+      #request-otp-form button[type="submit"],
+      #reset-password-form button[type="submit"],
+      #otp-step button,
+      #login-otp-step button {
+        border: none;
+        border-radius: 8px;
+        padding: 14px;
+        background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        width: 100%;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          opacity 0.2s ease;
+      }
 
-        #login-form input:focus {
+      #request-otp-form button[type="submit"]:hover,
+      #reset-password-form button[type="submit"]:hover,
+      #otp-step button:hover,
+      #login-otp-step button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px var(--shadow);
+      }
 
-            border-color: var(--accent);
+      #request-otp-form button[type="submit"]:disabled,
+      #reset-password-form button[type="submit"]:disabled,
+      #otp-step button:disabled,
+      #login-otp-step button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
 
-            box-shadow:
-                0 0 0 3px
-                color-mix(
-                    in srgb,
-                    var(--accent) 15%,
-                    transparent
-                );
-        }
+      #otp-message,
+      #otp-verify-message,
+      #reset-message {
+        min-height: 22px;
+        margin: 16px 0 0;
+        color: #b42318;
+        font-size: 14px;
+      }
 
-        #request-otp-form{
-            display: flex;
-            flex-direction: column;
-        }
-        #reset-password-form {
-            flex-direction: column;
-        }
+      #otp-message.success,
+      #otp-verify-message.success,
+      #reset-message.success {
+        color: #067647;
+      }
 
-        #request-otp-form label,
-        #reset-password-form label {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--text);
-        }
-
-        #request-otp-form input,
-        #reset-password-form input {
-            width: 100%;
-            padding: 13px 14px;
-            margin-bottom: 20px;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: var(--field);
-            color: var(--text);
-            font-size: 16px;
-            outline: none;
-            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        #request-otp-form input::placeholder,
-        #reset-password-form input::placeholder {
-            color: var(--muted);
-        }
-
-        #request-otp-form input:focus,
-        #reset-password-form input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
-        }
-
-        #request-otp-form button[type="submit"],
-        #reset-password-form button[type="submit"],
-        #otp-step button,
-        #login-otp-step button {
-            border: none;
-            border-radius: 8px;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-        }
-
-        #request-otp-form button[type="submit"]:hover,
-        #reset-password-form button[type="submit"]:hover,
-        #otp-step button:hover,
-        #login-otp-step button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px var(--shadow);
-        }
-
-        #request-otp-form button[type="submit"]:disabled,
-        #reset-password-form button[type="submit"]:disabled,
-        #otp-step button:disabled,
-        #login-otp-step button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        #otp-message,
-        #otp-verify-message,
-        #reset-message {
-            min-height: 22px;
-            margin: 16px 0 0;
-            color: #b42318;
-            font-size: 14px;
-        }
-
-        #otp-message.success,
-        #otp-verify-message.success,
-        #reset-message.success {
-            color: #067647;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            PASSWORD ROW
         ===================================================== */
 
-        .password-row {
+      .password-row {
+        display: flex;
 
-            display: flex;
+        justify-content: space-between;
 
-            justify-content: space-between;
+        align-items: center;
+      }
 
-            align-items: center;
-        }
+      .password-row label {
+        margin-bottom: 8px;
+      }
 
+      .forgot-link {
+        font-size: 14px;
 
-        .password-row label {
+        color: var(--accent);
 
-            margin-bottom: 8px;
-        }
+        text-decoration: none;
+      }
 
+      .forgot-link:hover {
+        text-decoration: underline;
+      }
 
-        .forgot-link {
+      .auth-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 34px;
+        border-bottom: 1px solid var(--line);
+      }
 
-            font-size: 14px;
+      .auth-tab {
+        border: 0;
+        border-bottom: 3px solid transparent;
+        padding: 12px 8px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: bold;
+      }
 
-            color: var(--accent);
+      .auth-tab.active {
+        border-bottom-color: var(--accent);
+        color: var(--accent);
+      }
 
-            text-decoration: none;
-        }
+      .auth-panel[hidden] {
+        display: none;
+      }
 
+      .password-field {
+        position: relative;
+      }
 
-        .forgot-link:hover {
+      .password-field input {
+        padding-right: 48px !important;
+      }
 
-            text-decoration: underline;
-        }
+      .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+        padding: 6px;
+      }
 
-        .auth-tabs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 34px;
-            border-bottom: 1px solid var(--line);
-        }
+      .password-toggle:hover {
+        color: var(--accent);
+      }
 
-        .auth-tab {
-            border: 0;
-            border-bottom: 3px solid transparent;
-            padding: 12px 8px;
-            background: transparent;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: bold;
-        }
+      .reset-note {
+        color: var(--muted);
+        line-height: 1.5;
+        margin: 0 0 24px;
+      }
 
-        .auth-tab.active {
-            border-bottom-color: var(--accent);
-            color: var(--accent);
-        }
+      .otp-fields {
+        /* display: grid; */
+        font-size: 20px;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+        margin-top: 10px;
+      }
 
-        .auth-panel[hidden] {
-            display: none;
-        }
+      .reset-step[hidden] {
+        display: none;
+      }
 
-        .password-field {
-            position: relative;
-        }
+      .secondary-button {
+        margin-top: 12px;
+        border: 1px solid var(--accent);
+        background: transparent !important;
+        color: var(--accent) !important;
+      }
 
-        .password-field input {
-            padding-right: 48px !important;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 0;
-            background: transparent;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-            padding: 6px;
-        }
-
-        .password-toggle:hover {
-            color: var(--accent);
-        }
-
-        .reset-note {
-            color: var(--muted);
-            line-height: 1.5;
-            margin: 0 0 24px;
-        }
-
-        .otp-fields {
-            /* display: grid; */
-            font-size: 20px;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-            margin-top: 10px;
-        }
-
-        .reset-step[hidden] {
-            display: none;
-        }
-
-        .secondary-button {
-            margin-top: 12px;
-            border: 1px solid var(--accent);
-            background: transparent !important;
-            color: var(--accent) !important;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            LOGIN BUTTON
         ===================================================== */
 
-        #login-form button[type="submit"] {
+      #login-form button[type="submit"] {
+        border: none;
 
-            border: none;
+        border-radius: 8px;
 
-            border-radius: 8px;
+        padding: 14px;
 
-            padding: 14px;
+        background: linear-gradient(135deg, var(--accent-dark), var(--accent));
 
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--accent-dark),
-                    var(--accent)
-                );
+        color: white;
 
-            color: white;
+        font-size: 16px;
 
-            font-size: 16px;
+        font-weight: bold;
 
-            font-weight: bold;
+        cursor: pointer;
 
-            cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          opacity 0.2s ease;
+      }
 
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                opacity 0.2s ease;
-        }
+      #login-form button[type="submit"]:hover {
+        transform: translateY(-1px);
 
+        box-shadow: 0 8px 20px var(--shadow);
+      }
 
-        #login-form button[type="submit"]:hover {
+      #login-form button[type="submit"]:disabled {
+        opacity: 0.6;
 
-            transform: translateY(-1px);
+        cursor: not-allowed;
 
-            box-shadow:
-                0 8px 20px var(--shadow);
-        }
+        transform: none;
 
+        box-shadow: none;
+      }
 
-        #login-form button[type="submit"]:disabled {
-
-            opacity: 0.6;
-
-            cursor: not-allowed;
-
-            transform: none;
-
-            box-shadow: none;
-        }
-
-
-        /* =====================================================
+      /* =====================================================
            MESSAGE
         ===================================================== */
 
-        #login-message {
+      #login-message {
+        min-height: 22px;
 
-            min-height: 22px;
+        margin: 16px 0 0;
 
-            margin: 16px 0 0;
+        color: #b42318;
 
-            color: #b42318;
+        font-size: 14px;
+      }
 
-            font-size: 14px;
-        }
-
-        #login-message.success {
-
-            color: #067647;
-        }
-        /* =====================================================
+      #login-message.success {
+        color: #067647;
+      }
+      /* =====================================================
            CREATE ACCOUNT
         ===================================================== */
 
-        .account-prompt {
+      .account-prompt {
+        margin-top: 30px;
 
-            margin-top: 30px;
+        color: var(--muted);
 
-            color: var(--muted);
+        transition: color 0.3s ease;
+      }
+      .create-link {
+        color: var(--accent);
 
-            transition: color 0.3s ease;
-        }
-        .create-link {
+        text-decoration: none;
 
-            color: var(--accent);
-
-            text-decoration: none;
-
-            font-weight: bold;
-        }
-        .create-link:hover {
-
-            text-decoration: underline;
-        }
-        /* =====================================================
+        font-weight: bold;
+      }
+      .create-link:hover {
+        text-decoration: underline;
+      }
+      /* =====================================================
            MOBILE
         ===================================================== */
 
-        @media (max-width: 1000px) {
-
-            .form-panel {
-
-                padding: 40px;
-            }
-            .image-panel {
-
-                padding: 40px;
-            }
-            .image-copy h2 {
-
-                font-size: 44px;
-            }
+      @media (max-width: 1000px) {
+        .form-panel {
+          padding: 40px;
         }
-        @media (max-width: 820px) {
-
-            .login-page {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .image-panel {
-
-                min-height: 38vh;
-
-                padding: 32px;
-
-                align-items: flex-end;
-            }
-
-
-            .image-copy h2 {
-
-                font-size: 40px;
-            }
-
-
-            .image-copy p:last-child {
-
-                font-size: 16px;
-            }
-
-
-            .form-panel {
-
-                min-height: 62vh;
-
-                padding: 35px 28px 50px;
-            }
-            .topbar {
-
-                margin-bottom: 50px;
-            }
-            .theme-controls {
-
-                gap: 10px;
-            }
-            .theme-picker {
-
-                gap: 5px;
-            }
-            .theme-button {
-
-                width: 19px;
-
-                height: 19px;
-            }
-
-
-            .mode-button {
-
-                width: 38px;
-
-                height: 38px;
-            }
-
-
-            .login-card h1 {
-
-                font-size: 36px;
-            }
+        .image-panel {
+          padding: 40px;
+        }
+        .image-copy h2 {
+          font-size: 44px;
+        }
+      }
+      @media (max-width: 820px) {
+        .login-page {
+          grid-template-columns: 1fr;
         }
 
+        .image-panel {
+          min-height: 38vh;
 
-        @media (max-width: 480px) {
+          padding: 32px;
 
-            .image-panel {
-
-                min-height: 34vh;
-
-                padding: 25px;
-            }
-
-
-            .image-copy h2 {
-
-                font-size: 32px;
-            }
-
-
-            .form-panel {
-
-                padding: 30px 22px 45px;
-            }
-
-
-            .topbar {
-
-                margin-bottom: 40px;
-            }
-
-
-            .brand {
-
-                font-size: 19px;
-            }
-
-
-            .theme-button {
-
-                width: 17px;
-
-                height: 17px;
-            }
-
-
-            .mode-button {
-
-                width: 36px;
-
-                height: 36px;
-
-                font-size: 16px;
-            }
-        }
-        .otp-input {
-            width: 40px;
-            height: 50px;
-            font-size: 26px;
-            font-weight: 700;
-            text-align: center;
-            border-radius: 8px;
-            border: 1px solid var(--line);
+          align-items: flex-end;
         }
 
+        .image-copy h2 {
+          font-size: 40px;
+        }
+
+        .image-copy p:last-child {
+          font-size: 16px;
+        }
+
+        .form-panel {
+          min-height: 62vh;
+
+          padding: 35px 28px 50px;
+        }
+        .topbar {
+          margin-bottom: 50px;
+        }
+        .theme-controls {
+          gap: 10px;
+        }
+        .theme-picker {
+          gap: 5px;
+        }
+        .theme-button {
+          width: 19px;
+
+          height: 19px;
+        }
+
+        .mode-button {
+          width: 38px;
+
+          height: 38px;
+        }
+
+        .login-card h1 {
+          font-size: 36px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .image-panel {
+          min-height: 34vh;
+
+          padding: 25px;
+        }
+
+        .image-copy h2 {
+          font-size: 32px;
+        }
+
+        .form-panel {
+          padding: 30px 22px 45px;
+        }
+
+        .topbar {
+          margin-bottom: 40px;
+        }
+
+        .brand {
+          font-size: 19px;
+        }
+
+        .theme-button {
+          width: 17px;
+
+          height: 17px;
+        }
+
+        .mode-button {
+          width: 36px;
+
+          height: 36px;
+
+          font-size: 16px;
+        }
+      }
+      .otp-input {
+        width: 40px;
+        height: 50px;
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+      }
     </style>
+  </head>
 
-</head>
-
-
-<body
-    data-theme="ocean"
-    data-mode="light"
->
-
-
+  <body data-theme="ocean" data-mode="light">
     <!-- =====================================================
          MAIN PAGE
     ===================================================== -->
 
     <div class="login-page">
-
-
-        <!-- =================================================
+      <!-- =================================================
              LEFT SIDE
         ================================================= -->
 
-        <section class="image-panel">
+      <section class="image-panel">
+        <div class="image-copy">
+          <p class="eyebrow">Your workspace awaits</p>
 
-            <div class="image-copy">
+          <h2>Make room for better work.</h2>
 
-                <p class="eyebrow">
-                    Your workspace awaits
-                </p>
+          <p>
+            Bring your projects, people, and best ideas together in one calm
+            place.
+          </p>
+        </div>
+      </section>
 
-
-                <h2>
-                    Make room for better work.
-                </h2>
-
-
-                <p>
-                    Bring your projects, people,
-                    and best ideas together in one
-                    calm place.
-                </p>
-
+      <section class="form-panel">
+        <div class="topbar">
+          <p class="brand">OrgNexus</p>
+          <div class="theme-controls">
+            <div class="theme-picker" aria-label="Choose a theme">
+              <button
+                class="theme-button active"
+                type="button"
+                data-theme="ocean"
+                aria-label="Ocean theme"
+                title="Ocean"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="forest"
+                aria-label="Forest theme"
+                title="Forest"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="purple"
+                aria-label="Purple theme"
+                title="Purple"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="sunset"
+                aria-label="Sunset theme"
+                title="Sunset"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="teal"
+                aria-label="Teal theme"
+                title="Teal"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="rose"
+                aria-label="Rose theme"
+                title="Rose"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="amber"
+                aria-label="Amber theme"
+                title="Amber"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="indigo"
+                aria-label="Indigo theme"
+                title="Indigo"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="graphite"
+                aria-label="Graphite theme"
+                title="Graphite"
+              ></button>
+              <button
+                class="theme-button"
+                type="button"
+                data-theme="coral"
+                aria-label="Coral theme"
+                title="Coral"
+              ></button>
             </div>
-
-        </section>
-
-        <section class="form-panel">
-            <div class="topbar">
-                <p class="brand">OrgNexus</p>
-                <div class="theme-controls">
-                    <div class="theme-picker" aria-label="Choose a theme">
-                        <button class="theme-button active" type="button" data-theme="ocean" aria-label="Ocean theme" title="Ocean"></button>
-                        <button class="theme-button" type="button" data-theme="forest" aria-label="Forest theme" title="Forest"></button>
-                        <button class="theme-button" type="button" data-theme="purple" aria-label="Purple theme" title="Purple"></button>
-                        <button class="theme-button" type="button" data-theme="sunset" aria-label="Sunset theme" title="Sunset"></button>
-                        <button class="theme-button" type="button" data-theme="teal" aria-label="Teal theme" title="Teal"></button>
-                        <button class="theme-button" type="button" data-theme="rose" aria-label="Rose theme" title="Rose"></button>
-                        <button class="theme-button" type="button" data-theme="amber" aria-label="Amber theme" title="Amber"></button>
-                        <button class="theme-button" type="button" data-theme="indigo" aria-label="Indigo theme" title="Indigo"></button>
-                        <button class="theme-button" type="button" data-theme="graphite" aria-label="Graphite theme" title="Graphite"></button>
-                        <button class="theme-button" type="button" data-theme="coral" aria-label="Coral theme" title="Coral"></button>
-                    </div>
-                    <button type="button" class="mode-button" id="mode-button" aria-label="Toggle dark mode" title="Toggle dark mode">☀️</button>
-                </div>
+            <button
+              type="button"
+              class="mode-button"
+              id="mode-button"
+              aria-label="Toggle dark mode"
+              title="Toggle dark mode"
+            >
+              ☀️
+            </button>
+          </div>
+        </div>
+        <main class="login-card">
+          <div
+            class="auth-tabs"
+            role="tablist"
+            aria-label="Authentication options"
+          >
+            <button
+              class="auth-tab active"
+              id="sign-in-tab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="sign-in-panel"
+            >
+              Sign in
+            </button>
+            <button
+              class="auth-tab"
+              id="forgot-password-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="forgot-password-panel"
+              disabled
+            >
+              Forgot password
+            </button>
+          </div>
+          <h1 id="auth-title">Sign in</h1>
+          <p class="intro" id="auth-intro">
+            Welcome back. Enter your details to continue.
+          </p>
+          <div
+            class="auth-panel"
+            id="sign-in-panel"
+            role="tabpanel"
+            aria-labelledby="sign-in-tab"
+          >
+            <form id="login-form">
+              {% csrf_token %}
+              <label for="login-email">Email</label>
+              <input
+                id="login-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="Enter your email"
+              />
+              <div class="password-row" id="forgot-password-row">
+                <label for="password">Password</label>
+                <a class="forgot-link" href="#forgot-password"
+                  >Forgot password?</a
+                >
+              </div>
+              <div class="password-field">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Enter your password"
+                />
+                <button
+                  class="password-toggle"
+                  type="button"
+                  data-target="password"
+                  aria-label="Show password"
+                  title="Show password"
+                >
+                  &#128065;
+                </button>
+              </div>
+              <button type="submit" id="signInbutton" disabled>Sign in</button>
+              <p id="login-message" role="alert"></p>
+            </form>
+            <div class="reset-step" id="login-otp-step" hidden>
+              <div class="otp-fields" aria-label="Six digit sign-in OTP">
+                <input
+                  id="login-otp-1"
+                  class="login-otp-input otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  autocomplete="one-time-code"
+                  required
+                />
+                <input
+                  id="login-otp-2"
+                  class="login-otp-input otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="login-otp-3"
+                  class="login-otp-input otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="login-otp-4"
+                  class="login-otp-input otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="login-otp-5"
+                  class="login-otp-input otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="login-otp-6"
+                  class="login-otp-input otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+              </div>
+              <button id="verify-login-otp-button" type="button">
+                Verify OTP
+              </button>
+              <p id="login-otp-message" role="alert"></p>
             </div>
-            <main class="login-card">
-                <div class="auth-tabs" role="tablist" aria-label="Authentication options">
-                    <button class="auth-tab active" id="sign-in-tab" type="button" role="tab" aria-selected="true" aria-controls="sign-in-panel">Sign in</button>
-                    <button class="auth-tab" id="forgot-password-tab" type="button" role="tab" aria-selected="false" aria-controls="forgot-password-panel" disabled>Forgot password</button>
-                </div>
-                <h1 id="auth-title">Sign in</h1>
-                <p class="intro" id="auth-intro"> Welcome back. Enter your details to continue.</p>
-                <div class="auth-panel" id="sign-in-panel" role="tabpanel" aria-labelledby="sign-in-tab">
-                <form id="login-form">
-                    {% csrf_token %}
-                    <label for="login-email">Email</label>
-                    <input id="login-email" name="email" type="email" autocomplete="email" placeholder="Enter your email">
-                    <div class="password-row" id="forgot-password-row">
-                        <label for="password">Password</label>
-                        <a class="forgot-link" href="#forgot-password">Forgot password?</a>
-                    </div>
-                    <div class="password-field">
-                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password">
-                        <button class="password-toggle" type="button" data-target="password" aria-label="Show password" title="Show password">&#128065;</button>
-                    </div>
-                    <button type="submit" id="signInbutton" disabled>Sign in</button>
-                    <p id="login-message" role="alert"></p>
-                </form>
-                <div class="reset-step" id="login-otp-step" hidden>
-                    <div class="otp-fields" aria-label="Six digit sign-in OTP">
-                        <input id="login-otp-1" class="login-otp-input otp-input" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" required>
-                        <input id="login-otp-2" class="login-otp-input otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                        <input id="login-otp-3" class="login-otp-input otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                        <input id="login-otp-4" class="login-otp-input otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                        <input id="login-otp-5" class="login-otp-input otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                        <input id="login-otp-6" class="login-otp-input otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                    </div>
-                    <button id="verify-login-otp-button" type="button">Verify OTP</button>
-                    <p id="login-otp-message" role="alert"></p>
-                </div>
-                <p class="account-prompt" id="account-prompt_id">New here?
-                    <a class="create-link" href="#create-account">Create a new account</a>
-                </p>
-                </div>
-                <div class="auth-panel" id="forgot-password-panel" role="tabpanel" aria-labelledby="forgot-password-tab" hidden>
-                    <p class="reset-note">Enter your account email. We will send a one-time password to verify your identity.</p>
-                    <form id="request-otp-form">
-                        {% csrf_token %}
-                        <label for="reset-email">Email</label>
-                    <input id="reset-email" name="email" type="email" autocomplete="email" placeholder="Enter your email" required>
-                        <button type="submit" id="otpsendbtn">Send OTP</button>
-                    </form>
-                    <div class="reset-step" id="otp-step" hidden >
-                        <label for="otp-1">Enter OTP</label>
-                        <div class="otp-fields" aria-label="Six digit OTP" >
-                            <input id="otp-1" class="otp-input" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" required>
-                            <input id="otp-2" class="otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                            <input id="otp-3" class="otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                            <input id="otp-4" class="otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                            <input id="otp-5" class="otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                            <input id="otp-6" class="otp-input" type="text" inputmode="numeric" maxlength="1" required>
-                        </div>
-                        <button id="verify-otp-button" type="button">Verify OTP</button>
-                        <p id="otp-verify-message" role="alert"></p>
-                    </div>
-                    <form id="reset-password-form" class="reset-step" hidden>
-                        {% csrf_token %}
-                        <label for="new-password">New password</label>
-                        <div class="password-field">
-                            <input id="new-password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required>
-                            <button class="password-toggle" type="button" data-target="new-password" aria-label="Show password" title="Show password">&#128065;</button>
-                        </div>
-                        <label for="confirm-password">Confirm password</label>
-                        <div class="password-field">
-                            <input id="confirm-password" name="confirm_password" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
-                            <button class="password-toggle" type="button" data-target="confirm-password" aria-label="Show password" title="Show password">&#128065;</button>
-                        </div>
-                        <button type="submit">Update password</button>
-                        <p id="reset-message" role="alert"></p>
-                    </form>
-                </div>
-            </main>
-        </section>
+            <p class="account-prompt" id="account-prompt_id">
+              New here?
+              <a class="create-link" href="#create-account"
+                >Create a new account</a
+              >
+            </p>
+          </div>
+          <div
+            class="auth-panel"
+            id="forgot-password-panel"
+            role="tabpanel"
+            aria-labelledby="forgot-password-tab"
+            hidden
+          >
+            <p class="reset-note">
+              Enter your account email. We will send a one-time password to
+              verify your identity.
+            </p>
+            <form id="request-otp-form">
+              {% csrf_token %}
+              <label for="reset-email">Email</label>
+              <input
+                id="reset-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="Enter your email"
+                required
+              />
+              <button type="submit" id="otpsendbtn">Send OTP</button>
+            </form>
+            <div class="reset-step" id="otp-step" hidden>
+              <label for="otp-1">Enter OTP</label>
+              <div class="otp-fields" aria-label="Six digit OTP">
+                <input
+                  id="otp-1"
+                  class="otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  autocomplete="one-time-code"
+                  required
+                />
+                <input
+                  id="otp-2"
+                  class="otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="otp-3"
+                  class="otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="otp-4"
+                  class="otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="otp-5"
+                  class="otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+                <input
+                  id="otp-6"
+                  class="otp-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  required
+                />
+              </div>
+              <button id="verify-otp-button" type="button">Verify OTP</button>
+              <p id="otp-verify-message" role="alert"></p>
+            </div>
+            <form id="reset-password-form" class="reset-step" hidden>
+              {% csrf_token %}
+              <label for="new-password">New password</label>
+              <div class="password-field">
+                <input
+                  id="new-password"
+                  name="password"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="At least 8 characters"
+                  required
+                />
+                <button
+                  class="password-toggle"
+                  type="button"
+                  data-target="new-password"
+                  aria-label="Show password"
+                  title="Show password"
+                >
+                  &#128065;
+                </button>
+              </div>
+              <label for="confirm-password">Confirm password</label>
+              <div class="password-field">
+                <input
+                  id="confirm-password"
+                  name="confirm_password"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Repeat your password"
+                  required
+                />
+                <button
+                  class="password-toggle"
+                  type="button"
+                  data-target="confirm-password"
+                  aria-label="Show password"
+                  title="Show password"
+                >
+                  &#128065;
+                </button>
+              </div>
+              <button type="submit">Update password</button>
+              <p id="reset-message" role="alert"></p>
+            </form>
+          </div>
+        </main>
+      </section>
     </div>
-
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        let publicKey = null;
-        let publicKeyReady = null;
+      let publicKey = null;
+      let publicKeyReady = null;
 
-        async function loadPublicKey() {
-            try {
-                const response = await fetch('/get-public-key/');
+      async function loadPublicKey() {
+        try {
+          const response = await fetch("/get-public-key/");
 
-                if (!response.ok) {
-                    throw new Error(`Public key request failed: HTTP ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log("Received public key data:", data);
-
-                if (!data.public_key) {
-                    throw new Error("Public key was not returned by Django.");
-                }
-
-                // ---- Normalize the key string ----
-                let keyB64 = data.public_key.trim();
-
-                // Strip PEM headers/footers if the server sent a full PEM
-                keyB64 = keyB64
-                    .replace(/-----BEGIN [^-]+-----/g, '')
-                    .replace(/-----END [^-]+-----/g, '')
-                    .replace(/\s+/g, '');   // remove all whitespace/newlines
-
-                // Decode Base64 → ArrayBuffer
-                const binaryString = atob(keyB64);
-                const binaryKey = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    binaryKey[i] = binaryString.charCodeAt(i);
-                }
-
-                // Import as SPKI
-                publicKey = await window.crypto.subtle.importKey(
-                    "spki",
-                    binaryKey.buffer,
-                    {
-                        name: "RSA-OAEP",
-                        hash: "SHA-256"
-                    },
-                    false,
-                    ["encrypt"]
-                );
-
-                console.log("Public key imported successfully:", publicKey);
-                return publicKey;
-
-            } catch (error) {
-                console.error("Public key loading failed:", error);
-                $('#login-message')
-                    .removeClass('success')
-                    .text('Unable to initialize secure login. Check console for details.');
-                throw error;   // re-throw so publicKeyReady rejects
-            }
-        }
-
-        // Start loading immediately and keep the promise
-        publicKeyReady = loadPublicKey();
-
-        function getCookie(name) {
-            const cookie = document.cookie.split('; ').find(row =>row.startsWith(name + '='));
-            return cookie ? decodeURIComponent(cookie.split('=')[1]): '';
-        }
-
-        $(document).ready(function() {
-            function toggleButton() {
-                var email = $("#login-email").val().trim();
-                var password = $("#password").val().trim();
-                $('#signInbutton').prop("disabled", email === "" || password === "");
-            }
-            toggleButton();
-
-            $("#login-email, #password").on("input change", function() {
-                toggleButton();
-            });
-        });
-
-        $("#otpsendbtn").click(function(event){
-            $("#otp-step").show();
-            $("#reset-email").val();
-            $('#auth-intro').text("");
-            $("#request-otp-form").hide();
-            $('.reset-note').text(
-            `Send an OTP to verify your ${$("#reset-email").val().substring(0, 5)}xxxx@gmail.com.`
+          if (!response.ok) {
+            throw new Error(
+              `Public key request failed: HTTP ${response.status}`,
             );
+          }
+
+          const data = await response.json();
+          console.log("Received public key data:", data);
+
+          if (!data.public_key) {
+            throw new Error("Public key was not returned by Django.");
+          }
+
+          // ---- Normalize the key string ----
+          let keyB64 = data.public_key.trim();
+
+          // Strip PEM headers/footers if the server sent a full PEM
+          keyB64 = keyB64
+            .replace(/-----BEGIN [^-]+-----/g, "")
+            .replace(/-----END [^-]+-----/g, "")
+            .replace(/\s+/g, ""); // remove all whitespace/newlines
+
+          // Decode Base64 → ArrayBuffer
+          const binaryString = atob(keyB64);
+          const binaryKey = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            binaryKey[i] = binaryString.charCodeAt(i);
+          }
+
+          // Import as SPKI
+          publicKey = await window.crypto.subtle.importKey(
+            "spki",
+            binaryKey.buffer,
+            {
+              name: "RSA-OAEP",
+              hash: "SHA-256",
+            },
+            false,
+            ["encrypt"],
+          );
+
+          console.log("Public key imported successfully:", publicKey);
+          return publicKey;
+        } catch (error) {
+          console.error("Public key loading failed:", error);
+          $("#login-message")
+            .removeClass("success")
+            .text(
+              "Unable to initialize secure login. Check console for details.",
+            );
+          throw error; // re-throw so publicKeyReady rejects
+        }
+      }
+
+      // Start loading immediately and keep the promise
+      publicKeyReady = loadPublicKey();
+
+      function getCookie(name) {
+        const cookie = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith(name + "="));
+        return cookie ? decodeURIComponent(cookie.split("=")[1]) : "";
+      }
+
+      $(document).ready(function () {
+        function toggleButton() {
+          var email = $("#login-email").val().trim();
+          var password = $("#password").val().trim();
+          $("#signInbutton").prop("disabled", email === "" || password === "");
+        }
+        toggleButton();
+
+        $("#login-email, #password").on("input change", function () {
+          toggleButton();
+        });
+      });
+
+      $("#otpsendbtn").click(function (event) {
+        $("#otp-step").show();
+        $("#reset-email").val();
+        $("#auth-intro").text("");
+        $("#request-otp-form").hide();
+        $(".reset-note").text(
+          `Send an OTP to verify your ${$("#reset-email").val().substring(0, 5)}xxxx@gmail.com.`,
+        );
+      });
+
+      $("#sign-in-tab").click(function (event) {
+        showAuthPanel("sign-in");
+        $("#login-form").prop("hidden", false);
+        $("#login-otp-step").prop("hidden", true);
+
+        $(".login-otp-input").val("");
+        $("#request-otp-form").show();
+        $("#reset-email").val("");
+        $("#otp-step").hide();
+        $("#reset-password-form").hide();
+        $("#otp-1").val("");
+        $("#otp-2").val("");
+        $("#otp-3").val("");
+        $("#otp-4").val("");
+        $("#otp-5").val("");
+        $("#otp-6").val("");
+        $("#new-password").val("");
+        $("#confirm-password").val("");
+        // $('.reset-note').text(
+        // `Enter your account email. We will send a one-time password to verify your identity.`
+        // );
+      });
+
+      async function encryptValue(value) {
+        if (!(publicKey instanceof CryptoKey)) {
+          throw new Error("Public key is not loaded. Please try again.");
+        }
+        const encodedValue = new TextEncoder().encode(value);
+        const encryptedData = await window.crypto.subtle.encrypt(
+          {
+            name: "RSA-OAEP",
+          },
+          publicKey,
+          encodedValue,
+        );
+
+        return btoa(String.fromCharCode(...new Uint8Array(encryptedData)));
+      }
+      $("#login-form").on("submit", async function (event) {
+        event.preventDefault();
+        debugger;
+        const button = $(this).find('button[type="submit"]');
+        const message = $("#login-message");
+
+        button.prop("disabled", true);
+        message.removeClass("success").text("");
+
+        try {
+          await publicKeyReady;
+
+          const email = $("#login-email").val();
+          const password = $("#password").val();
+          if (!email || !password) {
+            throw new Error("Email and password are required.");
+          }
+
+          const encryptedEmail = await encryptValue(email);
+          const encryptedPassword = await encryptValue(password);
+
+          $.ajax({
+            url: "/",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              action: "request_login_otp",
+              email: encryptedEmail,
+              password: encryptedPassword,
+              status: "credentials_verified",
+            }),
+            headers: {
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
+          })
+            .done(function (response) {
+              message.addClass("success").text(response.message);
+              $("#login-otp-step").prop("hidden", false);
+              $("#login-otp-1").focus();
+              $("#login-form").hide();
+              $("#auth-title").hide();
+              $("#account-prompt_id").hide();
+              $("#auth-intro").text(
+                `Enter the six-digit OTP sent to ${$("#login-email").val().substring(0, 5)}XXXX@XXXXX.com`,
+              );
+            })
+            .fail(function (xhr) {
+              const response = xhr.responseJSON || {};
+
+              message.text(response.message || "Unable to sign in.");
+            })
+            .always(function () {
+              button.prop("disabled", false);
+            });
+        } catch (error) {
+          console.error("Login encryption error:", error);
+          message.text(error.message);
+          button.prop("disabled", false);
+        }
+      });
+
+      function showAuthPanel(panel) {
+        const forgot = panel === "forgot";
+        $("#sign-in-panel").prop("hidden", forgot);
+        $("#forgot-password-panel").prop("hidden", !forgot);
+        $("#sign-in-tab")
+          .toggleClass("active", !forgot)
+          .attr("aria-selected", String(!forgot));
+        $("#forgot-password-tab")
+          .toggleClass("active", forgot)
+          .attr("aria-selected", String(forgot));
+        $("#auth-title").text(forgot ? "Reset password" : "Sign in");
+        $("#auth-intro").text(
+          forgot
+            ? "Verify your email and choose a new password."
+            : "Welcome back. Enter your details to continue.",
+        );
+      }
+
+      $("#sign-in-tab, #back-to-sign-in").on("click", function () {
+        showAuthPanel("sign-in");
+      });
+
+      $("#forgot-password-tab, .forgot-link").on("click", function (event) {
+        event.preventDefault();
+        showAuthPanel("forgot");
+      });
+
+      $(".password-toggle").on("click", function () {
+        const input = $("#" + $(this).data("target"));
+        const showing = input.attr("type") === "text";
+        input.attr("type", showing ? "password" : "text");
+        $(this).attr("aria-label", showing ? "Show password" : "Hide password");
+        $(this).attr("title", showing ? "Show password" : "Hide password");
+      });
+
+      $("#request-otp-form").on("submit", function (event) {
+        $("#request-otp-form").prop("hidden", true);
+        event.preventDefault();
+        const form = this;
+        const message = $("#otp-message");
+        const button = $(form).find('button[type="submit"]');
+        button.prop("disabled", true);
+        message.removeClass("success").text("");
+
+        // $.ajax({
+        //     url: '/',
+        //     method: 'POST',
+        //     contentType: 'application/json',
+        //     data: JSON.stringify({
+        //         action: 'request_password_reset',
+        //         email: $('#reset-email').val()
+        //     }),
+        //     headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        // }).done(function (response) {
+        //     message.addClass('success').text(response.message);
+        //     $('#request-otp-form').prop('hidden', true);
+        //     $('#otp-step').prop('hidden', false);
+        //     $('#otp-1').focus();
+        // }).fail(function (xhr) {
+        //     const response = xhr.responseJSON || {};
+        //     message.text(response.message || 'Unable to send OTP.');
+        // }).always(function () {
+        //     button.prop('disabled', false);
+        // });
+      });
+
+      $(".otp-input").on("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 1);
+        if (this.value) {
+          $(this).next(".otp-input").focus();
+        }
+      });
+
+      $(".otp-input").on("keydown", function (event) {
+        if (event.key === "Backspace" && !this.value) {
+          $(this).prev(".otp-input").focus();
+        }
+      });
+
+      $(".login-otp-input").on("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 1);
+        if (this.value) {
+          $(this).next(".login-otp-input").focus();
+        }
+      });
+
+      $(".login-otp-input").on("keydown", function (event) {
+        if (event.key === "Backspace" && !this.value) {
+          $(this).prev(".login-otp-input").focus();
+        }
+      });
+
+      $("#verify-login-otp-button").on("click", function () {
+        const button = $(this);
+        const message = $("#login-otp-message");
+        const otp = $(".login-otp-input")
+          .map(function () {
+            return this.value;
+          })
+          .get()
+          .join("");
+        if (otp.length !== 6) {
+          message.removeClass("success").text("Enter all 6 OTP digits.");
+          return;
+        }
+        button.prop("disabled", true);
+        $.ajax({
+          url: "/",
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            action: "verify_login_otp",
+            otp: otp,
+            status: "otp_verify_testing",
+          }),
+          headers: { "X-CSRFToken": getCookie("csrftoken") },
         })
-        
-        $("#sign-in-tab").click(function(event){
-            showAuthPanel('sign-in');
-            $('#login-form').prop('hidden', false);
-            $('#login-otp-step').prop('hidden', true);
-            
-            $('.login-otp-input').val('');
-            $("#request-otp-form").show();
-            $("#reset-email").val("")
-            $("#otp-step").hide();
-            $("#reset-password-form").hide();
-            $("#otp-1").val("");
-            $("#otp-2").val("");
-            $("#otp-3").val("");
-            $("#otp-4").val("");
-            $("#otp-5").val("");
-            $("#otp-6").val("");
-            $("#new-password").val("");
-            $("#confirm-password").val("");
-            // $('.reset-note').text(
-            // `Enter your account email. We will send a one-time password to verify your identity.`
-            // );
+          .done(function (response) {
+            message.addClass("success").text(response.message);
+            window.location.href = "/staticAnalysis/";
+          })
+          .fail(function (xhr) {
+            const response = xhr.responseJSON || {};
+            message
+              .removeClass("success")
+              .text(response.message || "Unable to verify OTP.");
+          })
+          .always(function () {
+            button.prop("disabled", false);
+          });
+      });
 
+      $("#verify-otp-button").on("click", function () {
+        $("#request-otp-form").hide();
+        $("#otp-step").hide();
+        $("#reset-password-form").show();
 
+        const button = $(this);
+        const message = $("#otp-verify-message");
+        const otp = $(".otp-input")
+          .map(function () {
+            return this.value;
+          })
+          .get()
+          .join("");
+        if (otp.length !== 6) {
+          message.removeClass("success").text("Enter all 6 OTP digits.");
+          return;
+        }
+
+        button.prop("disabled", true);
+        message.removeClass("success").text("");
+        // $.ajax({
+        //     url: '/',
+        //     method: 'POST',
+        //     contentType: 'application/json',
+        //     data: JSON.stringify({ action: 'verify_reset_otp', otp: otp }),
+        //     headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        // }).done(function (response) {
+        //     message.addClass('success').text(response.message);
+        //     $('#otp-step').prop('hidden', true);
+        //     $('#reset-password-form').prop('hidden', false);
+        //     $('#new-password').focus();
+        // }).fail(function (xhr) {
+        //     const response = xhr.responseJSON || {};
+        //     message.text(response.message || 'Unable to verify OTP.');
+        // }).always(function () {
+        //     button.prop('disabled', false);
+        // });
+      });
+
+      $("#reset-password-form").on("submit", function (event) {
+        event.preventDefault();
+        const form = this;
+        const message = $("#reset-message");
+        const button = $(form).find('button[type="submit"]');
+        button.prop("disabled", true);
+        message.removeClass("success").text("");
+
+        $.ajax({
+          url: "/",
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            action: "reset_password",
+            password: $("#new-password").val(),
+            confirm_password: $("#confirm-password").val(),
+          }),
+          headers: { "X-CSRFToken": getCookie("csrftoken") },
         })
+          .done(function (response) {
+            message.addClass("success").text(response.message);
+            form.reset();
+            // $('#request-otp-form')[0].reset();
+            $("#reset-password-form").prop("hidden", true);
+          })
+          .fail(function (xhr) {
+            const response = xhr.responseJSON || {};
+            message.text(response.message || "Unable to update password.");
+          })
+          .always(function () {
+            button.prop("disabled", false);
+          });
+      });
 
-       
-        
-
-
-
-        async function encryptValue(value) {
-            if (!(publicKey instanceof CryptoKey)) {
-                throw new Error(
-                    "Public key is not loaded. Please try again."
-                );
-            }
-            const encodedValue = new TextEncoder().encode(value);
-            const encryptedData = await window.crypto.subtle.encrypt(
-                {
-                    name: "RSA-OAEP"
-                },
-                publicKey,
-                encodedValue
-            );
-
-            return btoa(
-                String.fromCharCode(
-                    ...new Uint8Array(encryptedData)
-                )
-            );
-        }
-        $('#login-form').on('submit', async function(event) {
-            event.preventDefault();
-            debugger
-            const button = $(this).find('button[type="submit"]');
-            const message = $('#login-message');
-
-            button.prop('disabled', true);
-            message.removeClass('success').text('');
-
-            try {
-                await publicKeyReady;
-
-                const email = $('#login-email').val();
-                const password = $('#password').val();
-                if (!email || !password) {
-                    throw new Error("Email and password are required.");
-                }
-
-                const encryptedEmail = await encryptValue(email);
-                const encryptedPassword = await encryptValue(password);
-
-                $.ajax({
-                    url: '/',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        action: 'request_login_otp',
-                        email: encryptedEmail,
-                        password: encryptedPassword,
-                        status: 'credentials_verified'
-                    }),
-                    headers: {
-                        'X-CSRFToken': getCookie('csrftoken')
-                    }
-                })
-                .done(function(response) {
-                    message.addClass('success').text(response.message);
-                    $('#login-otp-step').prop('hidden', false);
-                    $('#login-otp-1').focus();
-                    $('#login-form').hide();
-                    $("#auth-title").hide();
-                    $("#account-prompt_id").hide();
-                    $("#auth-intro").text(`Enter the six-digit OTP sent to ${$("#login-email").val().substring(0, 5)}XXXX@XXXXX.com`)
-                })
-                .fail(function(xhr) {
-                    const response = xhr.responseJSON || {};
-
-                    message.text(
-                        response.message || 'Unable to sign in.'
-                    );
-                })
-                .always(function() {
-                    button.prop('disabled', false);
-                });
-
-            } catch (error) {
-                console.error('Login encryption error:', error);
-                message.text(error.message);
-                button.prop('disabled', false);
-            }
-        });
-        
-        
-        
-        
-        
-        function showAuthPanel(panel) {
-            const forgot = panel === 'forgot';
-            $('#sign-in-panel').prop('hidden', forgot);
-            $('#forgot-password-panel').prop('hidden', !forgot);
-            $('#sign-in-tab').toggleClass('active', !forgot).attr('aria-selected', String(!forgot));
-            $('#forgot-password-tab').toggleClass('active', forgot).attr('aria-selected', String(forgot));
-            $('#auth-title').text(forgot ? 'Reset password' : 'Sign in');
-            $('#auth-intro').text(forgot ? 'Verify your email and choose a new password.' : 'Welcome back. Enter your details to continue.');
-        }
-
-        $('#sign-in-tab, #back-to-sign-in').on('click', function () {
-            showAuthPanel('sign-in');
-        });
-
-        $('#forgot-password-tab, .forgot-link').on('click', function (event) {
-            event.preventDefault();
-            showAuthPanel('forgot');
-        });
-
-
-
-        
-
-        $('.password-toggle').on('click', function () {
-            const input = $('#' + $(this).data('target'));
-            const showing = input.attr('type') === 'text';
-            input.attr('type', showing ? 'password' : 'text');
-            $(this).attr('aria-label', showing ? 'Show password' : 'Hide password');
-            $(this).attr('title', showing ? 'Show password' : 'Hide password');
-        });
-
-        $('#request-otp-form').on('submit', function (event) {
-            $('#request-otp-form').prop('hidden', true);
-            event.preventDefault();
-            const form = this;
-            const message = $('#otp-message');
-            const button = $(form).find('button[type="submit"]');
-            button.prop('disabled', true);
-            message.removeClass('success').text('');
-            
-
-            // $.ajax({
-            //     url: '/',
-            //     method: 'POST',
-            //     contentType: 'application/json',
-            //     data: JSON.stringify({
-            //         action: 'request_password_reset',
-            //         email: $('#reset-email').val()
-            //     }),
-            //     headers: { 'X-CSRFToken': getCookie('csrftoken') }
-            // }).done(function (response) {
-            //     message.addClass('success').text(response.message);
-            //     $('#request-otp-form').prop('hidden', true);
-            //     $('#otp-step').prop('hidden', false);
-            //     $('#otp-1').focus();
-            // }).fail(function (xhr) {
-            //     const response = xhr.responseJSON || {};
-            //     message.text(response.message || 'Unable to send OTP.');
-            // }).always(function () {
-            //     button.prop('disabled', false);
-            // });
-        });
-
-        $('.otp-input').on('input', function () {
-            this.value = this.value.replace(/\D/g, '').slice(0, 1);
-            if (this.value) {
-                $(this).next('.otp-input').focus();
-            }
-        });
-
-        $('.otp-input').on('keydown', function (event) {
-            if (event.key === 'Backspace' && !this.value) {
-                $(this).prev('.otp-input').focus();
-            }
-        });
-
-        $('.login-otp-input').on('input', function () {
-            this.value = this.value.replace(/\D/g, '').slice(0, 1);
-            if (this.value) {
-                $(this).next('.login-otp-input').focus();
-            }
-        });
-
-        $('.login-otp-input').on('keydown', function (event) {
-            if (event.key === 'Backspace' && !this.value) {
-                $(this).prev('.login-otp-input').focus();
-            }
-        });
-
-        $('#verify-login-otp-button').on('click', function () {
-            const button = $(this);
-            const message = $('#login-otp-message');
-            const otp = $('.login-otp-input').map(function () { return this.value; }).get().join('');
-            if (otp.length !== 6) {
-                message.removeClass('success').text('Enter all 6 OTP digits.');
-                return;
-            }
-            button.prop('disabled', true);
-            $.ajax({
-                url: '/',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({action: 'verify_login_otp', otp: otp, status: 'otp_verify_testing'}),
-                headers: {'X-CSRFToken': getCookie('csrftoken')}
-            }).done(function (response) {
-                message.addClass('success').text(response.message);
-                window.location.href = '/staticAnalysis/';
-            }).fail(function (xhr) {
-                const response = xhr.responseJSON || {};
-                message.removeClass('success').text(response.message || 'Unable to verify OTP.');
-            }).always(function () {
-                button.prop('disabled', false);
-            });
-        });
-
-        $('#verify-otp-button').on('click', function () {
-            $("#request-otp-form").hide();
-            $("#otp-step").hide();
-            $("#reset-password-form").show();
-            
-            const button = $(this);
-            const message = $('#otp-verify-message');
-            const otp = $('.otp-input').map(function () { return this.value; }).get().join('');
-            if (otp.length !== 6) {
-                message.removeClass('success').text('Enter all 6 OTP digits.');
-                return;
-            }
-
-            button.prop('disabled', true);
-            message.removeClass('success').text('');
-            // $.ajax({
-            //     url: '/',
-            //     method: 'POST',
-            //     contentType: 'application/json',
-            //     data: JSON.stringify({ action: 'verify_reset_otp', otp: otp }),
-            //     headers: { 'X-CSRFToken': getCookie('csrftoken') }
-            // }).done(function (response) {
-            //     message.addClass('success').text(response.message);
-            //     $('#otp-step').prop('hidden', true);
-            //     $('#reset-password-form').prop('hidden', false);
-            //     $('#new-password').focus();
-            // }).fail(function (xhr) {
-            //     const response = xhr.responseJSON || {};
-            //     message.text(response.message || 'Unable to verify OTP.');
-            // }).always(function () {
-            //     button.prop('disabled', false);
-            // });
-        });
-
-        $('#reset-password-form').on('submit', function (event) {
-            event.preventDefault();
-            const form = this;
-            const message = $('#reset-message');
-            const button = $(form).find('button[type="submit"]');
-            button.prop('disabled', true);
-            message.removeClass('success').text('');
-
-            $.ajax({
-                url: '/',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    action: 'reset_password',
-                    password: $('#new-password').val(),
-                    confirm_password: $('#confirm-password').val()
-                }),
-                headers: { 'X-CSRFToken': getCookie('csrftoken') }
-            }).done(function (response) {
-                message.addClass('success').text(response.message);
-                form.reset();
-                // $('#request-otp-form')[0].reset();
-                $('#reset-password-form').prop('hidden', true);
-            }).fail(function (xhr) {
-                const response = xhr.responseJSON || {};
-                message.text(response.message || 'Unable to update password.');
-            }).always(function () {
-                button.prop('disabled', false);
-            });
-        });
-
-
-
-        /* =====================================================
+      /* =====================================================
            THEME BUTTON
         ===================================================== */
 
-        $('.theme-button').on(
-            'click',
-            function() {
+      $(".theme-button").on("click", function () {
+        const theme = $(this).data("theme");
 
+        /* Change theme */
 
-                const theme =
-                    $(this).data('theme');
+        $("body").attr("data-theme", theme);
 
+        /* Remove active */
 
-                /* Change theme */
+        $(".theme-button").removeClass("active");
 
-                $('body').attr(
-                    'data-theme',
-                    theme
-                );
+        /* Add active */
 
+        $(this).addClass("active");
 
-                /* Remove active */
+        /* Save theme */
 
-                $('.theme-button')
-                    .removeClass('active');
+        localStorage.setItem("northstar-theme", theme);
+      });
 
-
-                /* Add active */
-
-                $(this)
-                    .addClass('active');
-
-
-                /* Save theme */
-
-                localStorage.setItem(
-                    'northstar-theme',
-                    theme
-                );
-
-            }
-        );
-
-
-
-        /* =====================================================
+      /* =====================================================
            DARK / LIGHT MODE
         ===================================================== */
 
-        $('#mode-button').on(
-            'click',
-            function() {
+      $("#mode-button").on("click", function () {
+        const body = $("body");
 
+        const currentMode = body.attr("data-mode");
 
-                const body =
-                    $('body');
+        let newMode;
 
+        if (currentMode === "light") {
+          newMode = "dark";
+        } else {
+          newMode = "light";
+        }
 
-                const currentMode =
-                    body.attr('data-mode');
+        /* Change mode */
 
+        body.attr("data-mode", newMode);
 
-                let newMode;
+        /* Change icon */
 
+        if (newMode === "dark") {
+          $(this).text("🌙");
 
-                if (currentMode === 'light') {
+          $(this).attr("title", "Switch to light mode");
+        } else {
+          $(this).text("☀️");
 
-                    newMode = 'dark';
+          $(this).attr("title", "Switch to dark mode");
+        }
 
-                } else {
+        /* Save mode */
 
-                    newMode = 'light';
+        localStorage.setItem("northstar-mode", newMode);
+      });
 
-                }
-
-
-                /* Change mode */
-
-                body.attr(
-                    'data-mode',
-                    newMode
-                );
-
-
-                /* Change icon */
-
-                if (newMode === 'dark') {
-
-                    $(this).text('🌙');
-
-                    $(this).attr(
-                        'title',
-                        'Switch to light mode'
-                    );
-
-                } else {
-
-                    $(this).text('☀️');
-
-                    $(this).attr(
-                        'title',
-                        'Switch to dark mode'
-                    );
-
-                }
-
-
-                /* Save mode */
-
-                localStorage.setItem(
-                    'northstar-mode',
-                    newMode
-                );
-
-            }
-        );
-
-
-
-        /* =====================================================
+      /* =====================================================
            LOAD SAVED THEME
         ===================================================== */
 
-        $(document).ready(function() {
+      $(document).ready(function () {
+        const savedTheme = localStorage.getItem("northstar-theme");
 
+        const savedMode = localStorage.getItem("northstar-mode");
 
-            const savedTheme =
-                localStorage.getItem(
-                    'northstar-theme'
-                );
-
-
-            const savedMode =
-                localStorage.getItem(
-                    'northstar-mode'
-                );
-
-
-
-            /* =================================================
+        /* =================================================
                LOAD THEME
             ================================================= */
 
-            if (savedTheme) {
+        if (savedTheme) {
+          $("body").attr("data-theme", savedTheme);
 
-                $('body').attr(
-                    'data-theme',
-                    savedTheme
-                );
+          $(".theme-button").removeClass("active");
 
+          $('.theme-button[data-theme="' + savedTheme + '"]').addClass(
+            "active",
+          );
+        }
 
-                $('.theme-button')
-                    .removeClass('active');
-
-
-                $(
-                    '.theme-button[data-theme="' +
-                    savedTheme +
-                    '"]'
-                )
-                    .addClass('active');
-
-            }
-
-
-
-            /* =================================================
+        /* =================================================
                LOAD MODE
             ================================================= */
 
-            if (savedMode) {
+        if (savedMode) {
+          $("body").attr("data-mode", savedMode);
+        }
 
-                $('body').attr(
-                    'data-mode',
-                    savedMode
-                );
-
-            }
-
-
-
-            /* =================================================
+        /* =================================================
                SET MODE ICON
             ================================================= */
 
-            const currentMode =
-                $('body').attr('data-mode');
+        const currentMode = $("body").attr("data-mode");
 
-
-            if (currentMode === 'dark') {
-
-                $('#mode-button')
-                    .text('🌙')
-                    .attr(
-                        'title',
-                        'Switch to light mode'
-                    );
-
-            } else {
-
-                $('#mode-button')
-                    .text('☀️')
-                    .attr(
-                        'title',
-                        'Switch to dark mode'
-                    );
-
-            }
-
-        });
-
-
+        if (currentMode === "dark") {
+          $("#mode-button").text("🌙").attr("title", "Switch to light mode");
+        } else {
+          $("#mode-button").text("☀️").attr("title", "Switch to dark mode");
+        }
+      });
     </script>
-
-
-</body>
-
+  </body>
 </html>
