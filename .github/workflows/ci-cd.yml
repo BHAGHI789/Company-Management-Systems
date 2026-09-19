@@ -89,7 +89,9 @@ jobs:
 
       # -------------------- Prettier --------------------
       - name: Check formatting with Prettier
-        run: ./node_modules/.bin/prettier --check .
+        run: |
+          node ./node_modules/prettier/bin/prettier.cjs --check .
+      
 
       # ==========================================================
       # DJANGO
