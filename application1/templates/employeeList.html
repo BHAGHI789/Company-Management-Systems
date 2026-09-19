@@ -1,9 +1,4 @@
-{% extends "base.html" %}
-
-{% block title %}
-  Employees · OrgNexus
-{% endblock %}
-
+{% extends "base.html" %} {% block title %} Employees · OrgNexus {% endblock %}
 {% block extra_css %}
 <style>
   body:has(.employee-layout) {
@@ -488,9 +483,7 @@
     }
   }
 </style>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="employee-layout">
   <aside class="side-nav-panel" aria-label="Team hierarchy">
     <div class="side-nav-header">
@@ -803,9 +796,7 @@
               <span class="status-pill status-active">Active</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -823,9 +814,7 @@
               <span class="status-pill status-active">Active</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -843,9 +832,7 @@
               <span class="status-pill status-active">Active</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -863,9 +850,7 @@
               <span class="status-pill status-active">Active</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -883,9 +868,7 @@
               <span class="status-pill status-onleave">On Leave</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -903,9 +886,7 @@
               <span class="status-pill status-active">Active</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -923,9 +904,7 @@
               <span class="status-pill status-active">Active</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -943,9 +922,7 @@
               <span class="status-pill status-active">Active</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -963,9 +940,7 @@
               <span class="status-pill status-inactive">Inactive</span>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit">
-                Edit
-              </button>
+              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
 
               <button class="btn btn-sm btn-danger" title="Delete">
                 Delete
@@ -987,17 +962,13 @@
     </div>
   </section>
 </div>
-{% endblock %}
-
-{% block extra_js %}
+{% endblock %} {% block extra_js %}
 <script>
   const filterForm = document.getElementById("employeeFilterForm");
   const filterField = document.getElementById("filterField");
   const filterOperator = document.getElementById("filterOperator");
   const filterValue = document.getElementById("filterValue");
-  const clearEmployeeFilter = document.getElementById(
-    "clearEmployeeFilter",
-  );
+  const clearEmployeeFilter = document.getElementById("clearEmployeeFilter");
   const employeeTable = document.getElementById("employeeTable");
   const tableBody = employeeTable.querySelector("tbody");
   const employeeImport = document.getElementById("employeeImport");
@@ -1050,10 +1021,7 @@
 
   function renderPagination() {
     const filteredRows = getFilteredRows();
-    const totalPages = Math.max(
-      1,
-      Math.ceil(filteredRows.length / pageSize),
-    );
+    const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
 
     currentPage = Math.min(currentPage, totalPages);
 
@@ -1074,26 +1042,13 @@
 
     employeePagination.innerHTML = "";
 
-    addPageButton(
-      "Previous",
-      currentPage - 1,
-      currentPage === 1,
-    );
+    addPageButton("Previous", currentPage - 1, currentPage === 1);
 
     for (let page = 1; page <= totalPages; page += 1) {
-      addPageButton(
-        page,
-        page,
-        false,
-        page === currentPage,
-      );
+      addPageButton(page, page, false, page === currentPage);
     }
 
-    addPageButton(
-      "Next",
-      currentPage + 1,
-      currentPage === totalPages,
-    );
+    addPageButton("Next", currentPage + 1, currentPage === totalPages);
   }
 
   function addPageButton(label, page, disabled, active) {
@@ -1135,18 +1090,14 @@
     filterValue.focus();
   });
 
-  document
-    .getElementById("btn-refresh")
-    .addEventListener("click", function () {
-      filterForm.reset();
-      filterEmployeeRows();
-    });
+  document.getElementById("btn-refresh").addEventListener("click", function () {
+    filterForm.reset();
+    filterEmployeeRows();
+  });
 
-  document
-    .getElementById("btn-import")
-    .addEventListener("click", function () {
-      employeeImport.click();
-    });
+  document.getElementById("btn-import").addEventListener("click", function () {
+    employeeImport.click();
+  });
 
   employeeImport.addEventListener("change", function (event) {
     const file = event.target.files[0];
@@ -1158,18 +1109,13 @@
     const reader = new FileReader();
 
     reader.onload = function () {
-      const lines = reader.result
-        .trim()
-        .split(/\r?\n/)
-        .filter(Boolean);
+      const lines = reader.result.trim().split(/\r?\n/).filter(Boolean);
 
       if (lines.length < 2) {
         return;
       }
 
-      const rows = lines
-        .slice(1)
-        .map((line) => parseCsvLine(line));
+      const rows = lines.slice(1).map((line) => parseCsvLine(line));
 
       tableBody.innerHTML = rows
         .map(
@@ -1184,9 +1130,7 @@
         )
         .join("");
 
-      employeeRows = Array.from(
-        tableBody.querySelectorAll("tr"),
-      );
+      employeeRows = Array.from(tableBody.querySelectorAll("tr"));
 
       filterEmployeeRows();
       event.target.value = "";
@@ -1195,61 +1139,44 @@
     reader.readAsText(file);
   });
 
-  document
-    .getElementById("btn-export")
-    .addEventListener("click", function () {
-      const visibleRows = employeeRows.filter(
-        (row) => !row.hidden,
-      );
+  document.getElementById("btn-export").addEventListener("click", function () {
+    const visibleRows = employeeRows.filter((row) => !row.hidden);
 
-      const header = Array.from(
-        employeeTable.querySelectorAll("thead th"),
-      ).map((cell) => cell.textContent.trim());
+    const header = Array.from(employeeTable.querySelectorAll("thead th")).map(
+      (cell) => cell.textContent.trim(),
+    );
 
-      const csv = [
-        header,
-        ...visibleRows.map((row) =>
-          Array.from(row.cells).map(
-            (cell) => cell.textContent.trim(),
-          ),
-        ),
-      ]
-        .map((row) =>
-          row
-            .map((value) =>
-              `"${value.replace(/"/g, '""')}"`,
-            )
-            .join(","),
-        )
-        .join("\n");
+    const csv = [
+      header,
+      ...visibleRows.map((row) =>
+        Array.from(row.cells).map((cell) => cell.textContent.trim()),
+      ),
+    ]
+      .map((row) =>
+        row.map((value) => `"${value.replace(/"/g, '""')}"`).join(","),
+      )
+      .join("\n");
 
-      const link = document.createElement("a");
+    const link = document.createElement("a");
 
-      link.href = URL.createObjectURL(
-        new Blob([csv], {
-          type: "text/csv;charset=utf-8;",
-        }),
-      );
+    link.href = URL.createObjectURL(
+      new Blob([csv], {
+        type: "text/csv;charset=utf-8;",
+      }),
+    );
 
-      link.download = "employees.csv";
-      link.click();
+    link.download = "employees.csv";
+    link.click();
 
-      URL.revokeObjectURL(link.href);
-    });
+    URL.revokeObjectURL(link.href);
+  });
 
   function parseCsvLine(line) {
     return line
       .match(/("(?:[^"]|"")*"|[^,]*)/g)
       .slice(0, -1)
-      .filter(
-        (_, index, values) => index < values.length - 1,
-      )
-      .map((value) =>
-        value
-          .replace(/^"|"$/g, "")
-          .replace(/""/g, '"')
-          .trim(),
-      );
+      .filter((_, index, values) => index < values.length - 1)
+      .map((value) => value.replace(/^"|"$/g, "").replace(/""/g, '"').trim());
   }
 
   function escapeHtml(value) {
