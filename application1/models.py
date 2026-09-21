@@ -7,6 +7,15 @@ from django.db import models  # type: ignore
 
 
 class User(AbstractUser):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name="Email", unique=True)
     phoneNumber = models.CharField(
@@ -28,6 +37,15 @@ class User(AbstractUser):
 
 
 class Department(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     department = models.CharField(
         verbose_name="Department ", max_length=100, unique=True, blank=False, null=False
@@ -57,6 +75,15 @@ class Department(models.Model):
 
 
 class Designation(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     designation = models.CharField(
         verbose_name="Designation ", max_length=100, unique=True
@@ -89,6 +116,15 @@ class Designation(models.Model):
 
 
 class Roles(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     roleName = models.CharField(verbose_name="Role Name", max_length=100, unique=True)
     description = models.TextField(blank=True)
@@ -114,8 +150,60 @@ class Roles(models.Model):
     def __str__(self):
         return self.roleName
 
+class Company(models.Model):
+    id = models.UUIDField( primary_key=True, default=uuid.uuid4,editable=False)
+    company_code = models.CharField( max_length=50,unique=True)
+    company_name = models.CharField(max_length=255)
+    legal_name = models.CharField( max_length=255, blank=True,null=True)
+    registration_number = models.CharField( max_length=100, blank=True,null=True)
+    website_name = models.CharField( max_length=255, blank=True,null=True)
+    website_url = models.URLField( max_length=500, blank=True,null=True)
+    domain_name = models.CharField( max_length=255, unique=True, blank=True,null=True)
+    subdomain = models.CharField( max_length=255, blank=True,null=True)
+    description = models.TextField( blank=True,null=True)
+    industry = models.CharField( max_length=150, blank=True,null=True)
+    company_size = models.CharField( max_length=50, blank=True,null=True)
+    founded_year = models.PositiveIntegerField( blank=True,null=True)
+    email = models.EmailField( max_length=254, blank=True,null=True)
+    phone_number = models.CharField( max_length=20, blank=True,null=True)
+    alternate_phone = models.CharField( max_length=20, blank=True,null=True)
+    address_line1 = models.CharField( max_length=255, blank=True,null=True)
+    address_line2 = models.CharField( max_length=255, blank=True,null=True)
+    city = models.CharField( max_length=100, blank=True,null=True)
+    state = models.CharField( max_length=100, blank=True,null=True)
+    country = models.CharField( max_length=100, blank=True,null=True)
+    postal_code = models.CharField( max_length=20, blank=True,null=True)
+    logo = models.ImageField( upload_to="companies/logos/", blank=True,null=True)
+    favicon = models.ImageField( upload_to="companies/favicons/", blank=True,null=True)
+    primary_color = models.CharField( max_length=20,default="#1976D2")
+    secondary_color = models.CharField( max_length=20,default="#FFFFFF")
+    linkedin_url = models.URLField( blank=True,null=True)
+    twitter_url = models.URLField( blank=True,null=True)
+    facebook_url = models.URLField( blank=True,null=True)
+    instagram_url = models.URLField( blank=True,null=True)
+    youtube_url = models.URLField( blank=True,null=True)
+    subscription_plan = models.CharField( max_length=50,default="FREE")
+    is_active = models.BooleanField(default=True)
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        db_table = "companies"
+        ordering = ["company_name"]
+
+    def __str__(self):
+        return self.company_name
 
 class Employees(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(
         User, verbose_name="User", on_delete=models.CASCADE, related_name="employee"
@@ -187,6 +275,15 @@ class Employees(models.Model):
 
 
 class OTPValues(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name="Email", unique=True)
     otp = models.CharField(verbose_name="OTP", max_length=6)
@@ -214,6 +311,15 @@ class OTPValues(models.Model):
 
 
 class EmployeeSalary(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     SALARY_STATUS_CHOICES = [
         ("ACTIVE", "Active"),
         ("INACTIVE", "Inactive"),
@@ -323,6 +429,15 @@ def employee_file_path(instance, filename):
 
 
 class EmployeeImage(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     employee = models.ForeignKey(
         Employees,
@@ -358,6 +473,15 @@ class EmployeeImage(models.Model):
 
 
 class EmployeeFile(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     employee = models.ForeignKey(
         Employees,
@@ -391,6 +515,15 @@ class EmployeeFile(models.Model):
 
 
 class Project(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     PROJECT_STATUS_CHOICES = [
         ("PLANNED", "Planned"),
         ("IN_PROGRESS", "In Progress"),
@@ -450,6 +583,15 @@ class Project(models.Model):
 
 
 class ProjectTeam(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     project = models.ForeignKey(
         Project,
@@ -510,6 +652,15 @@ class ProjectTeam(models.Model):
 
 
 class WorkItemType(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(verbose_name="Work Item Type", max_length=100, unique=True)
     description = models.TextField(verbose_name="Description", blank=True)
@@ -538,6 +689,15 @@ class WorkItemType(models.Model):
 
 
 class ProjectSprint(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     SPRINT_STATUS_CHOICES = [
         ("PLANNED", "Planned"),
         ("ACTIVE", "Active"),
@@ -604,6 +764,15 @@ class ProjectSprint(models.Model):
 
 
 class ProjectTask(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     TASK_STATUS_CHOICES = [
         ("New", "New"),
         ("IN_PROGRESS", "In Progress"),
@@ -745,6 +914,15 @@ class ProjectTask(models.Model):
 
 
 class TaskHistory(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     task = models.ForeignKey(
         ProjectTask,
@@ -779,6 +957,15 @@ class TaskHistory(models.Model):
 
 
 class ProjectTaskAttachment(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     ATTACHMENT_TYPE_CHOICES = [
         ("IMAGE", "Image"),
         ("FILE", "File"),
@@ -829,6 +1016,15 @@ class ProjectTaskAttachment(models.Model):
 
 
 class ProjectBudget(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     BUDGET_STATUS_CHOICES = [
         ("DRAFT", "Draft"),
         ("APPROVED", "Approved"),
@@ -880,6 +1076,15 @@ class ProjectBudget(models.Model):
 
 
 class ProjectExpense(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     EXPENSE_CATEGORY_CHOICES = [
         ("INFRASTRUCTURE", "Infrastructure"),
         ("SOFTWARE", "Software"),
@@ -960,6 +1165,15 @@ class ProjectExpense(models.Model):
 
 
 class ProjectEmployeeCost(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     COST_STATUS_CHOICES = [
         ("ESTIMATED", "Estimated"),
         ("CALCULATED", "Calculated"),
@@ -1040,6 +1254,15 @@ class ProjectEmployeeCost(models.Model):
 
 
 class ClientBilling(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     BILLING_STATUS_CHOICES = [
         ("DRAFT", "Draft"),
         ("SENT", "Sent"),
@@ -1110,6 +1333,15 @@ class ClientBilling(models.Model):
 
 
 class ClientBillingItem(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     billing = models.ForeignKey(
         ClientBilling,
@@ -1147,6 +1379,15 @@ class ClientBillingItem(models.Model):
 
 
 class ClientPayment(models.Model):
+    company = models.ForeignKey(
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
+    )
+
     PAYMENT_METHOD_CHOICES = [
         ("BANK_TRANSFER", "Bank Transfer"),
         ("UPI", "UPI"),
@@ -1185,3 +1426,53 @@ class ClientPayment(models.Model):
 
     def __str__(self):
         return f"{self.billing.invoiceNumber} - " f"{self.amount}"
+
+
+class CompanyMembership(models.Model):
+    """
+    Optional membership model for users who can access more than one company.
+    Existing User.company and User.role fields are retained for compatibility.
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    user = models.ForeignKey(
+        User,
+        verbose_name="User",
+        on_delete=models.CASCADE,
+        related_name="company_memberships",
+    )
+
+    company = models.ForeignKey(
+        Company,
+        verbose_name="Company",
+        on_delete=models.CASCADE,
+        related_name="user_memberships",
+    )
+
+    role = models.ForeignKey(
+        Roles,
+        verbose_name="Role",
+        on_delete=models.PROTECT,
+        related_name="company_memberships",
+        null=True,
+        blank=True,
+    )
+
+    is_active = models.BooleanField(default=True)
+
+    joinedDate = models.DateTimeField(
+        verbose_name="Joined Date",
+        auto_now_add=True,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "company"],
+                name="unique_user_company_membership",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.company}"
