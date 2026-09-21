@@ -1582,7 +1582,7 @@
 
       async function loadPublicKey() {
         try {
-          const response = await fetch("/get-public-key/");
+          const response = await fetch("/public-key/");
 
           if (!response.ok) {
             throw new Error(
