@@ -1,585 +1,1092 @@
 <!doctype html>
 <html lang="en" data-theme="ocean" data-mode="light">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}OrgNexus{% endblock %}</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  
-  <style>
-  :root {
-    --accent: #247ba0;
-    --accent-dark: #18566f;
-    --surface: #f4f9fb;
-    --surface-secondary: #ffffff;
-    --field: #eaf3f6;
-    --line: #c5dce4;
-    --text: #1f2933;
-    --muted: #667085;
-    --shadow: rgba(36, 123, 160, 0.15);
-    --sidebar-width: 260px;
-    --navbar-height: 56px;
-    --footer-height: 48px;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}OrgNexus{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
 
-  html[data-theme="forest"] {
-    --accent: #48745a; --accent-dark: #31513e;
-    --surface: #f6f8f1; --surface-secondary: #ffffff;
-    --field: #edf2e6; --line: #ced9c5;
-    --text: #26352b; --muted: #68756d;
-    --shadow: rgba(72, 116, 90, 0.15);
-  }
-  html[data-theme="purple"] {
-    --accent: #8d597c; --accent-dark: #633d57;
-    --surface: #faf6fa; --surface-secondary: #ffffff;
-    --field: #f3eaf1; --line: #dfcddd;
-    --text: #332532; --muted: #746574;
-    --shadow: rgba(141, 89, 124, 0.15);
-  }
-  html[data-theme="sunset"] {
-    --accent: #e76f51; --accent-dark: #c45135;
-    --surface: #fff8f4; --surface-secondary: #ffffff;
-    --field: #fff0e9; --line: #f1cfc1;
-    --text: #3d2924; --muted: #796761;
-    --shadow: rgba(231, 111, 81, 0.15);
-  }
-  html[data-theme="teal"] {
-    --accent: #0f8b8d; --accent-dark: #096b6d;
-    --surface: #f1fbfa; --surface-secondary: #ffffff;
-    --field: #e4f4f2; --line: #bfe0dc;
-    --text: #173b3c; --muted: #5f7778;
-    --shadow: rgba(15, 139, 141, 0.15);
-  }
-  html[data-theme="rose"] {
-    --accent: #c44569; --accent-dark: #8f2d4b;
-    --surface: #fff6f8; --surface-secondary: #ffffff;
-    --field: #fcecef; --line: #efc5d0;
-    --text: #45232e; --muted: #82616b;
-    --shadow: rgba(196, 69, 105, 0.15);
-  }
-  html[data-theme="amber"] {
-    --accent: #c47f17; --accent-dark: #85530d;
-    --surface: #fffaf0; --surface-secondary: #ffffff;
-    --field: #fff3d9; --line: #ecd49f;
-    --text: #463516; --muted: #806f4d;
-    --shadow: rgba(196, 127, 23, 0.15);
-  }
-  html[data-theme="indigo"] {
-    --accent: #536dfe; --accent-dark: #303f9f;
-    --surface: #f5f6ff; --surface-secondary: #ffffff;
-    --field: #e9ebff; --line: #cbd0ff;
-    --text: #202958; --muted: #66709a;
-    --shadow: rgba(83, 109, 254, 0.15);
-  }
-  html[data-theme="graphite"] {
-    --accent: #4b5563; --accent-dark: #1f2937;
-    --surface: #f4f5f6; --surface-secondary: #ffffff;
-    --field: #e8eaed; --line: #cbd0d6;
-    --text: #20242a; --muted: #68717d;
-    --shadow: rgba(75, 85, 99, 0.15);
-  }
-  html[data-theme="coral"] {
-    --accent: #ef6351; --accent-dark: #b9382c;
-    --surface: #fff7f5; --surface-secondary: #ffffff;
-    --field: #ffebe7; --line: #f2c9c1;
-    --text: #482521; --muted: #85645e;
-    --shadow: rgba(239, 99, 81, 0.15);
-  }
+    <style>
+      :root {
+        --accent: #247ba0;
+        --accent-dark: #18566f;
+        --surface: #f4f9fb;
+        --surface-secondary: #ffffff;
+        --field: #eaf3f6;
+        --line: #c5dce4;
+        --text: #1f2933;
+        --muted: #667085;
+        --shadow: rgba(36, 123, 160, 0.15);
+        --sidebar-width: 260px;
+        --navbar-height: 56px;
+        --footer-height: 48px;
+      }
 
-  html[data-mode="dark"] {
-    --surface: #0b1a22;
-    --surface-secondary: #112833;
-    --field: #1a3644;
-    --line: #2a4d5e;
-    --text: #e6f7ff;
-    --muted: #9bb7c4;
-    --shadow: rgba(0, 0, 0, 0.4);
-  }
+      html[data-theme="forest"] {
+        --accent: #48745a;
+        --accent-dark: #31513e;
+        --surface: #f6f8f1;
+        --surface-secondary: #ffffff;
+        --field: #edf2e6;
+        --line: #ced9c5;
+        --text: #26352b;
+        --muted: #68756d;
+        --shadow: rgba(72, 116, 90, 0.15);
+      }
+      html[data-theme="purple"] {
+        --accent: #8d597c;
+        --accent-dark: #633d57;
+        --surface: #faf6fa;
+        --surface-secondary: #ffffff;
+        --field: #f3eaf1;
+        --line: #dfcddd;
+        --text: #332532;
+        --muted: #746574;
+        --shadow: rgba(141, 89, 124, 0.15);
+      }
+      html[data-theme="sunset"] {
+        --accent: #e76f51;
+        --accent-dark: #c45135;
+        --surface: #fff8f4;
+        --surface-secondary: #ffffff;
+        --field: #fff0e9;
+        --line: #f1cfc1;
+        --text: #3d2924;
+        --muted: #796761;
+        --shadow: rgba(231, 111, 81, 0.15);
+      }
+      html[data-theme="teal"] {
+        --accent: #0f8b8d;
+        --accent-dark: #096b6d;
+        --surface: #f1fbfa;
+        --surface-secondary: #ffffff;
+        --field: #e4f4f2;
+        --line: #bfe0dc;
+        --text: #173b3c;
+        --muted: #5f7778;
+        --shadow: rgba(15, 139, 141, 0.15);
+      }
+      html[data-theme="rose"] {
+        --accent: #c44569;
+        --accent-dark: #8f2d4b;
+        --surface: #fff6f8;
+        --surface-secondary: #ffffff;
+        --field: #fcecef;
+        --line: #efc5d0;
+        --text: #45232e;
+        --muted: #82616b;
+        --shadow: rgba(196, 69, 105, 0.15);
+      }
+      html[data-theme="amber"] {
+        --accent: #c47f17;
+        --accent-dark: #85530d;
+        --surface: #fffaf0;
+        --surface-secondary: #ffffff;
+        --field: #fff3d9;
+        --line: #ecd49f;
+        --text: #463516;
+        --muted: #806f4d;
+        --shadow: rgba(196, 127, 23, 0.15);
+      }
+      html[data-theme="indigo"] {
+        --accent: #536dfe;
+        --accent-dark: #303f9f;
+        --surface: #f5f6ff;
+        --surface-secondary: #ffffff;
+        --field: #e9ebff;
+        --line: #cbd0ff;
+        --text: #202958;
+        --muted: #66709a;
+        --shadow: rgba(83, 109, 254, 0.15);
+      }
+      html[data-theme="graphite"] {
+        --accent: #4b5563;
+        --accent-dark: #1f2937;
+        --surface: #f4f5f6;
+        --surface-secondary: #ffffff;
+        --field: #e8eaed;
+        --line: #cbd0d6;
+        --text: #20242a;
+        --muted: #68717d;
+        --shadow: rgba(75, 85, 99, 0.15);
+      }
+      html[data-theme="coral"] {
+        --accent: #ef6351;
+        --accent-dark: #b9382c;
+        --surface: #fff7f5;
+        --surface-secondary: #ffffff;
+        --field: #ffebe7;
+        --line: #f2c9c1;
+        --text: #482521;
+        --muted: #85645e;
+        --shadow: rgba(239, 99, 81, 0.15);
+      }
 
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; overflow: hidden; }
+      html[data-mode="dark"] {
+        --surface: #0b1a22;
+        --surface-secondary: #112833;
+        --field: #1a3644;
+        --line: #2a4d5e;
+        --text: #e6f7ff;
+        --muted: #9bb7c4;
+        --shadow: rgba(0, 0, 0, 0.4);
+      }
 
-  body {
-    background: var(--surface);
-    color: var(--text);
-    font-family: Arial, sans-serif;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+      }
 
-  a { color: inherit; text-decoration: none; }
+      body {
+        background: var(--surface);
+        color: var(--text);
+        font-family: Arial, sans-serif;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
 
-  .site-shell { display: flex; flex-direction: column; height: 100vh; }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-  /* ===== NAVBAR ===== */
-  .site-header {
-    height: var(--navbar-height);
-    background: linear-gradient(115deg, var(--accent-dark), var(--accent));
-    box-shadow: 0 4px 16px var(--shadow);
-    color: #fff;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    transition: background 0.3s ease;
-  }
+      .site-shell {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
 
-  .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    padding: 0 16px;
-  }
+      /* ===== NAVBAR ===== */
+      .site-header {
+        height: var(--navbar-height);
+        background: linear-gradient(115deg, var(--accent-dark), var(--accent));
+        box-shadow: 0 4px 16px var(--shadow);
+        color: #fff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        transition: background 0.3s ease;
+      }
 
-  .navbar-left { display: flex; align-items: center; gap: 12px; }
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 16px;
+      }
 
-  .sidebar-toggle {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
-    color: #fff;
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 1.2rem;
-  }
-  .sidebar-toggle:hover { background: rgba(255,255,255,0.15); }
+      .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
-  .brand { font-size: 1.15rem; font-weight: 700; }
+      .sidebar-toggle {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+      .sidebar-toggle:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
 
-  .header-actions { display: flex; align-items: center; gap: 8px; }
+      .brand {
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
 
-  .icon-action {
-    width: 36px; height: 36px; border-radius: 8px;
-    display: inline-flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 1.15rem; position: relative;
-    border: 1px solid transparent;
-  }
-  .icon-action:hover { background: rgba(255,255,255,0.15); }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-  .notification-badge {
-    position: absolute; top: 2px; right: 2px;
-    background: #ef4444; color: white;
-    font-size: 0.65rem; width: 16px; height: 16px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-weight: 700;
-  }
+      .icon-action {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.15rem;
+        position: relative;
+        border: 1px solid transparent;
+      }
+      .icon-action:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
 
-  .profile-menu { position: relative; }
-  .profile-trigger {
-    width: 36px; height: 36px; border-radius: 8px;
-    display: inline-flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 1.25rem; cursor: pointer;
-  }
-  .profile-trigger:hover { background: rgba(255,255,255,0.15); }
+      .notification-badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: #ef4444;
+        color: white;
+        font-size: 0.65rem;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
 
-  .profile-dropdown {
-    display: none; position: absolute; right: 0; top: calc(100% + 8px);
-    background: var(--surface-secondary); border: 1px solid var(--line);
-    border-radius: 10px; box-shadow: 0 10px 30px var(--shadow);
-    min-width: 180px; padding: 6px; z-index: 1100;
-  }
-  .profile-menu:hover .profile-dropdown { display: block; }
-  .profile-dropdown a {
-    display: block; padding: 10px 14px; border-radius: 7px;
-    font-size: 0.9rem; color: var(--text);
-  }
-  .profile-dropdown a:hover { background: var(--field); }
+      .profile-menu {
+        position: relative;
+      }
+      .profile-trigger {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.25rem;
+        cursor: pointer;
+      }
+      .profile-trigger:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
 
-  /* ===== SIDEBAR (Stronger Theme) ===== */
-  .sidebar {
-    width: var(--sidebar-width);
-    background: var(--surface-secondary);
-    border-right: 3px solid var(--accent);          /* ← Theme color border */
-    position: fixed;
-    top: var(--navbar-height);
-    left: 0;
-    bottom: var(--footer-height);
-    overflow-y: auto;
-    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
-    z-index: 900;
-  }
-  .sidebar.collapsed { transform: translateX(-100%); }
+      .profile-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        background: var(--surface-secondary);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        box-shadow: 0 10px 30px var(--shadow);
+        min-width: 180px;
+        padding: 6px;
+        z-index: 1100;
+      }
+      .profile-menu:hover .profile-dropdown {
+        display: block;
+      }
+      .profile-dropdown a {
+        display: block;
+        padding: 10px 14px;
+        border-radius: 7px;
+        font-size: 0.9rem;
+        color: var(--text);
+      }
+      .profile-dropdown a:hover {
+        background: var(--field);
+      }
 
-  .sidebar-inner { padding: 16px 12px; }
+      /* ===== SIDEBAR (Stronger Theme) ===== */
+      .sidebar {
+        width: var(--sidebar-width);
+        background: var(--surface-secondary);
+        border-right: 3px solid var(--accent); /* ← Theme color border */
+        position: fixed;
+        top: var(--navbar-height);
+        left: 0;
+        bottom: var(--footer-height);
+        overflow-y: auto;
+        transition:
+          transform 0.3s ease,
+          background 0.3s ease,
+          border-color 0.3s ease;
+        z-index: 900;
+      }
+      .sidebar.collapsed {
+        transform: translateX(-100%);
+      }
 
-  .sidebar-search { margin-bottom: 16px; }
-  .sidebar-search input {
-    width: 100%; padding: 9px 12px;
-    border: 1px solid var(--line); border-radius: 8px;
-    background: var(--field); color: var(--text);
-    font-size: 0.9rem; outline: none;
-  }
-  .sidebar-search input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
-  }
+      .sidebar-inner {
+        padding: 16px 12px;
+      }
 
-  .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-  .sidebar-menu a {
-    display: flex; align-items: center; gap: 10px;
-    padding: 11px 14px; border-radius: 8px;
-    font-size: 0.92rem; color: var(--text);
-    margin-bottom: 2px; transition: all 0.2s;
-  }
-  .sidebar-menu a:hover {
-    background: var(--field);
-    color: var(--accent);
-  }
-  .sidebar-menu a.active {
-    background: var(--accent);
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 35%, transparent);
-  }
-  .sidebar-menu a i { font-size: 1.1rem; width: 22px; text-align: center; }
+      .sidebar-search {
+        margin-bottom: 16px;
+      }
+      .sidebar-search input {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--field);
+        color: var(--text);
+        font-size: 0.9rem;
+        outline: none;
+      }
+      .sidebar-search input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+      }
 
-  /* ===== MAIN ===== */
-  .main-wrapper {
-    margin-left: var(--sidebar-width);
-    margin-top: var(--navbar-height);
-    margin-bottom: var(--footer-height);
-    height: calc(100vh - var(--navbar-height) - var(--footer-height));
-    overflow-y: auto;
-    transition: margin-left 0.3s ease;
-    padding: 24px;
-    background: var(--surface);
-  }
-  .main-wrapper.expanded { margin-left: 0; }
+      .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 14px;
+        border-radius: 8px;
+        font-size: 0.92rem;
+        color: var(--text);
+        margin-bottom: 2px;
+        transition: all 0.2s;
+      }
+      .sidebar-menu a:hover {
+        background: var(--field);
+        color: var(--accent);
+      }
+      .sidebar-menu a.active {
+        background: var(--accent);
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: 0 4px 12px
+          color-mix(in srgb, var(--accent) 35%, transparent);
+      }
+      .sidebar-menu a i {
+        font-size: 1.1rem;
+        width: 22px;
+        text-align: center;
+      }
 
-  /* ===== FOOTER (Stronger Theme) ===== */
-  .site-footer {
-    height: var(--footer-height);
-    background: var(--surface-secondary);
-    border-top: 3px solid var(--accent);            /* ← Theme color border */
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px;
-    position: fixed; bottom: 0; left: 0; right: 0;
-    z-index: 1000;
-    font-size: 0.85rem; color: var(--muted);
-    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-  }
+      /* ===== MAIN ===== */
+      .main-wrapper {
+        margin-left: var(--sidebar-width);
+        margin-top: var(--navbar-height);
+        margin-bottom: var(--footer-height);
+        height: calc(100vh - var(--navbar-height) - var(--footer-height));
+        overflow-y: auto;
+        transition: margin-left 0.3s ease;
+        padding: 24px;
+        background: var(--surface);
+      }
+      .main-wrapper.expanded {
+        margin-left: 0;
+      }
 
-  .theme-tools { display: flex; align-items: center; gap: 8px; }
-  .theme-picker { display: flex; gap: 5px; }
+      /* ===== FOOTER (Stronger Theme) ===== */
+      .site-footer {
+        height: var(--footer-height);
+        background: var(--surface-secondary);
+        border-top: 3px solid var(--accent); /* ← Theme color border */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        font-size: 0.85rem;
+        color: var(--muted);
+        transition:
+          background 0.3s ease,
+          border-color 0.3s ease,
+          color 0.3s ease;
+      }
 
-  .theme-button {
-    width: 16px; height: 16px; border-radius: 50%;
-    border: 2px solid transparent; cursor: pointer; padding: 0;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .theme-button:hover, .theme-button.active {
-    border-color: var(--text); transform: scale(1.25);
-  }
+      .theme-tools {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .theme-picker {
+        display: flex;
+        gap: 5px;
+      }
 
-  .theme-button[data-theme="ocean"]    { background: #247ba0; }
-  .theme-button[data-theme="forest"]   { background: #48745a; }
-  .theme-button[data-theme="purple"]   { background: #8d597c; }
-  .theme-button[data-theme="sunset"]   { background: #e76f51; }
-  .theme-button[data-theme="teal"]     { background: #0f8b8d; }
-  .theme-button[data-theme="rose"]     { background: #c44569; }
-  .theme-button[data-theme="amber"]    { background: #c47f17; }
-  .theme-button[data-theme="indigo"]   { background: #536dfe; }
-  .theme-button[data-theme="graphite"] { background: #4b5563; }
-  .theme-button[data-theme="coral"]    { background: #ef6351; }
+      .theme-button {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        padding: 0;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+      .theme-button:hover,
+      .theme-button.active {
+        border-color: var(--text);
+        transform: scale(1.25);
+      }
 
-  .mode-button {
-    width: 28px; height: 28px; border-radius: 50%;
-    border: 1px solid var(--line);
-    background: var(--surface-secondary); color: var(--text);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 0.9rem;
-  }
-  .mode-button:hover { border-color: var(--accent); }
+      .theme-button[data-theme="ocean"] {
+        background: #247ba0;
+      }
+      .theme-button[data-theme="forest"] {
+        background: #48745a;
+      }
+      .theme-button[data-theme="purple"] {
+        background: #8d597c;
+      }
+      .theme-button[data-theme="sunset"] {
+        background: #e76f51;
+      }
+      .theme-button[data-theme="teal"] {
+        background: #0f8b8d;
+      }
+      .theme-button[data-theme="rose"] {
+        background: #c44569;
+      }
+      .theme-button[data-theme="amber"] {
+        background: #c47f17;
+      }
+      .theme-button[data-theme="indigo"] {
+        background: #536dfe;
+      }
+      .theme-button[data-theme="graphite"] {
+        background: #4b5563;
+      }
+      .theme-button[data-theme="coral"] {
+        background: #ef6351;
+      }
 
-  @media (max-width: 900px) {
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.open { transform: translateX(0); }
-    .main-wrapper { margin-left: 0; }
-  }
-</style>
-  {% block extra_css %}{% endblock %}
-</head>
-<body>
-  <div class="site-shell">
+      .mode-button {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: var(--surface-secondary);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      .mode-button:hover {
+        border-color: var(--accent);
+      }
 
-    <!-- NAVBAR -->
-    <header class="site-header">
-      <nav class="navbar">
-        <div class="navbar-left">
-          <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
-            <i class="bi bi-list"></i>
-          </button>
-          <a class="brand" href="#">OrgNexus</a>
-        </div>
+      @media (max-width: 900px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main-wrapper {
+          margin-left: 0;
+        }
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <div class="site-shell">
+      <!-- NAVBAR -->
+      <header class="site-header">
+        <nav class="navbar">
+          <div class="navbar-left">
+            <button
+              class="sidebar-toggle"
+              id="sidebarToggle"
+              title="Toggle Sidebar"
+            >
+              <i class="bi bi-list"></i>
+            </button>
+            <a class="brand" href="#">OrgNexus</a>
+          </div>
 
-        <div class="header-actions">
-          <a class="icon-action" href="#" title="Settings"><i class="bi bi-gear-fill"></i></a>
-          <a class="icon-action" href="#" title="Notifications">
-            <i class="bi bi-bell-fill"></i>
-            <span class="notification-badge">3</span>
-          </a>
-          <div class="profile-menu">
-            <a class="profile-trigger" href="#" title="Profile"><i class="bi bi-person-circle"></i></a>
-            <div class="profile-dropdown">
-              <a href="#"><i class="bi bi-person me-2"></i> Profile</a>
-              <a href="#"><i class="bi bi-key me-2"></i> Change password</a>
-              <a href="#"><i class="bi bi-box-arrow-right me-2"></i> Sign out</a>
+          <div class="header-actions">
+            <a class="icon-action" href="#" title="Settings"
+              ><i class="bi bi-gear-fill"></i
+            ></a>
+            <a class="icon-action" href="#" title="Notifications">
+              <i class="bi bi-bell-fill"></i>
+              <span class="notification-badge">3</span>
+            </a>
+            <div class="profile-menu">
+              <a class="profile-trigger" href="#" title="Profile"
+                ><i class="bi bi-person-circle"></i
+              ></a>
+              <div class="profile-dropdown">
+                <a href="#"><i class="bi bi-person me-2"></i> Profile</a>
+                <a href="#"><i class="bi bi-key me-2"></i> Change password</a>
+                <a href="#"
+                  ><i class="bi bi-box-arrow-right me-2"></i> Sign out</a
+                >
+              </div>
             </div>
           </div>
+        </nav>
+      </header>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+          <div class="sidebar-search">
+            <input type="text" placeholder="Search menu..." />
+          </div>
+          <ul class="sidebar-menu">
+            {% if dataRole == 'DIRECTOR' or dataRole == 'Director' or dataRole
+            == 'GLOBAL_ADMIN' %}
+            <li>
+              <a class="active directorClass" href="/dashboard/"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="/employees/"
+                ><i class="bi bi-people"></i> Employees</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-building"></i> Departments</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-folder"></i> Projects</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-list-task"></i> All Tasks</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-graph-up"></i> Reports & Analytics</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-check2-square"></i> Approvals</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-calendar-x"></i> Leave Management</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-clock-history"></i> Attendance</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-star"></i> Performance Reviews</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-cash-stack"></i> Budget / Resources</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-gear"></i> Settings</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-bell"></i> Notifications</a
+              >
+            </li>
+            <li>
+              <a class="directorClass" href="#"
+                ><i class="bi bi-person"></i> Profile</a
+              >
+            </li>
+            {# ===== MANAGER / ADMIN ===== #} {% elif dataRole == 'MANAGER' or
+            request.user.userRole == 'Manager' or request.user.userRole ==
+            'ADMIN' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard (Team)</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-people"></i> My Team</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-folder"></i> Projects</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-list-task"></i> Task List</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-check2-square"></i> Approvals</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-calendar-x"></i> Leave Requests</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-clock-history"></i> Attendance</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-graph-up"></i> Reports</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== REPORTING MANAGER ===== #} {% elif dataRole ==
+            'REPORTING_MANAGER' or request.user.userRole == 'Reporting Manager'
+            %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-people"></i> My Team</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-list-task"></i> Task List</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-plus-circle"></i> Assign Tasks</a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-calendar-check"></i> Leave Approvals</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-clock-history"></i> Attendance</a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-chat-square-text"></i> Performance Feedback</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== SR DEVELOPER ===== #} {% elif dataRole == 'SR_DEVELOPER' or
+            request.user.userRole == 'Sr. Developer' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-list-task"></i> Task List</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-folder"></i> My Projects</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-code-slash"></i> Code Reviews</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-people"></i> Mentorship / Juniors</a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-file-earmark-text"></i> Technical Docs</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== DEVELOPER / EMPLOYEE ===== #} {% elif dataRole ==
+            'DEVELOPER' or request.user.userRole == 'Developer' or
+            request.user.userRole == 'EMPLOYEE' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-list-task"></i> Task List</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-folder"></i> My Projects</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-clock"></i> Timesheet</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== JR DEVELOPER ===== #} {% elif dataRole == 'JR_DEVELOPER' or
+            request.user.userRole == 'Jr. Developer' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-list-task"></i> Task List (Assigned)</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-book"></i> Learning Resources</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-clock"></i> Timesheet</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== QA MANAGER ===== #} {% elif dataRole == 'QA_MANAGER' or
+            request.user.userRole == 'QA Manager' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard (QA)</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-file-earmark-check"></i> Test Cases</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bug"></i> Bug Tracker</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-clipboard-check"></i> Test Plans</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-people"></i> QA Team</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-graph-up"></i> Reports</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-check2-square"></i> Approvals</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== QA REPORTING MANAGER ===== #} {% elif dataRole ==
+            'QA_REPORTING_MANAGER' or request.user.userRole == 'QA Reporting
+            Manager' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-people"></i> My QA Team</a>
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-file-earmark-check"></i> Test Cases</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bug"></i> Bug Tracker</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-plus-circle"></i> Assign Tests</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-graph-up"></i> Reports</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== SR QA TESTER ===== #} {% elif dataRole == 'SR_QA_TESTER' or
+            request.user.userRole == 'Sr. QA Tester' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-file-earmark-check"></i> Test Cases</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bug"></i> Bug Tracker</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-play-circle"></i> Test Execution</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-eye"></i> Review Bugs</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {# ===== QA TESTER ===== #} {% elif dataRole == 'QA_TESTER' or
+            request.user.userRole == 'QA Tester' %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="bi bi-file-earmark-check"></i> My Test Cases</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bug"></i> Bug Tracker</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-play-circle"></i> Test Execution</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+
+            {% else %}
+            <li>
+              <a class="active" href="#"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i> Profile</a>
+            </li>
+            {% endif %}
+          </ul>
         </div>
-      </nav>
-    </header>
+      </aside>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-inner">
-        <div class="sidebar-search">
-          <input type="text" placeholder="Search menu..." />
-        </div>
-        <ul class="sidebar-menu">
-          {% if dataRole == 'DIRECTOR' or dataRole == 'Director' or dataRole == 'GLOBAL_ADMIN' %}
-            <li><a class="active directorClass" href="/dashboard/"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a class="directorClass" href="/employees/"><i class="bi bi-people"></i> Employees</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-building"></i> Departments</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-folder"></i> Projects</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-list-task"></i> All Tasks</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-graph-up"></i> Reports & Analytics</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-check2-square"></i> Approvals</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-calendar-x"></i> Leave Management</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-clock-history"></i> Attendance</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-star"></i> Performance Reviews</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-cash-stack"></i> Budget / Resources</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-gear"></i> Settings</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a class="directorClass" href="#"><i class="bi bi-person"></i> Profile</a></li>
-          {# ===== MANAGER / ADMIN ===== #}
-          {% elif dataRole == 'MANAGER' or request.user.userRole == 'Manager' or request.user.userRole == 'ADMIN' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard (Team)</a></li>
-            <li><a href="#"><i class="bi bi-people"></i> My Team</a></li>
-            <li><a href="#"><i class="bi bi-folder"></i> Projects</a></li>
-            <li><a href="#"><i class="bi bi-list-task"></i> Task List</a></li>
-            <li><a href="#"><i class="bi bi-check2-square"></i> Approvals</a></li>
-            <li><a href="#"><i class="bi bi-calendar-x"></i> Leave Requests</a></li>
-            <li><a href="#"><i class="bi bi-clock-history"></i> Attendance</a></li>
-            <li><a href="#"><i class="bi bi-graph-up"></i> Reports</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== REPORTING MANAGER ===== #}
-          {% elif dataRole == 'REPORTING_MANAGER' or request.user.userRole == 'Reporting Manager' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-people"></i> My Team</a></li>
-            <li><a href="#"><i class="bi bi-list-task"></i> Task List</a></li>
-            <li><a href="#"><i class="bi bi-plus-circle"></i> Assign Tasks</a></li>
-            <li><a href="#"><i class="bi bi-calendar-check"></i> Leave Approvals</a></li>
-            <li><a href="#"><i class="bi bi-clock-history"></i> Attendance</a></li>
-            <li><a href="#"><i class="bi bi-chat-square-text"></i> Performance Feedback</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== SR DEVELOPER ===== #}
-          {% elif dataRole == 'SR_DEVELOPER' or request.user.userRole == 'Sr. Developer' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-list-task"></i> Task List</a></li>
-            <li><a href="#"><i class="bi bi-folder"></i> My Projects</a></li>
-            <li><a href="#"><i class="bi bi-code-slash"></i> Code Reviews</a></li>
-            <li><a href="#"><i class="bi bi-people"></i> Mentorship / Juniors</a></li>
-            <li><a href="#"><i class="bi bi-file-earmark-text"></i> Technical Docs</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== DEVELOPER / EMPLOYEE ===== #}
-          {% elif dataRole == 'DEVELOPER' or request.user.userRole == 'Developer' or request.user.userRole == 'EMPLOYEE' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-list-task"></i> Task List</a></li>
-            <li><a href="#"><i class="bi bi-folder"></i> My Projects</a></li>
-            <li><a href="#"><i class="bi bi-clock"></i> Timesheet</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== JR DEVELOPER ===== #}
-          {% elif dataRole == 'JR_DEVELOPER' or request.user.userRole == 'Jr. Developer' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-list-task"></i> Task List (Assigned)</a></li>
-            <li><a href="#"><i class="bi bi-book"></i> Learning Resources</a></li>
-            <li><a href="#"><i class="bi bi-clock"></i> Timesheet</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== QA MANAGER ===== #}
-          {% elif dataRole == 'QA_MANAGER' or request.user.userRole == 'QA Manager' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard (QA)</a></li>
-            <li><a href="#"><i class="bi bi-file-earmark-check"></i> Test Cases</a></li>
-            <li><a href="#"><i class="bi bi-bug"></i> Bug Tracker</a></li>
-            <li><a href="#"><i class="bi bi-clipboard-check"></i> Test Plans</a></li>
-            <li><a href="#"><i class="bi bi-people"></i> QA Team</a></li>
-            <li><a href="#"><i class="bi bi-graph-up"></i> Reports</a></li>
-            <li><a href="#"><i class="bi bi-check2-square"></i> Approvals</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== QA REPORTING MANAGER ===== #}
-          {% elif dataRole == 'QA_REPORTING_MANAGER' or request.user.userRole == 'QA Reporting Manager' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-people"></i> My QA Team</a></li>
-            <li><a href="#"><i class="bi bi-file-earmark-check"></i> Test Cases</a></li>
-            <li><a href="#"><i class="bi bi-bug"></i> Bug Tracker</a></li>
-            <li><a href="#"><i class="bi bi-plus-circle"></i> Assign Tests</a></li>
-            <li><a href="#"><i class="bi bi-graph-up"></i> Reports</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== SR QA TESTER ===== #}
-          {% elif dataRole == 'SR_QA_TESTER' or request.user.userRole == 'Sr. QA Tester' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-file-earmark-check"></i> Test Cases</a></li>
-            <li><a href="#"><i class="bi bi-bug"></i> Bug Tracker</a></li>
-            <li><a href="#"><i class="bi bi-play-circle"></i> Test Execution</a></li>
-            <li><a href="#"><i class="bi bi-eye"></i> Review Bugs</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {# ===== QA TESTER ===== #}
-          {% elif dataRole == 'QA_TESTER' or request.user.userRole == 'QA Tester' %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-file-earmark-check"></i> My Test Cases</a></li>
-            <li><a href="#"><i class="bi bi-bug"></i> Bug Tracker</a></li>
-            <li><a href="#"><i class="bi bi-play-circle"></i> Test Execution</a></li>
-            <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-
-          {% else %}
-            <li><a class="active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="#"><i class="bi bi-person"></i> Profile</a></li>
-          {% endif %}
-        </ul>
+      <!-- MAIN CONTENT -->
+      <div class="main-wrapper" id="mainWrapper">
+        {% block content %}{% endblock %}
       </div>
-    </aside>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-wrapper" id="mainWrapper">
-      {% block content %}{% endblock %}
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <span>Developer by Bhagya Raj Gangala &copy; 2026</span>
+        <div class="theme-tools">
+          <div class="theme-picker">
+            <button
+              class="theme-button"
+              data-theme="ocean"
+              title="Ocean"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="forest"
+              title="Forest"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="purple"
+              title="Purple"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="sunset"
+              title="Sunset"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="teal"
+              title="Teal"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="rose"
+              title="Rose"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="amber"
+              title="Amber"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="indigo"
+              title="Indigo"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="graphite"
+              title="Graphite"
+            ></button>
+            <button
+              class="theme-button"
+              data-theme="coral"
+              title="Coral"
+            ></button>
+          </div>
+          <button
+            class="mode-button"
+            id="mode-toggle"
+            title="Toggle dark/light"
+          >
+            <i class="bi bi-moon-fill"></i>
+          </button>
+        </div>
+      </footer>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoYz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ===== Sidebar Toggle =====
+        const sidebar = document.getElementById("sidebar");
+        const mainWrapper = document.getElementById("mainWrapper");
+        const toggleBtn = document.getElementById("sidebarToggle");
 
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <span>Developer by Bhagya Raj Gangala &copy; 2026</span>
-      <div class="theme-tools">
-        <div class="theme-picker">
-          <button class="theme-button" data-theme="ocean" title="Ocean"></button>
-          <button class="theme-button" data-theme="forest" title="Forest"></button>
-          <button class="theme-button" data-theme="purple" title="Purple"></button>
-          <button class="theme-button" data-theme="sunset" title="Sunset"></button>
-          <button class="theme-button" data-theme="teal" title="Teal"></button>
-          <button class="theme-button" data-theme="rose" title="Rose"></button>
-          <button class="theme-button" data-theme="amber" title="Amber"></button>
-          <button class="theme-button" data-theme="indigo" title="Indigo"></button>
-          <button class="theme-button" data-theme="graphite" title="Graphite"></button>
-          <button class="theme-button" data-theme="coral" title="Coral"></button>
-        </div>
-        <button class="mode-button" id="mode-toggle" title="Toggle dark/light">
-          <i class="bi bi-moon-fill"></i>
-        </button>
-      </div>
-    </footer>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoYz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-      // ===== Sidebar Toggle =====
-      const sidebar = document.getElementById('sidebar');
-      const mainWrapper = document.getElementById('mainWrapper');
-      const toggleBtn = document.getElementById('sidebarToggle');
-
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', function () {
-          sidebar.classList.toggle('collapsed');
-          mainWrapper.classList.toggle('expanded');
-        });
-      }
-
-      // ===== Theme System =====
-      const root = document.documentElement;
-      const themeButtons = document.querySelectorAll('.theme-button');
-      const modeToggle = document.getElementById('mode-toggle');
-
-      let currentTheme = localStorage.getItem('orgnexus-theme') || 'ocean';
-      let currentMode = localStorage.getItem('orgnexus-mode') || 'light';
-
-      root.setAttribute('data-theme', currentTheme);
-      root.setAttribute('data-mode', currentMode);
-
-      themeButtons.forEach(btn => {
-        if (btn.dataset.theme === currentTheme) {
-          btn.classList.add('active');
+        if (toggleBtn) {
+          toggleBtn.addEventListener("click", function () {
+            sidebar.classList.toggle("collapsed");
+            mainWrapper.classList.toggle("expanded");
+          });
         }
-      });
 
-      if (modeToggle) {
-        modeToggle.innerHTML = currentMode === 'dark'
-          ? '<i class="bi bi-sun-fill"></i>'
-          : '<i class="bi bi-moon-fill"></i>';
-      }
+        // ===== Theme System =====
+        const root = document.documentElement;
+        const themeButtons = document.querySelectorAll(".theme-button");
+        const modeToggle = document.getElementById("mode-toggle");
 
-      themeButtons.forEach(button => {
-        button.addEventListener('click', function () {
-          const selectedTheme = this.dataset.theme;
-          root.setAttribute('data-theme', selectedTheme);
-          localStorage.setItem('orgnexus-theme', selectedTheme);
+        let currentTheme = localStorage.getItem("orgnexus-theme") || "ocean";
+        let currentMode = localStorage.getItem("orgnexus-mode") || "light";
 
-          themeButtons.forEach(btn => btn.classList.remove('active'));
-          this.classList.add('active');
+        root.setAttribute("data-theme", currentTheme);
+        root.setAttribute("data-mode", currentMode);
+
+        themeButtons.forEach((btn) => {
+          if (btn.dataset.theme === currentTheme) {
+            btn.classList.add("active");
+          }
         });
-      });
 
-      if (modeToggle) {
-        modeToggle.addEventListener('click', function () {
-          currentMode = root.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
-          root.setAttribute('data-mode', currentMode);
-          localStorage.setItem('orgnexus-mode', currentMode);
-
-          this.innerHTML = currentMode === 'dark'
-            ? '<i class="bi bi-sun-fill"></i>'
-            : '<i class="bi bi-moon-fill"></i>';
-        });
-      }
-
-      // =====================================================
-      // ===== ACTIVE MENU ITEM (This is what you need) =====
-      // =====================================================
-
-      // 1. Remove active from all menu items first
-      const menuLinks = document.querySelectorAll('.sidebar-menu a');
-      menuLinks.forEach(link => link.classList.remove('active'));
-
-      // 2. Add active to the current page based on URL
-      const currentPath = window.location.pathname;
-
-      menuLinks.forEach(link => {
-        const href = link.getAttribute('href');
-
-        if (href && href !== '#' && currentPath.includes(href.replace(/^\/|\/$/g, ''))) {
-          link.classList.add('active');
+        if (modeToggle) {
+          modeToggle.innerHTML =
+            currentMode === "dark"
+              ? '<i class="bi bi-sun-fill"></i>'
+              : '<i class="bi bi-moon-fill"></i>';
         }
-      });
 
-      // 3. Also handle click (in case of same page or # links)
-      menuLinks.forEach(link => {
-        link.addEventListener('click', function () {
-          // Remove active from all
-          menuLinks.forEach(item => item.classList.remove('active'));
+        themeButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const selectedTheme = this.dataset.theme;
+            root.setAttribute("data-theme", selectedTheme);
+            localStorage.setItem("orgnexus-theme", selectedTheme);
 
-          // Add active only to clicked item
-          this.classList.add('active');
+            themeButtons.forEach((btn) => btn.classList.remove("active"));
+            this.classList.add("active");
+          });
+        });
+
+        if (modeToggle) {
+          modeToggle.addEventListener("click", function () {
+            currentMode =
+              root.getAttribute("data-mode") === "dark" ? "light" : "dark";
+            root.setAttribute("data-mode", currentMode);
+            localStorage.setItem("orgnexus-mode", currentMode);
+
+            this.innerHTML =
+              currentMode === "dark"
+                ? '<i class="bi bi-sun-fill"></i>'
+                : '<i class="bi bi-moon-fill"></i>';
+          });
+        }
+
+        // =====================================================
+        // ===== ACTIVE MENU ITEM (This is what you need) =====
+        // =====================================================
+
+        // 1. Remove active from all menu items first
+        const menuLinks = document.querySelectorAll(".sidebar-menu a");
+        menuLinks.forEach((link) => link.classList.remove("active"));
+
+        // 2. Add active to the current page based on URL
+        const currentPath = window.location.pathname;
+
+        menuLinks.forEach((link) => {
+          const href = link.getAttribute("href");
+
+          if (
+            href &&
+            href !== "#" &&
+            currentPath.includes(href.replace(/^\/|\/$/g, ""))
+          ) {
+            link.classList.add("active");
+          }
+        });
+
+        // 3. Also handle click (in case of same page or # links)
+        menuLinks.forEach((link) => {
+          link.addEventListener("click", function () {
+            // Remove active from all
+            menuLinks.forEach((item) => item.classList.remove("active"));
+
+            // Add active only to clicked item
+            this.classList.add("active");
+          });
         });
       });
+    </script>
 
-    });
-  </script>
-
-  {% block extra_js %}{% endblock %}
-</body>
+    {% block extra_js %}{% endblock %}
+  </body>
 </html>

@@ -1,69 +1,65 @@
-{% extends "base.html" %}
-{% block title %}Employees · OrgNexus{% endblock %}
-
-{% block extra_css %}
+{% extends "base.html" %} {% block title %}Employees · OrgNexus{% endblock %} {%
+block extra_css %}
 <style>
-
-  
-.employee-modal .modal-dialog {
+  .employee-modal .modal-dialog {
     max-width: 1100px;
-}
+  }
 
-.employee-modal .modal-content {
+  .employee-modal .modal-content {
     background: var(--surface-secondary);
     color: var(--text);
     border: 1px solid var(--line);
     border-radius: 16px;
     box-shadow: 0 20px 60px var(--shadow);
     overflow: hidden;
-}
+  }
 
-/* ---------- Modal Header ---------- */
+  /* ---------- Modal Header ---------- */
 
-.employee-modal .modal-header {
+  .employee-modal .modal-header {
     background: var(--surface-secondary);
     border-bottom: 1px solid var(--line);
     padding: 18px 22px;
-}
+  }
 
-.employee-modal-title-wrapper {
+  .employee-modal-title-wrapper {
     display: flex;
     flex-direction: column;
     gap: 3px;
-}
+  }
 
-.employee-modal .modal-title {
+  .employee-modal .modal-title {
     color: var(--accent-dark);
     font-size: 1.15rem;
     font-weight: 700;
     margin: 0;
-}
+  }
 
-.employee-modal-subtitle {
+  .employee-modal-subtitle {
     color: var(--muted);
     font-size: 0.78rem;
-}
+  }
 
-.employee-modal .btn-close {
+  .employee-modal .btn-close {
     opacity: 0.7;
-}
+  }
 
-.employee-modal .btn-close:hover {
+  .employee-modal .btn-close:hover {
     opacity: 1;
-}
+  }
 
-/* ---------- Stepper ---------- */
+  /* ---------- Stepper ---------- */
 
-.employee-modal-stepper {
+  .employee-modal-stepper {
     background: var(--field);
     border-bottom: 1px solid var(--line);
     display: grid;
     grid-template-columns: repeat(7, minmax(90px, 1fr));
     gap: 5px;
     padding: 15px 18px;
-}
+  }
 
-.employee-modal-step-nav {
+  .employee-modal-step-nav {
     align-items: center;
     background: transparent;
     border: 0;
@@ -74,9 +70,9 @@
     gap: 6px;
     min-width: 0;
     padding: 4px;
-}
+  }
 
-.employee-modal-step-circle {
+  .employee-modal-step-circle {
     align-items: center;
     background: var(--surface-secondary);
     border: 2px solid var(--line);
@@ -89,9 +85,9 @@
     justify-content: center;
     transition: all 0.2s ease;
     width: 30px;
-}
+  }
 
-.employee-modal-step-label {
+  .employee-modal-step-label {
     font-size: 0.68rem;
     font-weight: 600;
     max-width: 100%;
@@ -99,62 +95,62 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
+  }
 
-.employee-modal-step-nav.active {
+  .employee-modal-step-nav.active {
     color: var(--accent-dark);
-}
+  }
 
-.employee-modal-step-nav.active .employee-modal-step-circle {
+  .employee-modal-step-nav.active .employee-modal-step-circle {
     background: var(--accent);
     border-color: var(--accent);
     color: #fff;
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent);
-}
+  }
 
-.employee-modal-step-nav.completed {
+  .employee-modal-step-nav.completed {
     color: var(--accent-dark);
-}
+  }
 
-.employee-modal-step-nav.completed .employee-modal-step-circle {
+  .employee-modal-step-nav.completed .employee-modal-step-circle {
     background: var(--accent-dark);
     border-color: var(--accent-dark);
     color: #fff;
-}
+  }
 
-/* ---------- Modal Body ---------- */
+  /* ---------- Modal Body ---------- */
 
-.employee-modal .modal-body {
+  .employee-modal .modal-body {
     background: var(--surface-secondary);
     max-height: 62vh;
     overflow-y: auto;
     padding: 24px;
-}
+  }
 
-/* ---------- Step Content ---------- */
+  /* ---------- Step Content ---------- */
 
-.employee-modal-step {
+  .employee-modal-step {
     display: none;
-}
+  }
 
-.employee-modal-step.active {
+  .employee-modal-step.active {
     display: block;
     animation: employeeStepFade 0.2s ease;
-}
+  }
 
-@keyframes employeeStepFade {
+  @keyframes employeeStepFade {
     from {
-        opacity: 0;
-        transform: translateY(4px);
+      opacity: 0;
+      transform: translateY(4px);
     }
 
     to {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
+  }
 
-.employee-modal-section-title {
+  .employee-modal-section-title {
     align-items: center;
     color: var(--accent-dark);
     display: flex;
@@ -162,49 +158,49 @@
     font-weight: 700;
     gap: 8px;
     margin-bottom: 18px;
-}
+  }
 
-.employee-modal-section-title::before {
+  .employee-modal-section-title::before {
     background: var(--accent);
     border-radius: 4px;
     content: "";
     display: block;
     height: 18px;
     width: 4px;
-}
+  }
 
-/* ---------- Form Grid ---------- */
+  /* ---------- Form Grid ---------- */
 
-.employee-modal-grid {
+  .employee-modal-grid {
     display: grid;
     gap: 15px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-}
+  }
 
-.employee-modal-field {
+  .employee-modal-field {
     display: flex;
     flex-direction: column;
     gap: 6px;
-}
+  }
 
-.employee-modal-field.full-width {
+  .employee-modal-field.full-width {
     grid-column: 1 / -1;
-}
+  }
 
-.employee-modal-field label {
+  .employee-modal-field label {
     color: var(--text);
     font-size: 0.76rem;
     font-weight: 700;
-}
+  }
 
-.employee-modal-field label .required {
+  .employee-modal-field label .required {
     color: #dc3545;
     margin-left: 2px;
-}
+  }
 
-.employee-modal-field input,
-.employee-modal-field select,
-.employee-modal-field textarea {
+  .employee-modal-field input,
+  .employee-modal-field select,
+  .employee-modal-field textarea {
     background: var(--field);
     border: 1px solid var(--line);
     border-radius: 7px;
@@ -214,42 +210,42 @@
     outline: none;
     padding: 9px 11px;
     transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
     width: 100%;
-}
+  }
 
-.employee-modal-field textarea {
+  .employee-modal-field textarea {
     min-height: 90px;
     resize: vertical;
-}
+  }
 
-.employee-modal-field input::placeholder,
-.employee-modal-field textarea::placeholder {
+  .employee-modal-field input::placeholder,
+  .employee-modal-field textarea::placeholder {
     color: var(--muted);
-}
+  }
 
-.employee-modal-field input:focus,
-.employee-modal-field select:focus,
-.employee-modal-field textarea:focus {
+  .employee-modal-field input:focus,
+  .employee-modal-field select:focus,
+  .employee-modal-field textarea:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
-}
+  }
 
-.employee-modal-field input:hover,
-.employee-modal-field select:hover,
-.employee-modal-field textarea:hover {
+  .employee-modal-field input:hover,
+  .employee-modal-field select:hover,
+  .employee-modal-field textarea:hover {
     border-color: var(--accent);
-}
+  }
 
-/* ---------- File Input ---------- */
+  /* ---------- File Input ---------- */
 
-.employee-modal-field input[type="file"] {
+  .employee-modal-field input[type="file"] {
     cursor: pointer;
     padding: 7px;
-}
+  }
 
-.employee-modal-field input[type="file"]::file-selector-button {
+  .employee-modal-field input[type="file"]::file-selector-button {
     background: var(--accent);
     border: none;
     border-radius: 5px;
@@ -259,25 +255,25 @@
     font-weight: 600;
     margin-right: 10px;
     padding: 7px 10px;
-}
+  }
 
-/* ---------- Help Text ---------- */
+  /* ---------- Help Text ---------- */
 
-.employee-modal-help {
+  .employee-modal-help {
     color: var(--muted);
     font-size: 0.68rem;
     margin-top: 1px;
-}
+  }
 
-/* ---------- Profile Image ---------- */
+  /* ---------- Profile Image ---------- */
 
-.employee-profile-upload {
+  .employee-profile-upload {
     align-items: center;
     display: flex;
     gap: 15px;
-}
+  }
 
-.employee-profile-preview {
+  .employee-profile-preview {
     align-items: center;
     background: var(--field);
     border: 1px dashed var(--line);
@@ -289,133 +285,132 @@
     justify-content: center;
     overflow: hidden;
     width: 70px;
-}
+  }
 
-.employee-profile-preview i {
+  .employee-profile-preview i {
     font-size: 1.5rem;
-}
+  }
 
-.employee-profile-preview img {
+  .employee-profile-preview img {
     height: 100%;
     object-fit: cover;
     width: 100%;
-}
+  }
 
-/* ---------- Salary Card ---------- */
+  /* ---------- Salary Card ---------- */
 
-.employee-salary-summary {
+  .employee-salary-summary {
     background: var(--field);
     border: 1px solid var(--line);
     border-radius: 10px;
     margin-bottom: 18px;
     padding: 14px;
-}
+  }
 
-.employee-salary-summary-title {
+  .employee-salary-summary-title {
     color: var(--accent-dark);
     font-size: 0.76rem;
     font-weight: 700;
     margin-bottom: 4px;
-}
+  }
 
-.employee-salary-summary-text {
+  .employee-salary-summary-text {
     color: var(--muted);
     font-size: 0.7rem;
-}
+  }
 
-/* ---------- Modal Footer ---------- */
+  /* ---------- Modal Footer ---------- */
 
-.employee-modal .modal-footer {
+  .employee-modal .modal-footer {
     align-items: center;
     background: var(--surface-secondary);
     border-top: 1px solid var(--line);
     display: flex;
     justify-content: space-between;
     padding: 14px 22px;
-}
+  }
 
-.employee-modal-footer-left,
-.employee-modal-footer-right {
+  .employee-modal-footer-left,
+  .employee-modal-footer-right {
     display: flex;
     gap: 8px;
-}
+  }
 
-.employee-modal .employee-modal-btn {
+  .employee-modal .employee-modal-btn {
     border-radius: 7px;
     font-size: 0.8rem;
     font-weight: 600;
     min-height: 38px;
     padding: 8px 15px;
-}
+  }
 
-.employee-modal .employee-modal-btn-secondary {
+  .employee-modal .employee-modal-btn-secondary {
     background: transparent;
     border: 1px solid var(--line);
     color: var(--text);
-}
+  }
 
-.employee-modal .employee-modal-btn-secondary:hover {
+  .employee-modal .employee-modal-btn-secondary:hover {
     background: var(--field);
-}
+  }
 
-.employee-modal .employee-modal-btn-primary {
+  .employee-modal .employee-modal-btn-primary {
     background: var(--accent);
     border: 1px solid var(--accent);
     color: #fff;
-}
+  }
 
-.employee-modal .employee-modal-btn-primary:hover {
+  .employee-modal .employee-modal-btn-primary:hover {
     background: var(--accent-dark);
     border-color: var(--accent-dark);
     transform: translateY(-1px);
-}
+  }
 
-.employee-modal .employee-modal-btn-primary:disabled {
+  .employee-modal .employee-modal-btn-primary:disabled {
     cursor: not-allowed;
     opacity: 0.6;
     transform: none;
-}
+  }
 
-/* ---------- Responsive ---------- */
+  /* ---------- Responsive ---------- */
 
-@media (max-width: 768px) {
-
+  @media (max-width: 768px) {
     .employee-modal .modal-dialog {
-        margin: 10px;
+      margin: 10px;
     }
 
     .employee-modal .modal-body {
-        padding: 18px;
+      padding: 18px;
     }
 
     .employee-modal-grid {
-        grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
     }
 
     .employee-modal-field.full-width {
-        grid-column: auto;
+      grid-column: auto;
     }
 
     .employee-modal-stepper {
-        display: flex;
-        gap: 12px;
-        overflow-x: auto;
-        padding: 12px;
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 12px;
     }
 
     .employee-modal-step-nav {
-        flex: 0 0 75px;
+      flex: 0 0 75px;
     }
 
     .employee-modal .modal-footer {
-        flex-wrap: wrap;
-        gap: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .employee-modal-footer-right {
-        margin-left: auto;
+      margin-left: auto;
     }
-}
+  }
   body:has(.employee-layout) {
     overflow: hidden;
   }
@@ -509,7 +504,9 @@
     display: flex;
     gap: 8px;
     padding: 8px 10px;
-    transition: background 0.18s ease, transform 0.15s ease;
+    transition:
+      background 0.18s ease,
+      transform 0.15s ease;
     user-select: none;
   }
 
@@ -540,12 +537,24 @@
     width: 10px;
   }
 
-  .role-manager { background: #9b59b6; }
-  .role-reporting-manager { background: #3498db; }
-  .role-team-lead { background: #1abc9c; }
-  .role-sr-developer { background: #f39c12; }
-  .role-developer { background: #27ae60; }
-  .role-jr-developer { background: #95a5a6; }
+  .role-manager {
+    background: #9b59b6;
+  }
+  .role-reporting-manager {
+    background: #3498db;
+  }
+  .role-team-lead {
+    background: #1abc9c;
+  }
+  .role-sr-developer {
+    background: #f39c12;
+  }
+  .role-developer {
+    background: #27ae60;
+  }
+  .role-jr-developer {
+    background: #95a5a6;
+  }
 
   .node-label {
     color: var(--text);
@@ -562,9 +571,15 @@
     white-space: nowrap;
   }
 
-  .level-0 .tree-node { font-weight: 700; }
-  .level-1 .tree-node { font-weight: 600; }
-  .level-2 .tree-node { font-weight: 500; }
+  .level-0 .tree-node {
+    font-weight: 700;
+  }
+  .level-1 .tree-node {
+    font-weight: 600;
+  }
+  .level-2 .tree-node {
+    font-weight: 500;
+  }
 
   /* Hide children by default */
   .children {
@@ -637,7 +652,9 @@
     gap: 8px;
   }
 
-  .import-input { display: none; }
+  .import-input {
+    display: none;
+  }
 
   .filter-card {
     align-items: end;
@@ -646,7 +663,10 @@
     border-radius: 8px;
     display: grid;
     gap: 10px;
-    grid-template-columns: minmax(150px, 1fr) minmax(140px, 0.8fr) minmax(180px, 1.5fr) auto auto;
+    grid-template-columns: minmax(150px, 1fr) minmax(140px, 0.8fr) minmax(
+        180px,
+        1.5fr
+      ) auto auto;
     margin-bottom: 16px;
     padding: 12px;
   }
@@ -683,7 +703,9 @@
     font-size: 0.85rem;
     font-weight: 600;
     padding: 8px 14px;
-    transition: background 0.2s ease, transform 0.15s ease;
+    transition:
+      background 0.2s ease,
+      transform 0.15s ease;
   }
 
   .btn-primary {
@@ -753,9 +775,18 @@
     padding: 3px 10px;
   }
 
-  .status-active { background: #d4edda; color: #155724; }
-  .status-inactive { background: #f8d7da; color: #721c24; }
-  .status-onleave { background: #fff3cd; color: #856404; }
+  .status-active {
+    background: #d4edda;
+    color: #155724;
+  }
+  .status-inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  .status-onleave {
+    background: #fff3cd;
+    color: #856404;
+  }
 
   .role-badge {
     background: var(--field);
@@ -841,9 +872,9 @@
     box-shadow: 0 12px 40px var(--shadow);
     color: var(--text);
     overflow: hidden;
-}
+  }
 
-.employee-modal-header {
+  .employee-modal-header {
     background: var(--surface-secondary);
     border-bottom: 1px solid var(--line);
     padding: 16px 20px;
@@ -851,9 +882,9 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-}
+  }
 
-.employee-modal-header .modal-title {
+  .employee-modal-header .modal-title {
     align-items: center;
     color: var(--accent-dark);
     display: flex;
@@ -861,9 +892,9 @@
     font-weight: 700;
     gap: 9px;
     margin: 0;
-}
+  }
 
-.employee-modal-close {
+  .employee-modal-close {
     align-items: center;
     background: transparent;
     border: 0;
@@ -876,19 +907,18 @@
     margin-left: auto;
     padding: 0;
     width: 34px;
-}
+  }
 
-.employee-modal-close:hover {
+  .employee-modal-close:hover {
     background: var(--field);
     color: var(--text);
-}
+  }
 
-
-/* =========================================================
+  /* =========================================================
    RADIO NAVIGATION
    ========================================================= */
 
-.employee-section-navigation {
+  .employee-section-navigation {
     background: var(--field);
     border: 1px solid var(--line);
     border-radius: 10px;
@@ -898,9 +928,9 @@
     overflow-x: auto;
     padding: 8px;
     scrollbar-width: thin;
-}
+  }
 
-.employee-section-radio {
+  .employee-section-radio {
     align-items: center;
     border: 1px solid transparent;
     border-radius: 8px;
@@ -914,25 +944,25 @@
     padding: 8px 10px;
     transition: all 0.2s ease;
     white-space: nowrap;
-}
+  }
 
-.employee-section-radio input {
+  .employee-section-radio input {
     display: none;
-}
+  }
 
-.employee-section-radio:hover {
+  .employee-section-radio:hover {
     background: var(--surface-secondary);
     color: var(--text);
-}
+  }
 
-.employee-section-radio.active {
+  .employee-section-radio.active {
     background: var(--surface-secondary);
     border-color: var(--accent);
     color: var(--accent-dark);
     box-shadow: 0 2px 8px var(--shadow);
-}
+  }
 
-.employee-radio-circle {
+  .employee-radio-circle {
     align-items: center;
     background: transparent;
     border: 1px solid var(--line);
@@ -941,55 +971,53 @@
     height: 28px;
     justify-content: center;
     width: 28px;
-}
+  }
 
-.employee-section-radio.active .employee-radio-circle {
+  .employee-section-radio.active .employee-radio-circle {
     background: var(--accent);
     border-color: var(--accent);
     color: #fff;
-}
+  }
 
-
-/* =========================================================
+  /* =========================================================
    FORM SECTION
    ========================================================= */
 
-.employee-form-section {
+  .employee-form-section {
     display: none;
-}
+  }
 
-.employee-form-section.active {
+  .employee-form-section.active {
     display: block;
     animation: employeeSectionFade 0.2s ease;
-}
+  }
 
-@keyframes employeeSectionFade {
+  @keyframes employeeSectionFade {
     from {
-        opacity: 0;
-        transform: translateY(4px);
+      opacity: 0;
+      transform: translateY(4px);
     }
 
     to {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
+  }
 
-
-/* =========================================================
+  /* =========================================================
    SECTION TITLE
    ========================================================= */
 
-.employee-section-title {
+  .employee-section-title {
     align-items: center;
     border-bottom: 1px solid var(--line);
     display: flex;
     gap: 12px;
     margin-bottom: 18px;
     padding-bottom: 12px;
-}
+  }
 
-.employee-section-title > i {
+  .employee-section-title > i {
     align-items: center;
     background: color-mix(in srgb, var(--accent) 14%, transparent);
     border-radius: 8px;
@@ -998,112 +1026,104 @@
     height: 38px;
     justify-content: center;
     width: 38px;
-}
+  }
 
-.employee-section-title h6 {
+  .employee-section-title h6 {
     color: var(--text);
     font-size: 0.95rem;
     font-weight: 700;
     margin: 0 0 2px;
-}
+  }
 
-.employee-section-title span {
+  .employee-section-title span {
     color: var(--muted);
     font-size: 0.72rem;
-}
+  }
 
-
-/* =========================================================
+  /* =========================================================
    FORM FIELDS
    ========================================================= */
 
-.employee-form-label {
+  .employee-form-label {
     color: var(--muted);
     display: block;
     font-size: 0.73rem;
     font-weight: 700;
     margin-bottom: 6px;
-}
+  }
 
-.employee-form-label span {
+  .employee-form-label span {
     color: #dc3545;
-}
+  }
 
-.employee-input {
+  .employee-input {
     background: var(--field) !important;
     border: 1px solid var(--line) !important;
     border-radius: 7px !important;
     color: var(--text) !important;
     font-size: 0.84rem !important;
     min-height: 38px;
-}
+  }
 
-.employee-input::placeholder {
+  .employee-input::placeholder {
     color: var(--muted) !important;
     opacity: 0.75;
-}
+  }
 
-.employee-input:focus {
+  .employee-input:focus {
     background: var(--surface-secondary) !important;
     border-color: var(--accent) !important;
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent) !important;
     outline: none !important;
-}
+  }
 
-textarea.employee-input {
+  textarea.employee-input {
     min-height: auto;
     resize: vertical;
-}
+  }
 
-select.employee-input option {
+  select.employee-input option {
     background: var(--surface-secondary);
     color: var(--text);
-}
+  }
 
-
-/* =========================================================
+  /* =========================================================
    MODAL FOOTER
    ========================================================= */
 
-.employee-modal-footer {
+  .employee-modal-footer {
     background: var(--surface-secondary);
     border-top: 1px solid var(--line);
     gap: 8px;
     padding: 14px 20px;
-}
+  }
 
-
-/* =========================================================
+  /* =========================================================
    RESPONSIVE
    ========================================================= */
 
-@media (max-width: 767px) {
-
+  @media (max-width: 767px) {
     .employee-modal {
-        border-radius: 10px;
+      border-radius: 10px;
     }
 
     .employee-section-navigation {
-        gap: 4px;
+      gap: 4px;
     }
 
     .employee-section-radio {
-        font-size: 0.7rem;
-        padding: 7px 8px;
+      font-size: 0.7rem;
+      padding: 7px 8px;
     }
 
     .employee-radio-circle {
-        height: 25px;
-        width: 25px;
+      height: 25px;
+      width: 25px;
     }
-
-}
+  }
 </style>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="employee-layout">
-
   <!-- ==================== TEAM STRUCTURE PANEL ==================== -->
   <aside class="side-nav-panel" aria-label="Team hierarchy">
     <div class="side-nav-header">
@@ -1113,7 +1133,6 @@ select.employee-input option {
 
     <div class="team-tree-wrapper">
       <ul class="team-tree">
-
         <!-- MANAGER 1 - Expanded by default -->
         <li class="tree-item level-0">
           <div class="tree-node manager-node active" data-role="manager">
@@ -1305,7 +1324,6 @@ select.employee-input option {
             </li>
           </ul>
         </li>
-
       </ul>
     </div>
 
@@ -1313,7 +1331,9 @@ select.employee-input option {
       <div class="legend-title">ROLE COLORS</div>
       <div class="legend-items">
         <span><i class="role-dot role-manager"></i> Manager</span>
-        <span><i class="role-dot role-reporting-manager"></i> Reporting Mgr</span>
+        <span
+          ><i class="role-dot role-reporting-manager"></i> Reporting Mgr</span
+        >
         <span><i class="role-dot role-team-lead"></i> Team Lead</span>
         <span><i class="role-dot role-sr-developer"></i> Sr. Dev</span>
         <span><i class="role-dot role-developer"></i> Developer</span>
@@ -1326,11 +1346,30 @@ select.employee-input option {
     <div class="datatable-header">
       <h2>Employee Directory</h2>
       <div class="datatable-actions">
-        <button class="btn btn-outline" type="button" id="btn-refresh">Refresh</button>
-        <button class="btn btn-outline" type="button" id="btn-import">Import CSV</button>
-        <input class="import-input" id="employeeImport" type="file" accept=".csv,text/csv" />
-        <button class="btn btn-outline" type="button" id="btn-export">Export CSV</button>
-        <button class="btn btn-primary" type="button" id="btn-add-employee" data-bs-toggle="modal"  data-bs-target="#exampleModalToggle">+ Add Employee</button>
+        <button class="btn btn-outline" type="button" id="btn-refresh">
+          Refresh
+        </button>
+        <button class="btn btn-outline" type="button" id="btn-import">
+          Import CSV
+        </button>
+        <input
+          class="import-input"
+          id="employeeImport"
+          type="file"
+          accept=".csv,text/csv"
+        />
+        <button class="btn btn-outline" type="button" id="btn-export">
+          Export CSV
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          id="btn-add-employee"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModalToggle"
+        >
+          + Add Employee
+        </button>
       </div>
     </div>
 
@@ -1359,11 +1398,19 @@ select.employee-input option {
 
       <div class="filter-field">
         <label for="filterValue">Value</label>
-        <input id="filterValue" name="value" type="search" placeholder="Type a value to filter..." autocomplete="off" />
+        <input
+          id="filterValue"
+          name="value"
+          type="search"
+          placeholder="Type a value to filter..."
+          autocomplete="off"
+        />
       </div>
 
       <button class="btn btn-primary" type="submit">Filter</button>
-      <button class="btn btn-outline" type="button" id="clearEmployeeFilter">Clear</button>
+      <button class="btn btn-outline" type="button" id="clearEmployeeFilter">
+        Clear
+      </button>
     </form>
 
     <div class="table-wrap">
@@ -1389,8 +1436,12 @@ select.employee-input option {
             <td>—</td>
             <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <button class="btn btn-sm btn-primary" title="Edit"><i class="bi bi-pen-fill"></i></button>
-              <button class="btn btn-sm btn-danger" title="Delete"><i class="bi bi-trash3-fill"></i></button>
+              <button class="btn btn-sm btn-primary" title="Edit">
+                <i class="bi bi-pen-fill"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" title="Delete">
+                <i class="bi bi-trash3-fill"></i>
+              </button>
             </td>
           </tr>
           <!-- ... rest of your rows ... -->
@@ -1399,7 +1450,9 @@ select.employee-input option {
     </div>
 
     <div class="table-footer">
-      <span class="table-info" id="tableInfo">Showing 0 to 0 of 0 employees</span>
+      <span class="table-info" id="tableInfo"
+        >Showing 0 to 0 of 0 employees</span
+      >
       <nav aria-label="Employee table pagination">
         <ul class="pagination" id="employeePagination"></ul>
       </nav>
@@ -1408,1116 +1461,1158 @@ select.employee-input option {
 </div>
 
 <!-- ADD EMPLOYEE MODAL -->
-<div class="modal fade"
-     id="exampleModalToggle"
-     aria-hidden="true"
-     aria-labelledby="exampleModalToggleLabel"
-     tabindex="-1">
-
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content employee-modal">
-
-            <!-- HEADER -->
-            <div class="modal-header employee-modal-header">
-                <h5 class="modal-title" id="exampleModalToggleLabel">
-                    <i class="bi bi-person-plus-fill"></i>
-                    Add New Employee
-                </h5>
-
-                <button type="button"
-                        class="employee-modal-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-
-            <!-- BODY -->
-            <div class="modal-body">
-
-                <!-- RADIO NAVIGATION -->
-                <div class="employee-section-navigation">
-
-                    <label class="employee-section-radio active">
-                        <input type="radio"
-                               name="employeeSection"
-                               value="basic"
-                               checked>
-                        <span class="employee-radio-circle">
-                            <i class="bi bi-person"></i>
-                        </span>
-                        <span>Basic Information</span>
-                    </label>
-
-                    <label class="employee-section-radio">
-                        <input type="radio"
-                               name="employeeSection"
-                               value="contact">
-                        <span class="employee-radio-circle">
-                            <i class="bi bi-telephone"></i>
-                        </span>
-                        <span>Contact</span>
-                    </label>
-
-                    <label class="employee-section-radio">
-                        <input type="radio"
-                               name="employeeSection"
-                               value="organization">
-                        <span class="employee-radio-circle">
-                            <i class="bi bi-building"></i>
-                        </span>
-                        <span>Organization</span>
-                    </label>
-
-                    <label class="employee-section-radio">
-                        <input type="radio"
-                               name="employeeSection"
-                               value="salary">
-                        <span class="employee-radio-circle">
-                            <i class="bi bi-cash-stack"></i>
-                        </span>
-                        <span>Salary</span>
-                    </label>
-
-                    <label class="employee-section-radio">
-                        <input type="radio"
-                               name="employeeSection"
-                               value="skills">
-                        <span class="employee-radio-circle">
-                            <i class="bi bi-stars"></i>
-                        </span>
-                        <span>Skills</span>
-                    </label>
-
-                    <label class="employee-section-radio">
-                        <input type="radio"
-                               name="employeeSection"
-                               value="documents">
-                        <span class="employee-radio-circle">
-                            <i class="bi bi-file-earmark-text"></i>
-                        </span>
-                        <span>Documents</span>
-                    </label>
-
-                    <label class="employee-section-radio">
-                        <input type="radio"
-                               name="employeeSection"
-                               value="emergency">
-                        <span class="employee-radio-circle">
-                            <i class="bi bi-exclamation-triangle"></i>
-                        </span>
-                        <span>Emergency</span>
-                    </label>
-
-                </div>
-
-
-                <!-- ===================================================== -->
-                <!-- BASIC INFORMATION -->
-                <!-- ===================================================== -->
-
-                <div class="employee-form-section active"
-                     id="employee-section-basic">
-
-                    <div class="employee-section-title">
-                        <i class="bi bi-person-fill"></i>
-                        <div>
-                            <h6>Basic Information</h6>
-                            <span>Enter the employee's personal information</span>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">First Name <span>*</span></label>
-                            <input type="text" class="form-control employee-input" id="first_name" name="first_name" placeholder="Enter first name">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Last Name <span>*</span>
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="last_name"
-                                   name="last_name"
-                                   placeholder="Enter last name">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Email <span>*</span>
-                            </label>
-
-                            <input type="email"
-                                   class="form-control employee-input"
-                                   id="email"
-                                   name="email"
-                                   placeholder="employee@example.com">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Phone Number <span>*</span>
-                            </label>
-
-                            <input type="tel"
-                                   class="form-control employee-input"
-                                   id="phone"
-                                   name="phone"
-                                   placeholder="Enter phone number">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Gender
-                            </label>
-
-                            <select class="form-select employee-input"
-                                    id="gender"
-                                    name="gender">
-
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Date of Birth
-                            </label>
-
-                            <input type="date"
-                                   class="form-control employee-input"
-                                   id="date_of_birth"
-                                   name="date_of_birth">
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ===================================================== -->
-                <!-- CONTACT INFORMATION -->
-                <!-- ===================================================== -->
-
-                <div class="employee-form-section"
-                     id="employee-section-contact">
-
-                    <div class="employee-section-title">
-                        <i class="bi bi-telephone-fill"></i>
-
-                        <div>
-                            <h6>Contact Information</h6>
-                            <span>Employee contact and address details</span>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Personal Email
-                            </label>
-
-                            <input type="email"
-                                   class="form-control employee-input"
-                                   id="personal_email"
-                                   name="personal_email"
-                                   placeholder="Personal email">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Alternate Phone
-                            </label>
-
-                            <input type="tel"
-                                   class="form-control employee-input"
-                                   id="alternate_phone"
-                                   name="alternate_phone"
-                                   placeholder="Alternate phone">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="employee-form-label">
-                                Address Line 1
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="address_line1"
-                                   name="address_line1"
-                                   placeholder="Street address">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="employee-form-label">
-                                Address Line 2
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="address_line2"
-                                   name="address_line2"
-                                   placeholder="Apartment, building, landmark">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="employee-form-label">
-                                City
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="city"
-                                   name="city"
-                                   placeholder="City">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="employee-form-label">
-                                State
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="state"
-                                   name="state"
-                                   placeholder="State">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="employee-form-label">
-                                Postal Code
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="postal_code"
-                                   name="postal_code"
-                                   placeholder="Postal code">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Country
-                            </label>
-
-                            <select class="form-select employee-input"
-                                    id="country"
-                                    name="country">
-
-                                <option value="">Select Country</option>
-                                <option value="India">India</option>
-                                <option value="USA">USA</option>
-                                <option value="UK">UK</option>
-
-                            </select>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="employee-form-section"
-                     id="employee-section-organization">
-
-                    <div class="employee-section-title">
-                        <i class="bi bi-building-fill"></i>
-
-                        <div>
-                            <h6>Organization Information</h6>
-                            <span>Employee's role and organizational details</span>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Employee ID <span>*</span>
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="employee_id"
-                                   name="employee_id"
-                                   placeholder="EMP-1001">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Department <span>*</span>
-                            </label>
-
-                            <select class="form-select employee-input"
-                                    id="department"
-                                    name="department">
-
-                                <option value="">Select Department</option>
-                                <option value="Engineering">Engineering</option>
-                                <option value="HR">Human Resources</option>
-                                <option value="Finance">Finance</option>
-                                <option value="QA">Quality Assurance</option>
-                                <option value="Sales">Sales</option>
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Designation <span>*</span>
-                            </label>
-
-                            <select class="form-select employee-input"
-                                    id="designation"
-                                    name="designation">
-
-                                <option value="">Select Designation</option>
-                                <option value="Director">Director</option>
-                                <option value="Manager">Manager</option>
-                                <option value="Team Lead">Team Lead</option>
-                                <option value="Sr. Developer">Sr. Developer</option>
-                                <option value="Developer">Developer</option>
-                                <option value="Jr. Developer">Jr. Developer</option>
-                                <option value="QA">QA</option>
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Role <span>*</span>
-                            </label>
-
-                            <select class="form-select employee-input"
-                                    id="role"
-                                    name="role"
-                                    id="employeeRole">
-
-                                <option value="">Select Role</option>
-                                <option value="GLOBAL_ADMIN">Global Admin</option>
-                                <option value="ADMIN">Admin</option>
-                                <option value="MANAGER">Manager</option>
-                                <option value="REPORTING_MANAGER">
-                                    Reporting Manager
-                                </option>
-                                <option value="TEAM_LEAD">
-                                    Team Lead
-                                </option>
-                                <option value="SR_DEVELOPER">
-                                    Sr. Developer
-                                </option>
-                                <option value="DEVELOPER">
-                                    Developer
-                                </option>
-                                <option value="JR_DEVELOPER">
-                                    Jr. Developer
-                                </option>
-                                <option value="QA_MANAGER">
-                                    QA Manager
-                                </option>
-                                <option value="QA_TESTER">
-                                    QA Tester
-                                </option>
-                                <option value="EMPLOYEE">
-                                    Employee
-                                </option>
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Reporting Manager
-                            </label>
-
-                            <select class="form-select employee-input"
-                                    id="reportingManager"
-                                    name="reporting_manager">
-
-                                <option value="">
-                                    Select Reporting Manager
-                                </option>
-
-                                <option value="EMP-1001">
-                                    Priya Sharma
-                                </option>
-
-                                <option value="EMP-1002">
-                                    Rahul Verma
-                                </option>
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Employment Type <span>*</span>
-                            </label>
-
-                            <select class="form-select employee-input"
-                                    id="employmentType"
-                                    name="employment_type">
-
-                                <option value="">Select Type</option>
-                                <option value="full_time">Full Time</option>
-                                <option value="part_time">Part Time</option>
-                                <option value="contract">Contract</option>
-                                <option value="intern">Intern</option>
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Joining Date <span>*</span>
-                            </label>
-
-                            <input type="date"
-                                   class="form-control employee-input"
-                                   id="joiningDate"
-                                   name="joining_date">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Work Location
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="workLocation"
-                                   name="work_location"
-                                   placeholder="Hyderabad / Bangalore / Remote">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Status <span>*</span>
-                            </label>
-
-                            <select class="form-select employee-input" id="status" name="status">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="on_leave">On Leave</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="employee-form-section"
-                     id="employee-section-salary">
-
-                    <div class="employee-section-title">
-                        <i class="bi bi-cash-stack"></i>
-
-                        <div>
-                            <h6>Salary Information</h6>
-                            <span>Employee salary and bank information</span>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Salary Type</label>
-                            <select class="form-select employee-input" id="salaryType" name="salary_type">
-                                <option value="monthly">Monthly</option>
-                                <option value="annual">Annual</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Basic Salary
-                            </label>
-                            <input type="number" class="form-control employee-input" id="basicSalary" name="basic_salary" placeholder="0.00" min="0">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="employee-form-label">
-                                Allowances
-                            </label>
-                            <input type="number" class="form-control employee-input" id="allowances" name="allowances" placeholder="0.00" min="0">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Deductions</label>
-                            <input type="number" class="form-control employee-input" id="deductions" name="deductions" placeholder="0.00" min="0">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Bank Account Name</label>
-                            <input type="text" class="form-control employee-input" id="bankAccountName" name="bank_account_name" placeholder="Account holder name">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Bank Account Number</label>
-                            <input type="text" class="form-control employee-input" id="bankAccountNumber" name="bank_account_number" placeholder="Account number">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="employee-form-label">IFSC Code</label>
-                            <input type="text" class="form-control employee-input" id="ifscCode" name="ifsc_code" placeholder="IFSC code">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="employee-form-section" id="employee-section-skills">
-                    <div class="employee-section-title">
-                        <i class="bi bi-stars"></i>
-
-                        <div>
-                            <h6>Skills & Qualification</h6>
-                            <span>Employee technical skills and qualifications</span>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Primary Skill</label>
-
-                            <input type="text" class="form-control employee-input" id="primarySkill" name="primary_skill" placeholder="Python / React / Django">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Experience</label>
-
-                            <input type="number" class="form-control employee-input" id="experienceYears" name="experience_years" placeholder="Years" min="0" step="0.1">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="employee-form-label">Skills</label>
-
-                            <textarea class="form-control employee-input" name="skills" rows="3" placeholder="Python, Django, React, PostgreSQL..."></textarea>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Qualification</label>
-
-                            <input type="text" class="form-control employee-input" id="qualification" name="qualification" placeholder="B.Tech / M.Tech / MBA">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Certifications</label>
-
-                            <input type="text" class="form-control employee-input" id="certifications" name="certifications" placeholder="AWS, Azure, Python...">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="employee-form-label">
-                                Languages
-                            </label>
-
-                            <input type="text"
-                                   class="form-control employee-input"
-                                   id="languages"
-                                   name="languages"
-                                   placeholder="English, Telugu, Hindi...">
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="employee-form-section"
-                     id="employee-section-documents">
-                    <div class="employee-section-title"><i class="bi bi-file-earmark-text-fill"></i>
-                        <div>
-                            <h6>Documents</h6>
-                            <span>Upload employee documents</span>
-                        </div>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Resume</label>
-                            <input type="file"id="resume" class="form-control employee-input" name="resume" accept=".pdf,.doc,.docx">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">ID Proof</label>
-                            <input type="file" id="id_proof" class="form-control employee-input" name="id_proof" accept=".pdf,.jpg,.jpeg,.png">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Offer Letter</label>
-                            <input type="file" id="offer_letter" class="form-control employee-input" name="offer_letter" accept=".pdf,.doc,.docx">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Joining Letter</label>
-                            <input type="file" id="joining_letter" class="form-control employee-input" name="joining_letter" accept=".pdf,.doc,.docx">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="employee-form-label">Other Document</label>
-                            <input type="file" id="other_document" class="form-control employee-input" name="other_document">
-                        </div>
-                    </div>
-                </div>
-                <div class="employee-form-section" id="employee-section-emergency">
-
-                    <div class="employee-section-title">
-                        <i class="bi bi-exclamation-triangle-fill"></i>
-
-                        <div>
-                            <h6>Emergency Contact</h6>
-                            <span>Emergency contact information</span>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Contact Name</label>
-                            <input type="text" id="emergency_name" class="form-control employee-input" name="emergency_name" placeholder="Emergency contact name">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Relationship</label>
-                            <select id="emergency_relationship" class="form-select employee-input"name="emergency_relationship">
-                                <option value="">Select Relationship</option>
-                                <option value="father">Father</option>
-                                <option value="mother">Mother</option>
-                                <option value="spouse">Spouse</option>
-                                <option value="brother">Brother</option>
-                                <option value="sister">Sister</option>
-                                <option value="friend">Friend</option>
-                                <option value="other">Other</option>
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label">Phone Number</label>
-                            <input type="tel" id="emergency_phone" class="form-control employee-input" name="emergency_phone" placeholder="Emergency phone number">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="employee-form-label"> Email</label>
-                            <input type="email" id="emergency_email" class="form-control employee-input" name="emergency_email" placeholder="Emergency email">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="employee-form-label">Address</label>
-
-                            <textarea class="form-control employee-input" name="emergency_address" id="emergency_address" rows="3" placeholder="Emergency contact address"></textarea>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- FOOTER -->
-            <div class="modal-footer employee-modal-footer">
-
-                <button type="button"
-                        class="btn btn-outline"
-                        data-bs-dismiss="modal">
-                    Cancel
-                </button>
-
-                <button type="button"
-                        class="btn btn-primary"
-                        id="saveEmployeeBtn">
-                    <i class="bi bi-check-circle"></i>
-                    Save Employee
-                </button>
-
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div
+  class="modal fade"
+  id="exampleModalToggle"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content employee-modal">
+      <!-- HEADER -->
+      <div class="modal-header employee-modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">
+          <i class="bi bi-person-plus-fill"></i>
+          Add New Employee
+        </h5>
+
+        <button
+          type="button"
+          class="employee-modal-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
       </div>
+
+      <!-- BODY -->
       <div class="modal-body">
+        <!-- RADIO NAVIGATION -->
+        <div class="employee-section-navigation">
+          <label class="employee-section-radio active">
+            <input type="radio" name="employeeSection" value="basic" checked />
+            <span class="employee-radio-circle">
+              <i class="bi bi-person"></i>
+            </span>
+            <span>Basic Information</span>
+          </label>
 
-        <div class="modal-body-content">
-          
-        Hide this modal and show the first with the button below.
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="contact" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-telephone"></i>
+            </span>
+            <span>Contact</span>
+          </label>
+
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="organization" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-building"></i>
+            </span>
+            <span>Organization</span>
+          </label>
+
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="salary" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-cash-stack"></i>
+            </span>
+            <span>Salary</span>
+          </label>
+
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="skills" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-stars"></i>
+            </span>
+            <span>Skills</span>
+          </label>
+
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="documents" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-file-earmark-text"></i>
+            </span>
+            <span>Documents</span>
+          </label>
+
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="emergency" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-exclamation-triangle"></i>
+            </span>
+            <span>Emergency</span>
+          </label>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- BASIC INFORMATION -->
+        <!-- ===================================================== -->
+
+        <div class="employee-form-section active" id="employee-section-basic">
+          <div class="employee-section-title">
+            <i class="bi bi-person-fill"></i>
+            <div>
+              <h6>Basic Information</h6>
+              <span>Enter the employee's personal information</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label"
+                >First Name <span>*</span></label
+              >
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="first_name"
+                name="first_name"
+                placeholder="Enter first name"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Last Name <span>*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="last_name"
+                name="last_name"
+                placeholder="Enter last name"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Email <span>*</span> </label>
+
+              <input
+                type="email"
+                class="form-control employee-input"
+                id="email"
+                name="email"
+                placeholder="employee@example.com"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Phone Number <span>*</span>
+              </label>
+
+              <input
+                type="tel"
+                class="form-control employee-input"
+                id="phone"
+                name="phone"
+                placeholder="Enter phone number"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Gender </label>
+
+              <select
+                class="form-select employee-input"
+                id="gender"
+                name="gender"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Date of Birth </label>
+
+              <input
+                type="date"
+                class="form-control employee-input"
+                id="date_of_birth"
+                name="date_of_birth"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- CONTACT INFORMATION -->
+        <!-- ===================================================== -->
+
+        <div class="employee-form-section" id="employee-section-contact">
+          <div class="employee-section-title">
+            <i class="bi bi-telephone-fill"></i>
+
+            <div>
+              <h6>Contact Information</h6>
+              <span>Employee contact and address details</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label"> Personal Email </label>
+
+              <input
+                type="email"
+                class="form-control employee-input"
+                id="personal_email"
+                name="personal_email"
+                placeholder="Personal email"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Alternate Phone </label>
+
+              <input
+                type="tel"
+                class="form-control employee-input"
+                id="alternate_phone"
+                name="alternate_phone"
+                placeholder="Alternate phone"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label"> Address Line 1 </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="address_line1"
+                name="address_line1"
+                placeholder="Street address"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label"> Address Line 2 </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="address_line2"
+                name="address_line2"
+                placeholder="Apartment, building, landmark"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="employee-form-label"> City </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="city"
+                name="city"
+                placeholder="City"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="employee-form-label"> State </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="state"
+                name="state"
+                placeholder="State"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="employee-form-label"> Postal Code </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="postal_code"
+                name="postal_code"
+                placeholder="Postal code"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Country </label>
+
+              <select
+                class="form-select employee-input"
+                id="country"
+                name="country"
+              >
+                <option value="">Select Country</option>
+                <option value="India">India</option>
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="employee-form-section" id="employee-section-organization">
+          <div class="employee-section-title">
+            <i class="bi bi-building-fill"></i>
+
+            <div>
+              <h6>Organization Information</h6>
+              <span>Employee's role and organizational details</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Employee ID <span>*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="employee_id"
+                name="employee_id"
+                placeholder="EMP-1001"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Department <span>*</span>
+              </label>
+
+              <select
+                class="form-select employee-input"
+                id="department"
+                name="department"
+              >
+                <option value="">Select Department</option>
+                <option value="Engineering">Engineering</option>
+                <option value="HR">Human Resources</option>
+                <option value="Finance">Finance</option>
+                <option value="QA">Quality Assurance</option>
+                <option value="Sales">Sales</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Designation <span>*</span>
+              </label>
+
+              <select
+                class="form-select employee-input"
+                id="designation"
+                name="designation"
+              >
+                <option value="">Select Designation</option>
+                <option value="Director">Director</option>
+                <option value="Manager">Manager</option>
+                <option value="Team Lead">Team Lead</option>
+                <option value="Sr. Developer">Sr. Developer</option>
+                <option value="Developer">Developer</option>
+                <option value="Jr. Developer">Jr. Developer</option>
+                <option value="QA">QA</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Role <span>*</span> </label>
+
+              <select
+                class="form-select employee-input"
+                id="role"
+                name="role"
+                id="employeeRole"
+              >
+                <option value="">Select Role</option>
+                <option value="GLOBAL_ADMIN">Global Admin</option>
+                <option value="ADMIN">Admin</option>
+                <option value="MANAGER">Manager</option>
+                <option value="REPORTING_MANAGER">Reporting Manager</option>
+                <option value="TEAM_LEAD">Team Lead</option>
+                <option value="SR_DEVELOPER">Sr. Developer</option>
+                <option value="DEVELOPER">Developer</option>
+                <option value="JR_DEVELOPER">Jr. Developer</option>
+                <option value="QA_MANAGER">QA Manager</option>
+                <option value="QA_TESTER">QA Tester</option>
+                <option value="EMPLOYEE">Employee</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Reporting Manager </label>
+
+              <select
+                class="form-select employee-input"
+                id="reportingManager"
+                name="reporting_manager"
+              >
+                <option value="">Select Reporting Manager</option>
+
+                <option value="EMP-1001">Priya Sharma</option>
+
+                <option value="EMP-1002">Rahul Verma</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Employment Type <span>*</span>
+              </label>
+
+              <select
+                class="form-select employee-input"
+                id="employmentType"
+                name="employment_type"
+              >
+                <option value="">Select Type</option>
+                <option value="full_time">Full Time</option>
+                <option value="part_time">Part Time</option>
+                <option value="contract">Contract</option>
+                <option value="intern">Intern</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Joining Date <span>*</span>
+              </label>
+
+              <input
+                type="date"
+                class="form-control employee-input"
+                id="joiningDate"
+                name="joining_date"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Work Location </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="workLocation"
+                name="work_location"
+                placeholder="Hyderabad / Bangalore / Remote"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Status <span>*</span> </label>
+
+              <select
+                class="form-select employee-input"
+                id="status"
+                name="status"
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="on_leave">On Leave</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="employee-form-section" id="employee-section-salary">
+          <div class="employee-section-title">
+            <i class="bi bi-cash-stack"></i>
+
+            <div>
+              <h6>Salary Information</h6>
+              <span>Employee salary and bank information</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Salary Type</label>
+              <select
+                class="form-select employee-input"
+                id="salaryType"
+                name="salary_type"
+              >
+                <option value="monthly">Monthly</option>
+                <option value="annual">Annual</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label"> Basic Salary </label>
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="basicSalary"
+                name="basic_salary"
+                placeholder="0.00"
+                min="0"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label"> Allowances </label>
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="allowances"
+                name="allowances"
+                placeholder="0.00"
+                min="0"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Deductions</label>
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="deductions"
+                name="deductions"
+                placeholder="0.00"
+                min="0"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label">Bank Account Name</label>
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="bankAccountName"
+                name="bank_account_name"
+                placeholder="Account holder name"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label">Bank Account Number</label>
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="bankAccountNumber"
+                name="bank_account_number"
+                placeholder="Account number"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label">IFSC Code</label>
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="ifscCode"
+                name="ifsc_code"
+                placeholder="IFSC code"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="employee-form-section" id="employee-section-skills">
+          <div class="employee-section-title">
+            <i class="bi bi-stars"></i>
+
+            <div>
+              <h6>Skills & Qualification</h6>
+              <span>Employee technical skills and qualifications</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Primary Skill</label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="primarySkill"
+                name="primary_skill"
+                placeholder="Python / React / Django"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Experience</label>
+
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="experienceYears"
+                name="experience_years"
+                placeholder="Years"
+                min="0"
+                step="0.1"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label">Skills</label>
+
+              <textarea
+                class="form-control employee-input"
+                name="skills"
+                rows="3"
+                placeholder="Python, Django, React, PostgreSQL..."
+              ></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Qualification</label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="qualification"
+                name="qualification"
+                placeholder="B.Tech / M.Tech / MBA"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Certifications</label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="certifications"
+                name="certifications"
+                placeholder="AWS, Azure, Python..."
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label"> Languages </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="languages"
+                name="languages"
+                placeholder="English, Telugu, Hindi..."
+              />
+            </div>
+          </div>
+        </div>
+        <div class="employee-form-section" id="employee-section-documents">
+          <div class="employee-section-title">
+            <i class="bi bi-file-earmark-text-fill"></i>
+            <div>
+              <h6>Documents</h6>
+              <span>Upload employee documents</span>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Resume</label>
+              <input
+                type="file"
+                id="resume"
+                class="form-control employee-input"
+                name="resume"
+                accept=".pdf,.doc,.docx"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">ID Proof</label>
+              <input
+                type="file"
+                id="id_proof"
+                class="form-control employee-input"
+                name="id_proof"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Offer Letter</label>
+              <input
+                type="file"
+                id="offer_letter"
+                class="form-control employee-input"
+                name="offer_letter"
+                accept=".pdf,.doc,.docx"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Joining Letter</label>
+              <input
+                type="file"
+                id="joining_letter"
+                class="form-control employee-input"
+                name="joining_letter"
+                accept=".pdf,.doc,.docx"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label">Other Document</label>
+              <input
+                type="file"
+                id="other_document"
+                class="form-control employee-input"
+                name="other_document"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="employee-form-section" id="employee-section-emergency">
+          <div class="employee-section-title">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+
+            <div>
+              <h6>Emergency Contact</h6>
+              <span>Emergency contact information</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Contact Name</label>
+              <input
+                type="text"
+                id="emergency_name"
+                class="form-control employee-input"
+                name="emergency_name"
+                placeholder="Emergency contact name"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Relationship</label>
+              <select
+                id="emergency_relationship"
+                class="form-select employee-input"
+                name="emergency_relationship"
+              >
+                <option value="">Select Relationship</option>
+                <option value="father">Father</option>
+                <option value="mother">Mother</option>
+                <option value="spouse">Spouse</option>
+                <option value="brother">Brother</option>
+                <option value="sister">Sister</option>
+                <option value="friend">Friend</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Phone Number</label>
+              <input
+                type="tel"
+                id="emergency_phone"
+                class="form-control employee-input"
+                name="emergency_phone"
+                placeholder="Emergency phone number"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Email</label>
+              <input
+                type="email"
+                id="emergency_email"
+                class="form-control employee-input"
+                name="emergency_email"
+                placeholder="Emergency email"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label">Address</label>
+
+              <textarea
+                class="form-control employee-input"
+                name="emergency_address"
+                id="emergency_address"
+                rows="3"
+                placeholder="Emergency contact address"
+              ></textarea>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to first</button>
+
+      <!-- FOOTER -->
+      <div class="modal-footer employee-modal-footer">
+        <button type="button" class="btn btn-outline" data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button type="button" class="btn btn-primary" id="saveEmployeeBtn">
+          <i class="bi bi-check-circle"></i>
+          Save Employee
+        </button>
       </div>
     </div>
   </div>
 </div>
+<div
+  class="modal fade"
+  id="exampleModalToggle2"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel2"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body-content">
+          Hide this modal and show the first with the button below.
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-primary"
+            data-bs-target="#exampleModalToggle"
+            data-bs-toggle="modal"
+          >
+            Back to first
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-{% endblock %}
-
-{% block extra_js %}
-<script>
-
-  $(document).ready(function () {
-
-    $("#saveEmployeeBtn").on("click", function () {
-        
+  {% endblock %} {% block extra_js %}
+  <script>
+    $(document).ready(function () {
+      $("#saveEmployeeBtn").on("click", function () {});
     });
-      
-  });
 
+    document.addEventListener("DOMContentLoaded", function () {
+      const sectionRadios = document.querySelectorAll(
+        'input[name="employeeSection"]',
+      );
 
-document.addEventListener("DOMContentLoaded", function () {
+      const sectionContainers = document.querySelectorAll(
+        ".employee-form-section",
+      );
 
-    const sectionRadios = document.querySelectorAll(
-        'input[name="employeeSection"]'
-    );
-
-    const sectionContainers = document.querySelectorAll(
-        ".employee-form-section"
-    );
-
-
-    function showEmployeeSection(sectionName) {
-
+      function showEmployeeSection(sectionName) {
         // Hide all sections
         sectionContainers.forEach(function (section) {
-            section.classList.remove("active");
+          section.classList.remove("active");
         });
 
         // Remove active from all radio labels
-        document.querySelectorAll(
-            ".employee-section-radio"
-        ).forEach(function (label) {
-
+        document
+          .querySelectorAll(".employee-section-radio")
+          .forEach(function (label) {
             label.classList.remove("active");
-
-        });
-
+          });
 
         // Show selected section
         const selectedSection = document.getElementById(
-            "employee-section-" + sectionName
+          "employee-section-" + sectionName,
         );
 
         if (selectedSection) {
-            selectedSection.classList.add("active");
+          selectedSection.classList.add("active");
         }
-
 
         // Activate selected radio label
         const selectedRadio = document.querySelector(
-            'input[name="employeeSection"][value="' +
-            sectionName +
-            '"]'
+          'input[name="employeeSection"][value="' + sectionName + '"]',
         );
 
         if (selectedRadio) {
+          const selectedLabel = selectedRadio.closest(
+            ".employee-section-radio",
+          );
 
-            const selectedLabel =
-                selectedRadio.closest(".employee-section-radio");
-
-            if (selectedLabel) {
-                selectedLabel.classList.add("active");
-            }
-
+          if (selectedLabel) {
+            selectedLabel.classList.add("active");
+          }
         }
-    }
+      }
 
-
-    // Radio button change
-    sectionRadios.forEach(function (radio) {
-
+      // Radio button change
+      sectionRadios.forEach(function (radio) {
         radio.addEventListener("change", function () {
-
-            showEmployeeSection(this.value);
-
+          showEmployeeSection(this.value);
         });
+      });
 
-    });
+      // =====================================================
+      // ROLE / REPORTING MANAGER
+      // =====================================================
 
+      const employeeRole = document.getElementById("employeeRole");
 
-    // =====================================================
-    // ROLE / REPORTING MANAGER
-    // =====================================================
+      const reportingManager = document.querySelector(
+        'select[name="reporting_manager"]',
+      );
 
-    const employeeRole = document.getElementById("employeeRole");
-
-    const reportingManager = document.querySelector(
-        'select[name="reporting_manager"]'
-    );
-
-
-    function updateReportingManagerRequirement() {
-
+      function updateReportingManagerRequirement() {
         if (!employeeRole || !reportingManager) {
-            return;
+          return;
         }
 
         const role = employeeRole.value;
 
-        const rolesWithoutManager = [
-            "GLOBAL_ADMIN",
-            "ADMIN",
-            "MANAGER"
-        ];
+        const rolesWithoutManager = ["GLOBAL_ADMIN", "ADMIN", "MANAGER"];
 
         if (rolesWithoutManager.includes(role)) {
-
-            reportingManager.required = false;
-
+          reportingManager.required = false;
         } else {
-
-            reportingManager.required = true;
-
+          reportingManager.required = true;
         }
-    }
+      }
 
-
-    if (employeeRole) {
-
+      if (employeeRole) {
         employeeRole.addEventListener(
-            "change",
-            updateReportingManagerRequirement
+          "change",
+          updateReportingManagerRequirement,
         );
 
         updateReportingManagerRequirement();
-    }
-
-
-    // =====================================================
-    // SAVE EMPLOYEE
-    // =====================================================
-
-    // const saveEmployeeBtn =
-    //     document.getElementById("saveEmployeeBtn");
-
-
-    // if (saveEmployeeBtn) {
-
-    //     saveEmployeeBtn.addEventListener(
-    //         "click",
-    //         function () {
-
-    //             const formFields =
-    //                 document.querySelectorAll("#exampleModalToggle input, " +"#exampleModalToggle select, " +"#exampleModalToggle textarea");
-
-
-    //             let isValid = true;
-
-    //             debugger
-    //             formFields.forEach(function (field) {
-
-    //                 if (
-    //                     field.required &&
-    //                     !field.checkValidity()
-    //                 ) {
-
-    //                     isValid = false;
-
-    //                 }
-
-    //             });
-
-
-    //             if (!isValid) {
-
-    //                 alert(
-    //                     "Please fill all required fields before saving."
-    //                 );
-
-    //                 return;
-    //             }
-
-
-    //             /*
-    //              * Backend API / Django form submission
-    //              * can be added here later.
-    //              */
-
-    //             console.log(
-    //                 "Employee form is ready to submit."
-    //             );
-
-    //         }
-    //     );
-    // }
-
-
-    // =====================================================
-    // RESET MODAL WHEN CLOSED
-    // =====================================================
-
-    const employeeModal =
-        document.getElementById("exampleModalToggle");
-
-
-    if (employeeModal) {
-
-        employeeModal.addEventListener(
-            "hidden.bs.modal",
-            function () {
-
-                // Return to Basic Information
-                const basicRadio = document.querySelector(
-                    'input[name="employeeSection"][value="basic"]'
-                );
-
-                if (basicRadio) {
-
-                    basicRadio.checked = true;
-
-                    showEmployeeSection("basic");
-
-                }
-
-            }
-        );
-
-    }
-
-});
-  document.addEventListener('DOMContentLoaded', function () {
-
-    // ===== TEAM TREE EXPAND / COLLAPSE =====
-    document.querySelectorAll('.tree-node').forEach(function (node) {
-      node.addEventListener('click', function (e) {
-        e.stopPropagation();
-
-        const children = this.nextElementSibling;
-        const icon = this.querySelector('.toggle-icon');
-
-        // Toggle children if they exist
-        if (children && children.classList.contains('children')) {
-          children.classList.toggle('open');
-
-          if (icon) {
-            icon.textContent = children.classList.contains('open') ? '▼' : '▶';
-          }
-        }
-
-        // Active state
-        document.querySelectorAll('.tree-node').forEach(n => n.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
-
-    // ===== YOUR EXISTING EMPLOYEE TABLE JS =====
-    const filterForm = document.getElementById("employeeFilterForm");
-    const filterField = document.getElementById("filterField");
-    const filterOperator = document.getElementById("filterOperator");
-    const filterValue = document.getElementById("filterValue");
-    const clearEmployeeFilter = document.getElementById("clearEmployeeFilter");
-    const employeeTable = document.getElementById("employeeTable");
-    const tableBody = employeeTable.querySelector("tbody");
-    const employeeImport = document.getElementById("employeeImport");
-    const tableInfo = document.getElementById("tableInfo");
-    const employeePagination = document.getElementById("employeePagination");
-    const pageSize = 10;
-
-    let currentPage = 1;
-    let employeeRows = Array.from(tableBody.querySelectorAll("tr"));
-
-    const fieldIndexes = {
-      "emp-id": 0,
-      name: 1,
-      role: 2,
-      department: 3,
-      "reporting-to": 4,
-      status: 5,
-    };
-
-    function getFilteredRows() {
-      const field = filterField.value;
-      const operator = filterOperator.value;
-      const query = filterValue.value.trim().toLowerCase();
-
-      if (!query) return employeeRows;
-
-      return employeeRows.filter(function (row) {
-        const cells = Array.from(row.cells);
-        const values = field === "all"
-          ? cells.map(cell => cell.textContent.trim().toLowerCase())
-          : [cells[fieldIndexes[field]].textContent.trim().toLowerCase()];
-
-        return values.some(function (value) {
-          if (operator === "equals") return value === query;
-          if (operator === "starts-with") return value.startsWith(query);
-          return value.includes(query);
-        });
-      });
-    }
-
-    function renderPagination() {
-      const filteredRows = getFilteredRows();
-      const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
-      currentPage = Math.min(currentPage, totalPages);
-
-      const start = (currentPage - 1) * pageSize;
-      const end = Math.min(start + pageSize, filteredRows.length);
-
-      employeeRows.forEach(row => row.hidden = true);
-      filteredRows.slice(start, end).forEach(row => row.hidden = false);
-
-      tableInfo.textContent = filteredRows.length
-        ? `Showing ${start + 1} to ${end} of ${filteredRows.length} employees`
-        : "Showing 0 to 0 of 0 employees";
-
-      employeePagination.innerHTML = "";
-      addPageButton("Previous", currentPage - 1, currentPage === 1);
-
-      for (let page = 1; page <= totalPages; page++) {
-        addPageButton(page, page, false, page === currentPage);
       }
 
-      addPageButton("Next", currentPage + 1, currentPage === totalPages);
-    }
+      // =====================================================
+      // SAVE EMPLOYEE
+      // =====================================================
 
-    function addPageButton(label, page, disabled, active) {
-      const item = document.createElement("li");
-      const button = document.createElement("button");
-      button.type = "button";
-      button.textContent = label;
-      button.disabled = disabled;
-      if (active) button.classList.add("active");
+      // const saveEmployeeBtn =
+      //     document.getElementById("saveEmployeeBtn");
 
-      button.addEventListener("click", function () {
-        currentPage = page;
-        renderPagination();
+      // if (saveEmployeeBtn) {
+
+      //     saveEmployeeBtn.addEventListener(
+      //         "click",
+      //         function () {
+
+      //             const formFields =
+      //                 document.querySelectorAll("#exampleModalToggle input, " +"#exampleModalToggle select, " +"#exampleModalToggle textarea");
+
+      //             let isValid = true;
+
+      //             debugger
+      //             formFields.forEach(function (field) {
+
+      //                 if (
+      //                     field.required &&
+      //                     !field.checkValidity()
+      //                 ) {
+
+      //                     isValid = false;
+
+      //                 }
+
+      //             });
+
+      //             if (!isValid) {
+
+      //                 alert(
+      //                     "Please fill all required fields before saving."
+      //                 );
+
+      //                 return;
+      //             }
+
+      //             /*
+      //              * Backend API / Django form submission
+      //              * can be added here later.
+      //              */
+
+      //             console.log(
+      //                 "Employee form is ready to submit."
+      //             );
+
+      //         }
+      //     );
+      // }
+
+      // =====================================================
+      // RESET MODAL WHEN CLOSED
+      // =====================================================
+
+      const employeeModal = document.getElementById("exampleModalToggle");
+
+      if (employeeModal) {
+        employeeModal.addEventListener("hidden.bs.modal", function () {
+          // Return to Basic Information
+          const basicRadio = document.querySelector(
+            'input[name="employeeSection"][value="basic"]',
+          );
+
+          if (basicRadio) {
+            basicRadio.checked = true;
+
+            showEmployeeSection("basic");
+          }
+        });
+      }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+      // ===== TEAM TREE EXPAND / COLLAPSE =====
+      document.querySelectorAll(".tree-node").forEach(function (node) {
+        node.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          const children = this.nextElementSibling;
+          const icon = this.querySelector(".toggle-icon");
+
+          // Toggle children if they exist
+          if (children && children.classList.contains("children")) {
+            children.classList.toggle("open");
+
+            if (icon) {
+              icon.textContent = children.classList.contains("open")
+                ? "▼"
+                : "▶";
+            }
+          }
+
+          // Active state
+          document
+            .querySelectorAll(".tree-node")
+            .forEach((n) => n.classList.remove("active"));
+          this.classList.add("active");
+        });
       });
 
-      item.appendChild(button);
-      employeePagination.appendChild(item);
-    }
+      // ===== YOUR EXISTING EMPLOYEE TABLE JS =====
+      const filterForm = document.getElementById("employeeFilterForm");
+      const filterField = document.getElementById("filterField");
+      const filterOperator = document.getElementById("filterOperator");
+      const filterValue = document.getElementById("filterValue");
+      const clearEmployeeFilter = document.getElementById(
+        "clearEmployeeFilter",
+      );
+      const employeeTable = document.getElementById("employeeTable");
+      const tableBody = employeeTable.querySelector("tbody");
+      const employeeImport = document.getElementById("employeeImport");
+      const tableInfo = document.getElementById("tableInfo");
+      const employeePagination = document.getElementById("employeePagination");
+      const pageSize = 10;
 
-    function filterEmployeeRows() {
-      currentPage = 1;
+      let currentPage = 1;
+      let employeeRows = Array.from(tableBody.querySelectorAll("tr"));
+
+      const fieldIndexes = {
+        "emp-id": 0,
+        name: 1,
+        role: 2,
+        department: 3,
+        "reporting-to": 4,
+        status: 5,
+      };
+
+      function getFilteredRows() {
+        const field = filterField.value;
+        const operator = filterOperator.value;
+        const query = filterValue.value.trim().toLowerCase();
+
+        if (!query) return employeeRows;
+
+        return employeeRows.filter(function (row) {
+          const cells = Array.from(row.cells);
+          const values =
+            field === "all"
+              ? cells.map((cell) => cell.textContent.trim().toLowerCase())
+              : [cells[fieldIndexes[field]].textContent.trim().toLowerCase()];
+
+          return values.some(function (value) {
+            if (operator === "equals") return value === query;
+            if (operator === "starts-with") return value.startsWith(query);
+            return value.includes(query);
+          });
+        });
+      }
+
+      function renderPagination() {
+        const filteredRows = getFilteredRows();
+        const totalPages = Math.max(
+          1,
+          Math.ceil(filteredRows.length / pageSize),
+        );
+        currentPage = Math.min(currentPage, totalPages);
+
+        const start = (currentPage - 1) * pageSize;
+        const end = Math.min(start + pageSize, filteredRows.length);
+
+        employeeRows.forEach((row) => (row.hidden = true));
+        filteredRows.slice(start, end).forEach((row) => (row.hidden = false));
+
+        tableInfo.textContent = filteredRows.length
+          ? `Showing ${start + 1} to ${end} of ${filteredRows.length} employees`
+          : "Showing 0 to 0 of 0 employees";
+
+        employeePagination.innerHTML = "";
+        addPageButton("Previous", currentPage - 1, currentPage === 1);
+
+        for (let page = 1; page <= totalPages; page++) {
+          addPageButton(page, page, false, page === currentPage);
+        }
+
+        addPageButton("Next", currentPage + 1, currentPage === totalPages);
+      }
+
+      function addPageButton(label, page, disabled, active) {
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = label;
+        button.disabled = disabled;
+        if (active) button.classList.add("active");
+
+        button.addEventListener("click", function () {
+          currentPage = page;
+          renderPagination();
+        });
+
+        item.appendChild(button);
+        employeePagination.appendChild(item);
+      }
+
+      function filterEmployeeRows() {
+        currentPage = 1;
+        renderPagination();
+      }
+
+      filterForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        filterEmployeeRows();
+      });
+
+      filterValue.addEventListener("input", filterEmployeeRows);
+
+      clearEmployeeFilter.addEventListener("click", function () {
+        filterForm.reset();
+        filterEmployeeRows();
+        filterValue.focus();
+      });
+
+      document
+        .getElementById("btn-refresh")
+        .addEventListener("click", function () {
+          filterForm.reset();
+          filterEmployeeRows();
+        });
+
+      document
+        .getElementById("btn-import")
+        .addEventListener("click", function () {
+          employeeImport.click();
+        });
+
+      // Keep your import/export code as is...
+
       renderPagination();
-    }
-
-    filterForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      filterEmployeeRows();
     });
-
-    filterValue.addEventListener("input", filterEmployeeRows);
-
-    clearEmployeeFilter.addEventListener("click", function () {
-      filterForm.reset();
-      filterEmployeeRows();
-      filterValue.focus();
-    });
-
-    document.getElementById("btn-refresh").addEventListener("click", function () {
-      filterForm.reset();
-      filterEmployeeRows();
-    });
-
-    document.getElementById("btn-import").addEventListener("click", function () {
-      employeeImport.click();
-    });
-
-    // Keep your import/export code as is...
-
-    renderPagination();
-  });
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
+</div>
