@@ -179,7 +179,7 @@ class Company(models.Model):
     primary_color = models.CharField(max_length=20, default="#1976D2")
     secondary_color = models.CharField(max_length=20, default="#FFFFFF")
     linkedin_url = models.URLField(blank=True, null=True)
-    twitter_url = models.URLField(blank=True,  null=True)
+    twitter_url = models.URLField(blank=True, null=True)
     facebook_url = models.URLField(blank=True, null=True)
     instagram_url = models.URLField(blank=True, null=True)
     youtube_url = models.URLField(blank=True, null=True)
@@ -275,7 +275,12 @@ class Employees(models.Model):
 
 class OTPValues(models.Model):
     company = models.ForeignKey(
-        "Company", verbose_name="Company", on_delete=models.PROTECT, null=True, blank=True, related_name="%(class)s_records"
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name="Email", unique=True)
@@ -295,7 +300,7 @@ class OTPValues(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="otp_updated"
+        related_name="otp_updated",
     )
     createdDate = models.DateTimeField(verbose_name="Created Date", auto_now_add=True)
     updatedDate = models.DateTimeField(verbose_name="Updated Date", auto_now=True)
@@ -306,27 +311,69 @@ class OTPValues(models.Model):
 
 class EmployeeSalary(models.Model):
     company = models.ForeignKey(
-        "Company", verbose_name="Company", on_delete=models.PROTECT, null=True, blank=True, related_name="%(class)s_records"
+        "Company",
+        verbose_name="Company",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="%(class)s_records",
     )
-    STATUS = [("ACTIVE", "Active"), ("INACTIVE", "Inactive"), ("TERMINATED", "Terminated")]
+    STATUS = [
+        ("ACTIVE", "Active"),
+        ("INACTIVE", "Inactive"),
+        ("TERMINATED", "Terminated"),
+    ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    employee = models.ForeignKey(Employees, verbose_name="Employee", on_delete=models.PROTECT, related_name="salary_details",)
+    employee = models.ForeignKey(
+        Employees,
+        verbose_name="Employee",
+        on_delete=models.PROTECT,
+        related_name="salary_details",
+    )
     effectiveFrom = models.DateField(verbose_name="Effective From")
     effectiveTo = models.DateField(verbose_name="Effective To", null=True, blank=True)
-    basicSalary = models.DecimalField(verbose_name="Basic Salary", max_digits=14, decimal_places=2, default=0)
-    hra = models.DecimalField(verbose_name="HRA", max_digits=14, decimal_places=2, default=0)
-    conveyanceAllowance = models.DecimalField(verbose_name="Conveyance Allowance", max_digits=14, decimal_places=2, default=0)
-    medicalAllowance = models.DecimalField(verbose_name="Medical Allowance", max_digits=14, decimal_places=2, default=0)
-    otherAllowance = models.DecimalField(verbose_name="Other Allowance", max_digits=14, decimal_places=2, default=0)
-    bonus = models.DecimalField(verbose_name="Bonus", max_digits=14, decimal_places=2, default=0)
-    grossSalary = models.DecimalField(verbose_name="Gross Salary", max_digits=14, decimal_places=2, default=0)
-    pfDeduction = models.DecimalField(verbose_name="PF Deduction", max_digits=14, decimal_places=2, default=0)
-    professionalTax = models.DecimalField(verbose_name="Professional Tax", max_digits=14, decimal_places=2, default=0)
-    incomeTax = models.DecimalField(verbose_name="Income Tax", max_digits=14, decimal_places=2, default=0)
-    otherDeduction = models.DecimalField(verbose_name="Other Deduction", max_digits=14, decimal_places=2, default=0)
-    totalDeduction = models.DecimalField(verbose_name="Total Deduction", max_digits=14, decimal_places=2, default=0)
-    netSalary = models.DecimalField(verbose_name="Net Salary", max_digits=14, decimal_places=2, default=0)
-    employeeStatus = models.CharField(verbose_name="Employee Status", max_length=10, choices=STATUS, default="ACTIVE")
+    basicSalary = models.DecimalField(
+        verbose_name="Basic Salary", max_digits=14, decimal_places=2, default=0
+    )
+    hra = models.DecimalField(
+        verbose_name="HRA", max_digits=14, decimal_places=2, default=0
+    )
+    conveyanceAllowance = models.DecimalField(
+        verbose_name="Conveyance Allowance", max_digits=14, decimal_places=2, default=0
+    )
+    medicalAllowance = models.DecimalField(
+        verbose_name="Medical Allowance", max_digits=14, decimal_places=2, default=0
+    )
+    otherAllowance = models.DecimalField(
+        verbose_name="Other Allowance", max_digits=14, decimal_places=2, default=0
+    )
+    bonus = models.DecimalField(
+        verbose_name="Bonus", max_digits=14, decimal_places=2, default=0
+    )
+    grossSalary = models.DecimalField(
+        verbose_name="Gross Salary", max_digits=14, decimal_places=2, default=0
+    )
+    pfDeduction = models.DecimalField(
+        verbose_name="PF Deduction", max_digits=14, decimal_places=2, default=0
+    )
+    professionalTax = models.DecimalField(
+        verbose_name="Professional Tax", max_digits=14, decimal_places=2, default=0
+    )
+    incomeTax = models.DecimalField(
+        verbose_name="Income Tax", max_digits=14, decimal_places=2, default=0
+    )
+    otherDeduction = models.DecimalField(
+        verbose_name="Other Deduction", max_digits=14, decimal_places=2, default=0
+    )
+    totalDeduction = models.DecimalField(
+        verbose_name="Total Deduction", max_digits=14, decimal_places=2, default=0
+    )
+    netSalary = models.DecimalField(
+        verbose_name="Net Salary", max_digits=14, decimal_places=2, default=0
+    )
+    employeeStatus = models.CharField(
+        verbose_name="Employee Status", max_length=10, choices=STATUS, default="ACTIVE"
+    )
     notes = models.TextField(verbose_name="Notes", blank=True)
     createdBy = models.ForeignKey(
         User,
