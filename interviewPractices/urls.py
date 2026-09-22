@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from application1.views import EmployeeList, Login, get_public_key, Dashboard
+from application1.views import Dashboard, EmployeeList, Login, get_public_key
 
 urlpatterns = [
     path("admin/", admin.site.urls),
