@@ -1,11 +1,422 @@
-{% extends "base.html" %} {% block title %} Employees · OrgNexus {% endblock %}
-{% block extra_css %}
+{% extends "base.html" %} {% block title %}Employees · OrgNexus{% endblock %} {%
+block extra_css %}
 <style>
+  .employee-modal .modal-dialog {
+    max-width: 1100px;
+  }
+
+  .employee-modal .modal-content {
+    background: var(--surface-secondary);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px var(--shadow);
+    overflow: hidden;
+  }
+
+  /* ---------- Modal Header ---------- */
+
+  .employee-modal .modal-header {
+    background: var(--surface-secondary);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 22px;
+  }
+
+  .employee-modal-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .employee-modal .modal-title {
+    color: var(--accent-dark);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .employee-modal-subtitle {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .employee-modal .btn-close {
+    opacity: 0.7;
+  }
+
+  .employee-modal .btn-close:hover {
+    opacity: 1;
+  }
+
+  /* ---------- Stepper ---------- */
+
+  .employee-modal-stepper {
+    background: var(--field);
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(7, minmax(90px, 1fr));
+    gap: 5px;
+    padding: 15px 18px;
+  }
+
+  .employee-modal-step-nav {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding: 4px;
+  }
+
+  .employee-modal-step-circle {
+    align-items: center;
+    background: var(--surface-secondary);
+    border: 2px solid var(--line);
+    border-radius: 50%;
+    color: var(--muted);
+    display: flex;
+    font-size: 0.72rem;
+    font-weight: 700;
+    height: 30px;
+    justify-content: center;
+    transition: all 0.2s ease;
+    width: 30px;
+  }
+
+  .employee-modal-step-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .employee-modal-step-nav.active {
+    color: var(--accent-dark);
+  }
+
+  .employee-modal-step-nav.active .employee-modal-step-circle {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+
+  .employee-modal-step-nav.completed {
+    color: var(--accent-dark);
+  }
+
+  .employee-modal-step-nav.completed .employee-modal-step-circle {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    color: #fff;
+  }
+
+  /* ---------- Modal Body ---------- */
+
+  .employee-modal .modal-body {
+    background: var(--surface-secondary);
+    max-height: 62vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  /* ---------- Step Content ---------- */
+
+  .employee-modal-step {
+    display: none;
+  }
+
+  .employee-modal-step.active {
+    display: block;
+    animation: employeeStepFade 0.2s ease;
+  }
+
+  @keyframes employeeStepFade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .employee-modal-section-title {
+    align-items: center;
+    color: var(--accent-dark);
+    display: flex;
+    font-size: 0.92rem;
+    font-weight: 700;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .employee-modal-section-title::before {
+    background: var(--accent);
+    border-radius: 4px;
+    content: "";
+    display: block;
+    height: 18px;
+    width: 4px;
+  }
+
+  /* ---------- Form Grid ---------- */
+
+  .employee-modal-grid {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .employee-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .employee-modal-field.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .employee-modal-field label {
+    color: var(--text);
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
+  .employee-modal-field label .required {
+    color: #dc3545;
+    margin-left: 2px;
+  }
+
+  .employee-modal-field input,
+  .employee-modal-field select,
+  .employee-modal-field textarea {
+    background: var(--field);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    color: var(--text);
+    font-size: 0.84rem;
+    min-height: 40px;
+    outline: none;
+    padding: 9px 11px;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+    width: 100%;
+  }
+
+  .employee-modal-field textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+
+  .employee-modal-field input::placeholder,
+  .employee-modal-field textarea::placeholder {
+    color: var(--muted);
+  }
+
+  .employee-modal-field input:focus,
+  .employee-modal-field select:focus,
+  .employee-modal-field textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .employee-modal-field input:hover,
+  .employee-modal-field select:hover,
+  .employee-modal-field textarea:hover {
+    border-color: var(--accent);
+  }
+
+  /* ---------- File Input ---------- */
+
+  .employee-modal-field input[type="file"] {
+    cursor: pointer;
+    padding: 7px;
+  }
+
+  .employee-modal-field input[type="file"]::file-selector-button {
+    background: var(--accent);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 10px;
+    padding: 7px 10px;
+  }
+
+  /* ---------- Help Text ---------- */
+
+  .employee-modal-help {
+    color: var(--muted);
+    font-size: 0.68rem;
+    margin-top: 1px;
+  }
+
+  /* ---------- Profile Image ---------- */
+
+  .employee-profile-upload {
+    align-items: center;
+    display: flex;
+    gap: 15px;
+  }
+
+  .employee-profile-preview {
+    align-items: center;
+    background: var(--field);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    color: var(--muted);
+    display: flex;
+    flex-shrink: 0;
+    height: 70px;
+    justify-content: center;
+    overflow: hidden;
+    width: 70px;
+  }
+
+  .employee-profile-preview i {
+    font-size: 1.5rem;
+  }
+
+  .employee-profile-preview img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  /* ---------- Salary Card ---------- */
+
+  .employee-salary-summary {
+    background: var(--field);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    padding: 14px;
+  }
+
+  .employee-salary-summary-title {
+    color: var(--accent-dark);
+    font-size: 0.76rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .employee-salary-summary-text {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+
+  /* ---------- Modal Footer ---------- */
+
+  .employee-modal .modal-footer {
+    align-items: center;
+    background: var(--surface-secondary);
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 22px;
+  }
+
+  .employee-modal-footer-left,
+  .employee-modal-footer-right {
+    display: flex;
+    gap: 8px;
+  }
+
+  .employee-modal .employee-modal-btn {
+    border-radius: 7px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-height: 38px;
+    padding: 8px 15px;
+  }
+
+  .employee-modal .employee-modal-btn-secondary {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text);
+  }
+
+  .employee-modal .employee-modal-btn-secondary:hover {
+    background: var(--field);
+  }
+
+  .employee-modal .employee-modal-btn-primary {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #fff;
+  }
+
+  .employee-modal .employee-modal-btn-primary:hover {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    transform: translateY(-1px);
+  }
+
+  .employee-modal .employee-modal-btn-primary:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+  }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 768px) {
+    .employee-modal .modal-dialog {
+      margin: 10px;
+    }
+
+    .employee-modal .modal-body {
+      padding: 18px;
+    }
+
+    .employee-modal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .employee-modal-field.full-width {
+      grid-column: auto;
+    }
+
+    .employee-modal-stepper {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 12px;
+    }
+
+    .employee-modal-step-nav {
+      flex: 0 0 75px;
+    }
+
+    .employee-modal .modal-footer {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .employee-modal-footer-right {
+      margin-left: auto;
+    }
+  }
   body:has(.employee-layout) {
     overflow: hidden;
   }
 
-  body:has(.employee-layout) .site-main {
+  body:has(.employee-layout) .site-main,
+  body:has(.employee-layout) .main-wrapper {
     max-width: none;
     padding: 0;
   }
@@ -14,12 +425,14 @@
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(12, 1fr);
-    height: calc(100vh - 96px);
+    height: calc(100vh - 104px);
     min-height: 0;
     overflow: hidden;
     width: 100%;
+    padding: 16px;
   }
 
+  /* ===== SIDE NAV PANEL ===== */
   .side-nav-panel {
     background: var(--surface-secondary);
     border: 1px solid var(--line);
@@ -27,10 +440,10 @@
     box-shadow: 0 4px 18px var(--shadow);
     grid-column: span 3;
     height: 100%;
-    max-height: none;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
-    padding: 18px 14px;
-    position: static;
+    padding: 0;
   }
 
   .side-nav-header {
@@ -38,20 +451,15 @@
     border-bottom: 1px solid var(--line);
     display: flex;
     justify-content: space-between;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    padding: 16px 16px 12px;
+    flex-shrink: 0;
   }
 
   .side-nav-header h2 {
     color: var(--accent-dark);
-    display: flex;
-    flex-direction: column;
+    font-size: 1rem;
     font-weight: 700;
     margin: 0;
-  }
-
-  .side-nav-panel > div:last-child {
-    margin-top: auto !important;
   }
 
   .count-badge {
@@ -63,6 +471,14 @@
     padding: 3px 9px;
   }
 
+  /* ===== THIS PART HAS THE SCROLLBAR ===== */
+  .team-tree-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 10px;
+    min-height: 0;
+  }
+
   .team-tree,
   .team-tree ul {
     list-style: none;
@@ -72,11 +488,12 @@
 
   .team-tree ul {
     border-left: 2px solid var(--line);
-    padding-left: 18px;
+    margin-left: 12px;
+    padding-left: 14px;
   }
 
   .tree-item {
-    margin: 4px 0;
+    margin: 3px 0;
   }
 
   .tree-node {
@@ -90,6 +507,7 @@
     transition:
       background 0.18s ease,
       transform 0.15s ease;
+    user-select: none;
   }
 
   .tree-node:hover {
@@ -104,6 +522,14 @@
     font-weight: 600;
   }
 
+  .toggle-icon {
+    font-size: 0.7rem;
+    width: 14px;
+    text-align: center;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
   .role-dot {
     border-radius: 50%;
     flex-shrink: 0;
@@ -114,23 +540,18 @@
   .role-manager {
     background: #9b59b6;
   }
-
   .role-reporting-manager {
     background: #3498db;
   }
-
   .role-team-lead {
     background: #1abc9c;
   }
-
   .role-sr-developer {
     background: #f39c12;
   }
-
   .role-developer {
     background: #27ae60;
   }
-
   .role-jr-developer {
     background: #95a5a6;
   }
@@ -141,88 +562,73 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
   }
 
   .node-role {
     color: var(--muted);
     font-size: 0.68rem;
-    margin-left: auto;
     white-space: nowrap;
   }
 
   .level-0 .tree-node {
     font-weight: 700;
   }
-
   .level-1 .tree-node {
     font-weight: 600;
   }
-
   .level-2 .tree-node {
     font-weight: 500;
   }
 
-  .team-summary {
-    align-items: stretch;
-    background: var(--surface-secondary);
-    border-bottom: 1px solid var(--line);
+  /* Hide children by default */
+  .children {
+    display: none;
+  }
+
+  .children.open {
+    display: block;
+  }
+
+  /* Role Legend */
+  .role-legend {
+    border-top: 1px solid var(--line);
+    padding: 12px 16px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .legend-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .legend-items {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    padding: 16px 24px;
+    gap: 8px 12px;
   }
 
-  .team-summary-title {
-    color: var(--accent-dark);
-    font-size: 0.82rem;
-    font-weight: 700;
-    margin: 0;
-    padding: 10px 4px 10px 0;
-    text-transform: uppercase;
-  }
-
-  .team-person {
-    align-items: center;
-    background: var(--field);
-    border: 1px solid var(--line);
-    border-radius: 7px;
+  .legend-items span {
     display: flex;
-    gap: 9px;
-    min-width: 190px;
-    padding: 8px 12px;
+    align-items: center;
+    gap: 5px;
   }
 
-  .team-person-name {
-    color: var(--text);
-    font-size: 0.85rem;
-    font-weight: 700;
-  }
-
-  .team-person-role {
-    color: var(--muted);
-    display: block;
-    font-size: 0.7rem;
-    margin-top: 2px;
-  }
-
-  .team-person-dot {
-    background: var(--accent);
-    border-radius: 50%;
-    height: 9px;
-    width: 9px;
-  }
-
+  /* ===== DATATABLE PANEL ===== */
   .datatable-panel {
     background: var(--surface-secondary);
-    border-bottom: 1px solid var(--line);
-    border-top: 1px solid var(--line);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px var(--shadow);
     display: flex;
     flex-direction: column;
     grid-column: span 9;
     height: 100%;
     min-height: 0;
     overflow: hidden;
-    padding: 24px;
+    padding: 20px;
   }
 
   .datatable-header {
@@ -248,6 +654,148 @@
 
   .import-input {
     display: none;
+  }
+
+  .filter-card {
+    align-items: end;
+    background: var(--field);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns:
+      minmax(150px, 1fr) minmax(140px, 0.8fr) minmax(180px, 1.5fr)
+      auto auto;
+    margin-bottom: 16px;
+    padding: 12px;
+  }
+
+  .filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .filter-field label {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .filter-field select,
+  .filter-field input {
+    background: var(--surface-secondary);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    color: var(--text);
+    font-size: 0.85rem;
+    min-height: 36px;
+    padding: 7px 9px;
+    width: 100%;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    transition:
+      background 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text);
+  }
+
+  .btn-outline:hover {
+    background: var(--field);
+  }
+
+  .table-wrap {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  table.data-table {
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    width: 100%;
+  }
+
+  table.data-table thead {
+    background: var(--field);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  table.data-table th {
+    border-bottom: 2px solid var(--line);
+    color: var(--accent-dark);
+    font-weight: 700;
+    padding: 9px 8px;
+    text-align: left;
+  }
+
+  table.data-table td {
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    padding: 8px;
+  }
+
+  table.data-table tbody tr:hover {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .status-pill {
+    border-radius: 999px;
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+  }
+
+  .status-active {
+    background: #d4edda;
+    color: #155724;
+  }
+  .status-inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  .status-onleave {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .role-badge {
+    background: var(--field);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--accent-dark);
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 9px;
   }
 
   .table-footer {
@@ -295,157 +843,7 @@
     opacity: 0.5;
   }
 
-  .filter-card {
-    align-items: end;
-    background: var(--field);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    display: grid;
-    gap: 10px;
-    grid-template-columns:
-      minmax(150px, 1fr) minmax(140px, 0.8fr) minmax(180px, 1.5fr)
-      auto auto;
-    margin-bottom: 16px;
-    padding: 12px;
-  }
-
-  .filter-field {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .filter-field label {
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  .filter-field select,
-  .filter-field input {
-    background: var(--surface-secondary);
-    border: 1px solid var(--line);
-    border-radius: 5px;
-    color: var(--text);
-    font-size: 0.85rem;
-    min-height: 36px;
-    padding: 7px 9px;
-    width: 100%;
-  }
-
-  .filter-card .btn {
-    min-height: 36px;
-    white-space: nowrap;
-  }
-
-  .btn {
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 8px 14px;
-    transition:
-      background 0.2s ease,
-      transform 0.15s ease;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .btn-primary:hover {
-    background: var(--accent-dark);
-    transform: translateY(-1px);
-  }
-
-  .btn-outline {
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--text);
-  }
-
-  .btn-outline:hover {
-    background: var(--field);
-  }
-
-  .table-wrap {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  table.data-table {
-    border-collapse: collapse;
-    font-size: 0.8rem;
-    height: 100%;
-    table-layout: fixed;
-    width: 100%;
-  }
-
-  table.data-table thead {
-    background: var(--field);
-  }
-
-  table.data-table th {
-    border-bottom: 2px solid var(--line);
-    color: var(--accent-dark);
-    font-weight: 700;
-    overflow-wrap: anywhere;
-    padding: 9px 8px;
-    text-align: left;
-  }
-
-  table.data-table td {
-    border-bottom: 1px solid var(--line);
-    color: var(--text);
-    overflow-wrap: anywhere;
-    padding: 8px;
-  }
-
-  table.data-table tbody tr:hover {
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-  }
-
-  .status-pill {
-    border-radius: 999px;
-    display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 3px 10px;
-  }
-
-  .status-active {
-    background: #d4edda;
-    color: #155724;
-  }
-
-  .status-inactive {
-    background: #f8d7da;
-    color: #721c24;
-  }
-
-  .status-onleave {
-    background: #fff3cd;
-    color: #856404;
-  }
-
-  .role-badge {
-    background: var(--field);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    color: var(--accent-dark);
-    display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 3px 9px;
-  }
-
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
     body:has(.employee-layout) {
       overflow: auto;
     }
@@ -457,242 +855,488 @@
     }
 
     .side-nav-panel,
-    .datatable-panel,
-    .team-summary {
+    .datatable-panel {
       grid-column: span 12;
     }
 
     .side-nav-panel {
-      height: auto;
-      max-height: none;
-      overflow: visible;
-      position: static;
+      height: 400px;
+    }
+  }
+
+  .employee-modal {
+    background: var(--surface-secondary);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px var(--shadow);
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  .employee-modal-header {
+    background: var(--surface-secondary);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .employee-modal-header .modal-title {
+    align-items: center;
+    color: var(--accent-dark);
+    display: flex;
+    font-size: 1.05rem;
+    font-weight: 700;
+    gap: 9px;
+    margin: 0;
+  }
+
+  .employee-modal-close {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    height: 34px;
+    justify-content: center;
+    margin-left: auto;
+    padding: 0;
+    width: 34px;
+  }
+
+  .employee-modal-close:hover {
+    background: var(--field);
+    color: var(--text);
+  }
+
+  /* =========================================================
+   RADIO NAVIGATION
+   ========================================================= */
+
+  .employee-section-navigation {
+    background: var(--field);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding: 8px;
+    scrollbar-width: thin;
+  }
+
+  .employee-section-radio {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    flex: 0 0 auto;
+    font-size: 0.76rem;
+    font-weight: 600;
+    gap: 7px;
+    padding: 8px 10px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .employee-section-radio input {
+    display: none;
+  }
+
+  .employee-section-radio:hover {
+    background: var(--surface-secondary);
+    color: var(--text);
+  }
+
+  .employee-section-radio.active {
+    background: var(--surface-secondary);
+    border-color: var(--accent);
+    color: var(--accent-dark);
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .employee-radio-circle {
+    align-items: center;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    display: flex;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+  }
+
+  .employee-section-radio.active .employee-radio-circle {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* =========================================================
+   FORM SECTION
+   ========================================================= */
+
+  .employee-form-section {
+    display: none;
+  }
+
+  .employee-form-section.active {
+    display: block;
+    animation: employeeSectionFade 0.2s ease;
+  }
+
+  @keyframes employeeSectionFade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
     }
 
-    .datatable-panel {
-      max-height: none;
-      padding: 16px;
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+  .employee-section-title {
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+  }
+
+  .employee-section-title > i {
+    align-items: center;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border-radius: 8px;
+    color: var(--accent);
+    display: flex;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
+  }
+
+  .employee-section-title h6 {
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 2px;
+  }
+
+  .employee-section-title span {
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+
+  /* =========================================================
+   FORM FIELDS
+   ========================================================= */
+
+  .employee-form-label {
+    color: var(--muted);
+    display: block;
+    font-size: 0.73rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .employee-form-label span {
+    color: #dc3545;
+  }
+
+  .employee-input {
+    background: var(--field) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 7px !important;
+    color: var(--text) !important;
+    font-size: 0.84rem !important;
+    min-height: 38px;
+  }
+
+  .employee-input::placeholder {
+    color: var(--muted) !important;
+    opacity: 0.75;
+  }
+
+  .employee-input:focus {
+    background: var(--surface-secondary) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent) !important;
+    outline: none !important;
+  }
+
+  textarea.employee-input {
+    min-height: auto;
+    resize: vertical;
+  }
+
+  select.employee-input option {
+    background: var(--surface-secondary);
+    color: var(--text);
+  }
+
+  /* =========================================================
+   MODAL FOOTER
+   ========================================================= */
+
+  .employee-modal-footer {
+    background: var(--surface-secondary);
+    border-top: 1px solid var(--line);
+    gap: 8px;
+    padding: 14px 20px;
+  }
+
+  /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+  @media (max-width: 767px) {
+    .employee-modal {
+      border-radius: 10px;
     }
 
-    .filter-card {
-      grid-template-columns: 1fr 1fr;
+    .employee-section-navigation {
+      gap: 4px;
     }
 
-    .filter-field:nth-child(3) {
-      grid-column: span 2;
+    .employee-section-radio {
+      font-size: 0.7rem;
+      padding: 7px 8px;
+    }
+
+    .employee-radio-circle {
+      height: 25px;
+      width: 25px;
     }
   }
 </style>
 {% endblock %} {% block content %}
 <div class="employee-layout">
+  <!-- ==================== TEAM STRUCTURE PANEL ==================== -->
   <aside class="side-nav-panel" aria-label="Team hierarchy">
     <div class="side-nav-header">
       <h2>Team Structure</h2>
-      <span class="count-badge" id="team-count">12</span>
+      <span class="count-badge" id="team-count">48</span>
     </div>
 
-    <ul class="team-tree">
-      <li class="tree-item level-0">
-        <div class="tree-node active" data-role="manager" data-id="mgr-01">
-          <span class="role-dot role-manager"></span>
-          <span class="node-label">Priya Sharma</span>
-          <span class="node-role">Manager</span>
-        </div>
+    <div class="team-tree-wrapper">
+      <ul class="team-tree">
+        <!-- MANAGER 1 - Expanded by default -->
+        <li class="tree-item level-0">
+          <div class="tree-node manager-node active" data-role="manager">
+            <span class="toggle-icon">▼</span>
+            <span class="role-dot role-manager"></span>
+            <span class="node-label">Priya Sharma</span>
+            <span class="node-role">Manager</span>
+          </div>
 
-        <ul>
-          <li class="tree-item level-1">
-            <div
-              class="tree-node"
-              data-role="reporting_manager"
-              data-id="rm-01"
-            >
-              <span class="role-dot role-reporting-manager"></span>
-              <span class="node-label">Rahul Verma</span>
-              <span class="node-role">Reporting Manager</span>
-            </div>
+          <ul class="children open">
+            <!-- Reporting Manager 1 -->
+            <li class="tree-item level-1">
+              <div class="tree-node" data-role="reporting_manager">
+                <span class="toggle-icon">▼</span>
+                <span class="role-dot role-reporting-manager"></span>
+                <span class="node-label">Rahul Verma</span>
+                <span class="node-role">Reporting Manager</span>
+              </div>
 
-            <ul>
-              <li class="tree-item level-2">
-                <div class="tree-node" data-role="team_lead" data-id="tl-01">
-                  <span class="role-dot role-team-lead"></span>
-                  <span class="node-label">Ananya Patel</span>
-                  <span class="node-role">Team Lead</span>
-                </div>
+              <ul class="children open">
+                <li class="tree-item level-2">
+                  <div class="tree-node" data-role="team_lead">
+                    <span class="toggle-icon">▼</span>
+                    <span class="role-dot role-team-lead"></span>
+                    <span class="node-label">Ananya Patel</span>
+                    <span class="node-role">Team Lead</span>
+                  </div>
+                  <ul class="children open">
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="sr_developer">
+                        <span class="role-dot role-sr-developer"></span>
+                        <span class="node-label">Vikram Singh</span>
+                        <span class="node-role">Sr. Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="sr_developer">
+                        <span class="role-dot role-sr-developer"></span>
+                        <span class="node-label">Sneha Reddy</span>
+                        <span class="node-role">Sr. Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="developer">
+                        <span class="role-dot role-developer"></span>
+                        <span class="node-label">Arjun Mehta</span>
+                        <span class="node-role">Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="developer">
+                        <span class="role-dot role-developer"></span>
+                        <span class="node-label">Neha Gupta</span>
+                        <span class="node-role">Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="jr_developer">
+                        <span class="role-dot role-jr-developer"></span>
+                        <span class="node-label">Kavya Nair</span>
+                        <span class="node-role">Jr. Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="jr_developer">
+                        <span class="role-dot role-jr-developer"></span>
+                        <span class="node-label">Rohan Das</span>
+                        <span class="node-role">Jr. Developer</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
 
-                <ul>
-                  <li class="tree-item level-3">
-                    <div
-                      class="tree-node"
-                      data-role="sr_developer"
-                      data-id="sd-01"
-                    >
-                      <span class="role-dot role-sr-developer"></span>
-                      <span class="node-label">Vikram Singh</span>
-                      <span class="node-role">Sr. Developer</span>
-                    </div>
-                  </li>
+                <li class="tree-item level-2">
+                  <div class="tree-node" data-role="team_lead">
+                    <span class="toggle-icon">▶</span>
+                    <span class="role-dot role-team-lead"></span>
+                    <span class="node-label">Mohammed Irfan</span>
+                    <span class="node-role">Team Lead</span>
+                  </div>
+                  <ul class="children">
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="developer">
+                        <span class="role-dot role-developer"></span>
+                        <span class="node-label">Pooja Shah</span>
+                        <span class="node-role">Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="developer">
+                        <span class="role-dot role-developer"></span>
+                        <span class="node-label">Amit Joshi</span>
+                        <span class="node-role">Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="jr_developer">
+                        <span class="role-dot role-jr-developer"></span>
+                        <span class="node-label">Sanjay Kumar</span>
+                        <span class="node-role">Jr. Developer</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
 
-                  <li class="tree-item level-3">
-                    <div
-                      class="tree-node"
-                      data-role="sr_developer"
-                      data-id="sd-02"
-                    >
-                      <span class="role-dot role-sr-developer"></span>
-                      <span class="node-label">Sneha Reddy</span>
-                      <span class="node-role">Sr. Developer</span>
-                    </div>
-                  </li>
+            <!-- Reporting Manager 2 -->
+            <li class="tree-item level-1">
+              <div class="tree-node" data-role="reporting_manager">
+                <span class="toggle-icon">▶</span>
+                <span class="role-dot role-reporting-manager"></span>
+                <span class="node-label">Suresh Iyer</span>
+                <span class="node-role">Reporting Manager</span>
+              </div>
+              <ul class="children">
+                <li class="tree-item level-2">
+                  <div class="tree-node" data-role="team_lead">
+                    <span class="toggle-icon">▶</span>
+                    <span class="role-dot role-team-lead"></span>
+                    <span class="node-label">Deepak Rao</span>
+                    <span class="node-role">Team Lead</span>
+                  </div>
+                  <ul class="children">
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="developer">
+                        <span class="role-dot role-developer"></span>
+                        <span class="node-label">Meera Krishnan</span>
+                        <span class="node-role">Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="jr_developer">
+                        <span class="role-dot role-jr-developer"></span>
+                        <span class="node-label">Aditya Nair</span>
+                        <span class="node-role">Jr. Developer</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
 
-                  <li class="tree-item level-3">
-                    <div
-                      class="tree-node"
-                      data-role="developer"
-                      data-id="dev-01"
-                    >
-                      <span class="role-dot role-developer"></span>
-                      <span class="node-label">Arjun Mehta</span>
-                      <span class="node-role">Developer</span>
-                    </div>
-                  </li>
+        <!-- MANAGER 2 - Collapsed by default -->
+        <li class="tree-item level-0">
+          <div class="tree-node manager-node" data-role="manager">
+            <span class="toggle-icon">▶</span>
+            <span class="role-dot role-manager"></span>
+            <span class="node-label">Rajesh Kumar</span>
+            <span class="node-role">Manager</span>
+          </div>
 
-                  <li class="tree-item level-3">
-                    <div
-                      class="tree-node"
-                      data-role="jr_developer"
-                      data-id="jd-01"
-                    >
-                      <span class="role-dot role-jr-developer"></span>
-                      <span class="node-label">Kavya Nair</span>
-                      <span class="node-role">Jr. Developer</span>
-                    </div>
-                  </li>
-                </ul>
-              </li>
+          <ul class="children">
+            <li class="tree-item level-1">
+              <div class="tree-node" data-role="reporting_manager">
+                <span class="toggle-icon">▶</span>
+                <span class="role-dot role-reporting-manager"></span>
+                <span class="node-label">Anita Desai</span>
+                <span class="node-role">Reporting Manager</span>
+              </div>
+              <ul class="children">
+                <li class="tree-item level-2">
+                  <div class="tree-node" data-role="team_lead">
+                    <span class="toggle-icon">▶</span>
+                    <span class="role-dot role-team-lead"></span>
+                    <span class="node-label">Karan Malhotra</span>
+                    <span class="node-role">Team Lead</span>
+                  </div>
+                  <ul class="children">
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="developer">
+                        <span class="role-dot role-developer"></span>
+                        <span class="node-label">Siddharth Jain</span>
+                        <span class="node-role">Developer</span>
+                      </div>
+                    </li>
+                    <li class="tree-item level-3">
+                      <div class="tree-node" data-role="jr_developer">
+                        <span class="role-dot role-jr-developer"></span>
+                        <span class="node-label">Ishita Bose</span>
+                        <span class="node-role">Jr. Developer</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 
-              <li class="tree-item level-2">
-                <div class="tree-node" data-role="team_lead" data-id="tl-02">
-                  <span class="role-dot role-team-lead"></span>
-                  <span class="node-label">Mohammed Irfan</span>
-                  <span class="node-role">Team Lead</span>
-                </div>
-
-                <ul>
-                  <li class="tree-item level-3">
-                    <div
-                      class="tree-node"
-                      data-role="developer"
-                      data-id="dev-02"
-                    >
-                      <span class="role-dot role-developer"></span>
-                      <span class="node-label">Neha Gupta</span>
-                      <span class="node-role">Developer</span>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-
-          <li class="tree-item level-1">
-            <div
-              class="tree-node"
-              data-role="reporting_manager"
-              data-id="rm-02"
-            >
-              <span class="role-dot role-reporting-manager"></span>
-              <span class="node-label">Suresh Iyer</span>
-              <span class="node-role">Reporting Manager</span>
-            </div>
-
-            <ul>
-              <li class="tree-item level-2">
-                <div class="tree-node" data-role="sr_developer" data-id="sd-03">
-                  <span class="role-dot role-sr-developer"></span>
-                  <span class="node-label">Deepak Rao</span>
-                  <span class="node-role">Sr. Developer</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-
-    <div
-      style="
-        border-top: 1px solid var(--line);
-        margin-top: 22px;
-        padding-top: 14px;
-      "
-    >
-      <div
-        style="
-          color: var(--muted);
-          font-size: 0.75rem;
-          font-weight: 700;
-          margin-bottom: 8px;
-        "
-      >
-        ROLE COLORS
-      </div>
-
-      <div
-        style="
-          color: var(--muted);
-          display: flex;
-          flex-wrap: wrap;
-          font-size: 0.72rem;
-          gap: 8px 12px;
-        "
-      >
-        <span>
-          <i
-            class="role-dot role-manager"
-            style="display: inline-block; vertical-align: middle"
-          ></i>
-          Manager
-        </span>
-
-        <span>
-          <i
-            class="role-dot role-reporting-manager"
-            style="display: inline-block; vertical-align: middle"
-          ></i>
-          Reporting Mgr
-        </span>
-
-        <span>
-          <i
-            class="role-dot role-team-lead"
-            style="display: inline-block; vertical-align: middle"
-          ></i>
-          Team Lead
-        </span>
-
-        <span>
-          <i
-            class="role-dot role-sr-developer"
-            style="display: inline-block; vertical-align: middle"
-          ></i>
-          Sr. Dev
-        </span>
-
-        <span>
-          <i
-            class="role-dot role-developer"
-            style="display: inline-block; vertical-align: middle"
-          ></i>
-          Developer
-        </span>
-
-        <span>
-          <i
-            class="role-dot role-jr-developer"
-            style="display: inline-block; vertical-align: middle"
-          ></i>
-          Jr. Dev
-        </span>
+    <div class="role-legend">
+      <div class="legend-title">ROLE COLORS</div>
+      <div class="legend-items">
+        <span><i class="role-dot role-manager"></i> Manager</span>
+        <span
+          ><i class="role-dot role-reporting-manager"></i> Reporting Mgr</span
+        >
+        <span><i class="role-dot role-team-lead"></i> Team Lead</span>
+        <span><i class="role-dot role-sr-developer"></i> Sr. Dev</span>
+        <span><i class="role-dot role-developer"></i> Developer</span>
+        <span><i class="role-dot role-jr-developer"></i> Jr. Dev</span>
       </div>
     </div>
   </aside>
@@ -700,28 +1344,29 @@
   <section class="datatable-panel">
     <div class="datatable-header">
       <h2>Employee Directory</h2>
-
       <div class="datatable-actions">
         <button class="btn btn-outline" type="button" id="btn-refresh">
           Refresh
         </button>
-
         <button class="btn btn-outline" type="button" id="btn-import">
           Import CSV
         </button>
-
         <input
           class="import-input"
           id="employeeImport"
           type="file"
           accept=".csv,text/csv"
         />
-
         <button class="btn btn-outline" type="button" id="btn-export">
           Export CSV
         </button>
-
-        <button class="btn btn-primary" type="button" id="btn-add-employee">
+        <button
+          class="btn btn-primary"
+          type="button"
+          id="btn-add-employee"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModalToggle"
+        >
           + Add Employee
         </button>
       </div>
@@ -730,7 +1375,6 @@
     <form class="filter-card" id="employeeFilterForm">
       <div class="filter-field">
         <label for="filterField">Field name</label>
-
         <select id="filterField" name="field">
           <option value="all">All fields</option>
           <option value="emp-id">Emp ID</option>
@@ -744,7 +1388,6 @@
 
       <div class="filter-field">
         <label for="filterOperator">Operator</label>
-
         <select id="filterOperator" name="operator">
           <option value="contains">Contains</option>
           <option value="equals">Equals</option>
@@ -754,7 +1397,6 @@
 
       <div class="filter-field">
         <label for="filterValue">Value</label>
-
         <input
           id="filterValue"
           name="value"
@@ -765,14 +1407,13 @@
       </div>
 
       <button class="btn btn-primary" type="submit">Filter</button>
-
       <button class="btn btn-outline" type="button" id="clearEmployeeFilter">
         Clear
       </button>
     </form>
 
     <div class="table-wrap">
-      <table class="data-table" id="employeeTable" style="width: 100%">
+      <table class="data-table" id="employeeTable">
         <thead>
           <tr>
             <th>Emp ID</th>
@@ -784,415 +1425,1193 @@
             <th>Actions</th>
           </tr>
         </thead>
-
         <tbody>
+          <!-- Keep your existing rows here -->
           <tr>
             <td>EMP-1001</td>
             <td>Priya Sharma</td>
             <td><span class="role-badge">Manager</span></td>
             <td>Engineering</td>
             <td>—</td>
+            <td><span class="status-pill status-active">Active</span></td>
             <td>
-              <span class="status-pill status-active">Active</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
+              <button class="btn btn-sm btn-primary" title="Edit">
+                <i class="bi bi-pen-fill"></i>
+              </button>
               <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
+                <i class="bi bi-trash3-fill"></i>
               </button>
             </td>
           </tr>
-
-          <tr>
-            <td>EMP-1002</td>
-            <td>Rahul Verma</td>
-            <td><span class="role-badge">Reporting Manager</span></td>
-            <td>Engineering</td>
-            <td>Priya Sharma</td>
-            <td>
-              <span class="status-pill status-active">Active</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>EMP-1003</td>
-            <td>Ananya Patel</td>
-            <td><span class="role-badge">Team Lead</span></td>
-            <td>Engineering</td>
-            <td>Rahul Verma</td>
-            <td>
-              <span class="status-pill status-active">Active</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>EMP-1004</td>
-            <td>Vikram Singh</td>
-            <td><span class="role-badge">Sr. Developer</span></td>
-            <td>Engineering</td>
-            <td>Ananya Patel</td>
-            <td>
-              <span class="status-pill status-active">Active</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>EMP-1005</td>
-            <td>Sneha Reddy</td>
-            <td><span class="role-badge">Sr. Developer</span></td>
-            <td>Engineering</td>
-            <td>Ananya Patel</td>
-            <td>
-              <span class="status-pill status-onleave">On Leave</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>EMP-1006</td>
-            <td>Arjun Mehta</td>
-            <td><span class="role-badge">Developer</span></td>
-            <td>Engineering</td>
-            <td>Ananya Patel</td>
-            <td>
-              <span class="status-pill status-active">Active</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>EMP-1007</td>
-            <td>Kavya Nair</td>
-            <td><span class="role-badge">Jr. Developer</span></td>
-            <td>Engineering</td>
-            <td>Ananya Patel</td>
-            <td>
-              <span class="status-pill status-active">Active</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>EMP-1008</td>
-            <td>Mohammed Irfan</td>
-            <td><span class="role-badge">Team Lead</span></td>
-            <td>Engineering</td>
-            <td>Rahul Verma</td>
-            <td>
-              <span class="status-pill status-active">Active</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>EMP-1009</td>
-            <td>Neha Gupta</td>
-            <td><span class="role-badge">Developer</span></td>
-            <td>Engineering</td>
-            <td>Mohammed Irfan</td>
-            <td>
-              <span class="status-pill status-inactive">Inactive</span>
-            </td>
-            <td>
-              <button class="btn btn-sm btn-primary" title="Edit">Edit</button>
-
-              <button class="btn btn-sm btn-danger" title="Delete">
-                Delete
-              </button>
-            </td>
-          </tr>
+          <!-- ... rest of your rows ... -->
         </tbody>
       </table>
     </div>
 
     <div class="table-footer">
-      <span class="table-info" id="tableInfo">
-        Showing 0 to 0 of 0 employees
-      </span>
-
+      <span class="table-info" id="tableInfo"
+        >Showing 0 to 0 of 0 employees</span
+      >
       <nav aria-label="Employee table pagination">
         <ul class="pagination" id="employeePagination"></ul>
       </nav>
     </div>
   </section>
 </div>
-{% endblock %} {% block extra_js %}
-<script>
-  const filterForm = document.getElementById("employeeFilterForm");
-  const filterField = document.getElementById("filterField");
-  const filterOperator = document.getElementById("filterOperator");
-  const filterValue = document.getElementById("filterValue");
-  const clearEmployeeFilter = document.getElementById("clearEmployeeFilter");
-  const employeeTable = document.getElementById("employeeTable");
-  const tableBody = employeeTable.querySelector("tbody");
-  const employeeImport = document.getElementById("employeeImport");
-  const tableInfo = document.getElementById("tableInfo");
-  const employeePagination = document.getElementById("employeePagination");
-  const pageSize = 10;
 
-  let currentPage = 1;
-  let employeeRows = Array.from(tableBody.querySelectorAll("tr"));
+<!-- ADD EMPLOYEE MODAL -->
+<div
+  class="modal fade"
+  id="exampleModalToggle"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content employee-modal">
+      <!-- HEADER -->
+      <div class="modal-header employee-modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">
+          <i class="bi bi-person-plus-fill"></i>
+          Add New Employee
+        </h5>
 
-  const fieldIndexes = {
-    "emp-id": 0,
-    name: 1,
-    role: 2,
-    department: 3,
-    "reporting-to": 4,
-    status: 5,
-  };
+        <button
+          type="button"
+          class="employee-modal-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
 
-  function getFilteredRows() {
-    const field = filterField.value;
-    const operator = filterOperator.value;
-    const query = filterValue.value.trim().toLowerCase();
+      <!-- BODY -->
+      <div class="modal-body">
+        <!-- RADIO NAVIGATION -->
+        <div class="employee-section-navigation">
+          <label class="employee-section-radio active">
+            <input type="radio" name="employeeSection" value="basic" checked />
+            <span class="employee-radio-circle">
+              <i class="bi bi-person"></i>
+            </span>
+            <span>Basic Information</span>
+          </label>
 
-    if (!query) {
-      return employeeRows;
-    }
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="contact" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-telephone"></i>
+            </span>
+            <span>Contact</span>
+          </label>
 
-    return employeeRows.filter(function (row) {
-      const cells = Array.from(row.cells);
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="organization" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-building"></i>
+            </span>
+            <span>Organization</span>
+          </label>
 
-      const values =
-        field === "all"
-          ? cells.map((cell) => cell.textContent.trim().toLowerCase())
-          : [cells[fieldIndexes[field]].textContent.trim().toLowerCase()];
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="salary" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-cash-stack"></i>
+            </span>
+            <span>Salary</span>
+          </label>
 
-      return values.some(function (value) {
-        if (operator === "equals") {
-          return value === query;
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="skills" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-stars"></i>
+            </span>
+            <span>Skills</span>
+          </label>
+
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="documents" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-file-earmark-text"></i>
+            </span>
+            <span>Documents</span>
+          </label>
+
+          <label class="employee-section-radio">
+            <input type="radio" name="employeeSection" value="emergency" />
+            <span class="employee-radio-circle">
+              <i class="bi bi-exclamation-triangle"></i>
+            </span>
+            <span>Emergency</span>
+          </label>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- BASIC INFORMATION -->
+        <!-- ===================================================== -->
+
+        <div class="employee-form-section active" id="employee-section-basic">
+          <div class="employee-section-title">
+            <i class="bi bi-person-fill"></i>
+            <div>
+              <h6>Basic Information</h6>
+              <span>Enter the employee's personal information</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label"
+                >First Name <span>*</span></label
+              >
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="first_name"
+                name="first_name"
+                placeholder="Enter first name"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Last Name <span>*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="last_name"
+                name="last_name"
+                placeholder="Enter last name"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Email <span>*</span> </label>
+
+              <input
+                type="email"
+                class="form-control employee-input"
+                id="email"
+                name="email"
+                placeholder="employee@example.com"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Phone Number <span>*</span>
+              </label>
+
+              <input
+                type="tel"
+                class="form-control employee-input"
+                id="phone"
+                name="phone"
+                placeholder="Enter phone number"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Gender </label>
+
+              <select
+                class="form-select employee-input"
+                id="gender"
+                name="gender"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Date of Birth </label>
+
+              <input
+                type="date"
+                class="form-control employee-input"
+                id="date_of_birth"
+                name="date_of_birth"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- CONTACT INFORMATION -->
+        <!-- ===================================================== -->
+
+        <div class="employee-form-section" id="employee-section-contact">
+          <div class="employee-section-title">
+            <i class="bi bi-telephone-fill"></i>
+
+            <div>
+              <h6>Contact Information</h6>
+              <span>Employee contact and address details</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label"> Personal Email </label>
+
+              <input
+                type="email"
+                class="form-control employee-input"
+                id="personal_email"
+                name="personal_email"
+                placeholder="Personal email"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Alternate Phone </label>
+
+              <input
+                type="tel"
+                class="form-control employee-input"
+                id="alternate_phone"
+                name="alternate_phone"
+                placeholder="Alternate phone"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label"> Address Line 1 </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="address_line1"
+                name="address_line1"
+                placeholder="Street address"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label"> Address Line 2 </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="address_line2"
+                name="address_line2"
+                placeholder="Apartment, building, landmark"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="employee-form-label"> City </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="city"
+                name="city"
+                placeholder="City"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="employee-form-label"> State </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="state"
+                name="state"
+                placeholder="State"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="employee-form-label"> Postal Code </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="postal_code"
+                name="postal_code"
+                placeholder="Postal code"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Country </label>
+
+              <select
+                class="form-select employee-input"
+                id="country"
+                name="country"
+              >
+                <option value="">Select Country</option>
+                <option value="India">India</option>
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="employee-form-section" id="employee-section-organization">
+          <div class="employee-section-title">
+            <i class="bi bi-building-fill"></i>
+
+            <div>
+              <h6>Organization Information</h6>
+              <span>Employee's role and organizational details</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Employee ID <span>*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="employee_id"
+                name="employee_id"
+                placeholder="EMP-1001"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Department <span>*</span>
+              </label>
+
+              <select
+                class="form-select employee-input"
+                id="department"
+                name="department"
+              >
+                <option value="">Select Department</option>
+                <option value="Engineering">Engineering</option>
+                <option value="HR">Human Resources</option>
+                <option value="Finance">Finance</option>
+                <option value="QA">Quality Assurance</option>
+                <option value="Sales">Sales</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Designation <span>*</span>
+              </label>
+
+              <select
+                class="form-select employee-input"
+                id="designation"
+                name="designation"
+              >
+                <option value="">Select Designation</option>
+                <option value="Director">Director</option>
+                <option value="Manager">Manager</option>
+                <option value="Team Lead">Team Lead</option>
+                <option value="Sr. Developer">Sr. Developer</option>
+                <option value="Developer">Developer</option>
+                <option value="Jr. Developer">Jr. Developer</option>
+                <option value="QA">QA</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Role <span>*</span> </label>
+
+              <select
+                class="form-select employee-input"
+                id="role"
+                name="role"
+                id="employeeRole"
+              >
+                <option value="">Select Role</option>
+                <option value="GLOBAL_ADMIN">Global Admin</option>
+                <option value="ADMIN">Admin</option>
+                <option value="MANAGER">Manager</option>
+                <option value="REPORTING_MANAGER">Reporting Manager</option>
+                <option value="TEAM_LEAD">Team Lead</option>
+                <option value="SR_DEVELOPER">Sr. Developer</option>
+                <option value="DEVELOPER">Developer</option>
+                <option value="JR_DEVELOPER">Jr. Developer</option>
+                <option value="QA_MANAGER">QA Manager</option>
+                <option value="QA_TESTER">QA Tester</option>
+                <option value="EMPLOYEE">Employee</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Reporting Manager </label>
+
+              <select
+                class="form-select employee-input"
+                id="reportingManager"
+                name="reporting_manager"
+              >
+                <option value="">Select Reporting Manager</option>
+
+                <option value="EMP-1001">Priya Sharma</option>
+
+                <option value="EMP-1002">Rahul Verma</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Employment Type <span>*</span>
+              </label>
+
+              <select
+                class="form-select employee-input"
+                id="employmentType"
+                name="employment_type"
+              >
+                <option value="">Select Type</option>
+                <option value="full_time">Full Time</option>
+                <option value="part_time">Part Time</option>
+                <option value="contract">Contract</option>
+                <option value="intern">Intern</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">
+                Joining Date <span>*</span>
+              </label>
+
+              <input
+                type="date"
+                class="form-control employee-input"
+                id="joiningDate"
+                name="joining_date"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Work Location </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="workLocation"
+                name="work_location"
+                placeholder="Hyderabad / Bangalore / Remote"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Status <span>*</span> </label>
+
+              <select
+                class="form-select employee-input"
+                id="status"
+                name="status"
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="on_leave">On Leave</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="employee-form-section" id="employee-section-salary">
+          <div class="employee-section-title">
+            <i class="bi bi-cash-stack"></i>
+
+            <div>
+              <h6>Salary Information</h6>
+              <span>Employee salary and bank information</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Salary Type</label>
+              <select
+                class="form-select employee-input"
+                id="salaryType"
+                name="salary_type"
+              >
+                <option value="monthly">Monthly</option>
+                <option value="annual">Annual</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label"> Basic Salary </label>
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="basicSalary"
+                name="basic_salary"
+                placeholder="0.00"
+                min="0"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label"> Allowances </label>
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="allowances"
+                name="allowances"
+                placeholder="0.00"
+                min="0"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Deductions</label>
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="deductions"
+                name="deductions"
+                placeholder="0.00"
+                min="0"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label">Bank Account Name</label>
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="bankAccountName"
+                name="bank_account_name"
+                placeholder="Account holder name"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label">Bank Account Number</label>
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="bankAccountNumber"
+                name="bank_account_number"
+                placeholder="Account number"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="employee-form-label">IFSC Code</label>
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="ifscCode"
+                name="ifsc_code"
+                placeholder="IFSC code"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="employee-form-section" id="employee-section-skills">
+          <div class="employee-section-title">
+            <i class="bi bi-stars"></i>
+
+            <div>
+              <h6>Skills & Qualification</h6>
+              <span>Employee technical skills and qualifications</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Primary Skill</label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="primarySkill"
+                name="primary_skill"
+                placeholder="Python / React / Django"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Experience</label>
+
+              <input
+                type="number"
+                class="form-control employee-input"
+                id="experienceYears"
+                name="experience_years"
+                placeholder="Years"
+                min="0"
+                step="0.1"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label">Skills</label>
+
+              <textarea
+                class="form-control employee-input"
+                name="skills"
+                rows="3"
+                placeholder="Python, Django, React, PostgreSQL..."
+              ></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Qualification</label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="qualification"
+                name="qualification"
+                placeholder="B.Tech / M.Tech / MBA"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Certifications</label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="certifications"
+                name="certifications"
+                placeholder="AWS, Azure, Python..."
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label"> Languages </label>
+
+              <input
+                type="text"
+                class="form-control employee-input"
+                id="languages"
+                name="languages"
+                placeholder="English, Telugu, Hindi..."
+              />
+            </div>
+          </div>
+        </div>
+        <div class="employee-form-section" id="employee-section-documents">
+          <div class="employee-section-title">
+            <i class="bi bi-file-earmark-text-fill"></i>
+            <div>
+              <h6>Documents</h6>
+              <span>Upload employee documents</span>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Resume</label>
+              <input
+                type="file"
+                id="resume"
+                class="form-control employee-input"
+                name="resume"
+                accept=".pdf,.doc,.docx"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">ID Proof</label>
+              <input
+                type="file"
+                id="id_proof"
+                class="form-control employee-input"
+                name="id_proof"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Offer Letter</label>
+              <input
+                type="file"
+                id="offer_letter"
+                class="form-control employee-input"
+                name="offer_letter"
+                accept=".pdf,.doc,.docx"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Joining Letter</label>
+              <input
+                type="file"
+                id="joining_letter"
+                class="form-control employee-input"
+                name="joining_letter"
+                accept=".pdf,.doc,.docx"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label">Other Document</label>
+              <input
+                type="file"
+                id="other_document"
+                class="form-control employee-input"
+                name="other_document"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="employee-form-section" id="employee-section-emergency">
+          <div class="employee-section-title">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+
+            <div>
+              <h6>Emergency Contact</h6>
+              <span>Emergency contact information</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="employee-form-label">Contact Name</label>
+              <input
+                type="text"
+                id="emergency_name"
+                class="form-control employee-input"
+                name="emergency_name"
+                placeholder="Emergency contact name"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Relationship</label>
+              <select
+                id="emergency_relationship"
+                class="form-select employee-input"
+                name="emergency_relationship"
+              >
+                <option value="">Select Relationship</option>
+                <option value="father">Father</option>
+                <option value="mother">Mother</option>
+                <option value="spouse">Spouse</option>
+                <option value="brother">Brother</option>
+                <option value="sister">Sister</option>
+                <option value="friend">Friend</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label">Phone Number</label>
+              <input
+                type="tel"
+                id="emergency_phone"
+                class="form-control employee-input"
+                name="emergency_phone"
+                placeholder="Emergency phone number"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="employee-form-label"> Email</label>
+              <input
+                type="email"
+                id="emergency_email"
+                class="form-control employee-input"
+                name="emergency_email"
+                placeholder="Emergency email"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="employee-form-label">Address</label>
+
+              <textarea
+                class="form-control employee-input"
+                name="emergency_address"
+                id="emergency_address"
+                rows="3"
+                placeholder="Emergency contact address"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer employee-modal-footer">
+        <button type="button" class="btn btn-outline" data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button type="button" class="btn btn-primary" id="saveEmployeeBtn">
+          <i class="bi bi-check-circle"></i>
+          Save Employee
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="exampleModalToggle2"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel2"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body-content">
+          Hide this modal and show the first with the button below.
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-primary"
+            data-bs-target="#exampleModalToggle"
+            data-bs-toggle="modal"
+          >
+            Back to first
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %} {% block extra_js %}
+  <script>
+    $(document).ready(function () {
+      $("#saveEmployeeBtn").on("click", function () {});
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const sectionRadios = document.querySelectorAll(
+        'input[name="employeeSection"]',
+      );
+
+      const sectionContainers = document.querySelectorAll(
+        ".employee-form-section",
+      );
+
+      function showEmployeeSection(sectionName) {
+        // Hide all sections
+        sectionContainers.forEach(function (section) {
+          section.classList.remove("active");
+        });
+
+        // Remove active from all radio labels
+        document
+          .querySelectorAll(".employee-section-radio")
+          .forEach(function (label) {
+            label.classList.remove("active");
+          });
+
+        // Show selected section
+        const selectedSection = document.getElementById(
+          "employee-section-" + sectionName,
+        );
+
+        if (selectedSection) {
+          selectedSection.classList.add("active");
         }
 
-        if (operator === "starts-with") {
-          return value.startsWith(query);
+        // Activate selected radio label
+        const selectedRadio = document.querySelector(
+          'input[name="employeeSection"][value="' + sectionName + '"]',
+        );
+
+        if (selectedRadio) {
+          const selectedLabel = selectedRadio.closest(
+            ".employee-section-radio",
+          );
+
+          if (selectedLabel) {
+            selectedLabel.classList.add("active");
+          }
         }
-
-        return value.includes(query);
-      });
-    });
-  }
-
-  function renderPagination() {
-    const filteredRows = getFilteredRows();
-    const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
-
-    currentPage = Math.min(currentPage, totalPages);
-
-    const start = (currentPage - 1) * pageSize;
-    const end = Math.min(start + pageSize, filteredRows.length);
-
-    employeeRows.forEach((row) => {
-      row.hidden = true;
-    });
-
-    filteredRows.slice(start, end).forEach((row) => {
-      row.hidden = false;
-    });
-
-    tableInfo.textContent = filteredRows.length
-      ? `Showing ${start + 1} to ${end} of ${filteredRows.length} employees`
-      : "Showing 0 to 0 of 0 employees";
-
-    employeePagination.innerHTML = "";
-
-    addPageButton("Previous", currentPage - 1, currentPage === 1);
-
-    for (let page = 1; page <= totalPages; page += 1) {
-      addPageButton(page, page, false, page === currentPage);
-    }
-
-    addPageButton("Next", currentPage + 1, currentPage === totalPages);
-  }
-
-  function addPageButton(label, page, disabled, active) {
-    const item = document.createElement("li");
-    const button = document.createElement("button");
-
-    button.type = "button";
-    button.textContent = label;
-    button.disabled = disabled;
-
-    if (active) {
-      button.classList.add("active");
-    }
-
-    button.addEventListener("click", function () {
-      currentPage = page;
-      renderPagination();
-    });
-
-    item.appendChild(button);
-    employeePagination.appendChild(item);
-  }
-
-  function filterEmployeeRows() {
-    currentPage = 1;
-    renderPagination();
-  }
-
-  filterForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    filterEmployeeRows();
-  });
-
-  filterValue.addEventListener("input", filterEmployeeRows);
-
-  clearEmployeeFilter.addEventListener("click", function () {
-    filterForm.reset();
-    filterEmployeeRows();
-    filterValue.focus();
-  });
-
-  document.getElementById("btn-refresh").addEventListener("click", function () {
-    filterForm.reset();
-    filterEmployeeRows();
-  });
-
-  document.getElementById("btn-import").addEventListener("click", function () {
-    employeeImport.click();
-  });
-
-  employeeImport.addEventListener("change", function (event) {
-    const file = event.target.files[0];
-
-    if (!file) {
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      const lines = reader.result.trim().split(/\r?\n/).filter(Boolean);
-
-      if (lines.length < 2) {
-        return;
       }
 
-      const rows = lines.slice(1).map((line) => parseCsvLine(line));
+      // Radio button change
+      sectionRadios.forEach(function (radio) {
+        radio.addEventListener("change", function () {
+          showEmployeeSection(this.value);
+        });
+      });
 
-      tableBody.innerHTML = rows
-        .map(
-          (row) => `
-            <tr>
-              ${row
-                .slice(0, 7)
-                .map((cell) => `<td>${escapeHtml(cell)}</td>`)
-                .join("")}
-            </tr>
-          `,
-        )
-        .join("");
+      // =====================================================
+      // ROLE / REPORTING MANAGER
+      // =====================================================
 
-      employeeRows = Array.from(tableBody.querySelectorAll("tr"));
+      const employeeRole = document.getElementById("employeeRole");
 
-      filterEmployeeRows();
-      event.target.value = "";
-    };
+      const reportingManager = document.querySelector(
+        'select[name="reporting_manager"]',
+      );
 
-    reader.readAsText(file);
-  });
+      function updateReportingManagerRequirement() {
+        if (!employeeRole || !reportingManager) {
+          return;
+        }
 
-  document.getElementById("btn-export").addEventListener("click", function () {
-    const visibleRows = employeeRows.filter((row) => !row.hidden);
+        const role = employeeRole.value;
 
-    const header = Array.from(employeeTable.querySelectorAll("thead th")).map(
-      (cell) => cell.textContent.trim(),
-    );
+        const rolesWithoutManager = ["GLOBAL_ADMIN", "ADMIN", "MANAGER"];
 
-    const csv = [
-      header,
-      ...visibleRows.map((row) =>
-        Array.from(row.cells).map((cell) => cell.textContent.trim()),
-      ),
-    ]
-      .map((row) =>
-        row.map((value) => `"${value.replace(/"/g, '""')}"`).join(","),
-      )
-      .join("\n");
+        if (rolesWithoutManager.includes(role)) {
+          reportingManager.required = false;
+        } else {
+          reportingManager.required = true;
+        }
+      }
 
-    const link = document.createElement("a");
+      if (employeeRole) {
+        employeeRole.addEventListener(
+          "change",
+          updateReportingManagerRequirement,
+        );
 
-    link.href = URL.createObjectURL(
-      new Blob([csv], {
-        type: "text/csv;charset=utf-8;",
-      }),
-    );
+        updateReportingManagerRequirement();
+      }
 
-    link.download = "employees.csv";
-    link.click();
+      // =====================================================
+      // SAVE EMPLOYEE
+      // =====================================================
 
-    URL.revokeObjectURL(link.href);
-  });
+      // const saveEmployeeBtn =
+      //     document.getElementById("saveEmployeeBtn");
 
-  function parseCsvLine(line) {
-    return line
-      .match(/("(?:[^"]|"")*"|[^,]*)/g)
-      .slice(0, -1)
-      .filter((_, index, values) => index < values.length - 1)
-      .map((value) => value.replace(/^"|"$/g, "").replace(/""/g, '"').trim());
-  }
+      // if (saveEmployeeBtn) {
 
-  function escapeHtml(value) {
-    return value.replace(
-      /[&<>'"]/g,
-      (character) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          "'": "&#39;",
-          '"': "&quot;",
-        })[character],
-    );
-  }
+      //     saveEmployeeBtn.addEventListener(
+      //         "click",
+      //         function () {
 
-  renderPagination();
-</script>
-{% endblock %}
+      //             const formFields =
+      //                 document.querySelectorAll("#exampleModalToggle input, " +"#exampleModalToggle select, " +"#exampleModalToggle textarea");
+
+      //             let isValid = true;
+
+      //             debugger
+      //             formFields.forEach(function (field) {
+
+      //                 if (
+      //                     field.required &&
+      //                     !field.checkValidity()
+      //                 ) {
+
+      //                     isValid = false;
+
+      //                 }
+
+      //             });
+
+      //             if (!isValid) {
+
+      //                 alert(
+      //                     "Please fill all required fields before saving."
+      //                 );
+
+      //                 return;
+      //             }
+
+      //             /*
+      //              * Backend API / Django form submission
+      //              * can be added here later.
+      //              */
+
+      //             console.log(
+      //                 "Employee form is ready to submit."
+      //             );
+
+      //         }
+      //     );
+      // }
+
+      // =====================================================
+      // RESET MODAL WHEN CLOSED
+      // =====================================================
+
+      const employeeModal = document.getElementById("exampleModalToggle");
+
+      if (employeeModal) {
+        employeeModal.addEventListener("hidden.bs.modal", function () {
+          // Return to Basic Information
+          const basicRadio = document.querySelector(
+            'input[name="employeeSection"][value="basic"]',
+          );
+
+          if (basicRadio) {
+            basicRadio.checked = true;
+
+            showEmployeeSection("basic");
+          }
+        });
+      }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+      // ===== TEAM TREE EXPAND / COLLAPSE =====
+      document.querySelectorAll(".tree-node").forEach(function (node) {
+        node.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          const children = this.nextElementSibling;
+          const icon = this.querySelector(".toggle-icon");
+
+          // Toggle children if they exist
+          if (children && children.classList.contains("children")) {
+            children.classList.toggle("open");
+
+            if (icon) {
+              icon.textContent = children.classList.contains("open")
+                ? "▼"
+                : "▶";
+            }
+          }
+
+          // Active state
+          document
+            .querySelectorAll(".tree-node")
+            .forEach((n) => n.classList.remove("active"));
+          this.classList.add("active");
+        });
+      });
+
+      // ===== YOUR EXISTING EMPLOYEE TABLE JS =====
+      const filterForm = document.getElementById("employeeFilterForm");
+      const filterField = document.getElementById("filterField");
+      const filterOperator = document.getElementById("filterOperator");
+      const filterValue = document.getElementById("filterValue");
+      const clearEmployeeFilter = document.getElementById(
+        "clearEmployeeFilter",
+      );
+      const employeeTable = document.getElementById("employeeTable");
+      const tableBody = employeeTable.querySelector("tbody");
+      const employeeImport = document.getElementById("employeeImport");
+      const tableInfo = document.getElementById("tableInfo");
+      const employeePagination = document.getElementById("employeePagination");
+      const pageSize = 10;
+
+      let currentPage = 1;
+      let employeeRows = Array.from(tableBody.querySelectorAll("tr"));
+
+      const fieldIndexes = {
+        "emp-id": 0,
+        name: 1,
+        role: 2,
+        department: 3,
+        "reporting-to": 4,
+        status: 5,
+      };
+
+      function getFilteredRows() {
+        const field = filterField.value;
+        const operator = filterOperator.value;
+        const query = filterValue.value.trim().toLowerCase();
+
+        if (!query) return employeeRows;
+
+        return employeeRows.filter(function (row) {
+          const cells = Array.from(row.cells);
+          const values =
+            field === "all"
+              ? cells.map((cell) => cell.textContent.trim().toLowerCase())
+              : [cells[fieldIndexes[field]].textContent.trim().toLowerCase()];
+
+          return values.some(function (value) {
+            if (operator === "equals") return value === query;
+            if (operator === "starts-with") return value.startsWith(query);
+            return value.includes(query);
+          });
+        });
+      }
+
+      function renderPagination() {
+        const filteredRows = getFilteredRows();
+        const totalPages = Math.max(
+          1,
+          Math.ceil(filteredRows.length / pageSize),
+        );
+        currentPage = Math.min(currentPage, totalPages);
+
+        const start = (currentPage - 1) * pageSize;
+        const end = Math.min(start + pageSize, filteredRows.length);
+
+        employeeRows.forEach((row) => (row.hidden = true));
+        filteredRows.slice(start, end).forEach((row) => (row.hidden = false));
+
+        tableInfo.textContent = filteredRows.length
+          ? `Showing ${start + 1} to ${end} of ${filteredRows.length} employees`
+          : "Showing 0 to 0 of 0 employees";
+
+        employeePagination.innerHTML = "";
+        addPageButton("Previous", currentPage - 1, currentPage === 1);
+
+        for (let page = 1; page <= totalPages; page++) {
+          addPageButton(page, page, false, page === currentPage);
+        }
+
+        addPageButton("Next", currentPage + 1, currentPage === totalPages);
+      }
+
+      function addPageButton(label, page, disabled, active) {
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = label;
+        button.disabled = disabled;
+        if (active) button.classList.add("active");
+
+        button.addEventListener("click", function () {
+          currentPage = page;
+          renderPagination();
+        });
+
+        item.appendChild(button);
+        employeePagination.appendChild(item);
+      }
+
+      function filterEmployeeRows() {
+        currentPage = 1;
+        renderPagination();
+      }
+
+      filterForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        filterEmployeeRows();
+      });
+
+      filterValue.addEventListener("input", filterEmployeeRows);
+
+      clearEmployeeFilter.addEventListener("click", function () {
+        filterForm.reset();
+        filterEmployeeRows();
+        filterValue.focus();
+      });
+
+      document
+        .getElementById("btn-refresh")
+        .addEventListener("click", function () {
+          filterForm.reset();
+          filterEmployeeRows();
+        });
+
+      document
+        .getElementById("btn-import")
+        .addEventListener("click", function () {
+          employeeImport.click();
+        });
+
+      // Keep your import/export code as is...
+
+      renderPagination();
+    });
+  </script>
+  {% endblock %}
+</div>

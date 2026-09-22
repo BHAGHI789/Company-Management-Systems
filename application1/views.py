@@ -299,8 +299,17 @@ class Login(View):
 
 class EmployeeList(View):
     def get(self, request, *args, **kwargs):
-        return render(
-            request,
-            "employeeList.html",
-            locals(),
-        )
+        dataRole = "DIRECTOR"
+        context = {"dataRole": dataRole}
+        return render(request, "employeeList.html", context)
+
+
+class Dashboard(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        dataRole = "DIRECTOR"
+        context = {"dataRole": dataRole}
+        return render(request, "dashboard.html", context)

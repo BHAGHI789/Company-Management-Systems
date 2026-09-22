@@ -3,11 +3,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from application1.views import EmployeeList, Login, get_public_key
+from application1.views import Dashboard, EmployeeList, Login, get_public_key
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("login/", Login.as_view(), name="login"),
+    path("dashboard/", Dashboard.as_view(), name="dashboard"),
     path("employees/", EmployeeList.as_view(), name="employee_list"),
     path("public-key/", get_public_key, name="get_public_key"),
 ]
