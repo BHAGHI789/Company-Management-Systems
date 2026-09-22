@@ -150,49 +150,48 @@ class Roles(models.Model):
     def __str__(self):
         return self.roleName
 
+
 class Company(models.Model):
-    id = models.UUIDField( primary_key=True, default=uuid.uuid4,editable=False)
-    company_code = models.CharField( max_length=50,unique=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    company_code = models.CharField(max_length=50, unique=True)
     company_name = models.CharField(max_length=255)
-    legal_name = models.CharField( max_length=255, blank=True,null=True)
-    registration_number = models.CharField( max_length=100, blank=True,null=True)
-    website_name = models.CharField( max_length=255, blank=True,null=True)
-    website_url = models.URLField( max_length=500, blank=True,null=True)
-    domain_name = models.CharField( max_length=255, unique=True, blank=True,null=True)
-    subdomain = models.CharField( max_length=255, blank=True,null=True)
-    description = models.TextField( blank=True,null=True)
-    industry = models.CharField( max_length=150, blank=True,null=True)
-    company_size = models.CharField( max_length=50, blank=True,null=True)
-    founded_year = models.PositiveIntegerField( blank=True,null=True)
-    email = models.EmailField( max_length=254, blank=True,null=True)
-    phone_number = models.CharField( max_length=20, blank=True,null=True)
-    alternate_phone = models.CharField( max_length=20, blank=True,null=True)
-    address_line1 = models.CharField( max_length=255, blank=True,null=True)
-    address_line2 = models.CharField( max_length=255, blank=True,null=True)
-    city = models.CharField( max_length=100, blank=True,null=True)
-    state = models.CharField( max_length=100, blank=True,null=True)
-    country = models.CharField( max_length=100, blank=True,null=True)
-    postal_code = models.CharField( max_length=20, blank=True,null=True)
-    logo = models.ImageField( upload_to="companies/logos/", blank=True,null=True)
-    favicon = models.ImageField( upload_to="companies/favicons/", blank=True,null=True)
-    primary_color = models.CharField( max_length=20,default="#1976D2")
-    secondary_color = models.CharField( max_length=20,default="#FFFFFF")
-    linkedin_url = models.URLField( blank=True,null=True)
-    twitter_url = models.URLField( blank=True,null=True)
-    facebook_url = models.URLField( blank=True,null=True)
-    instagram_url = models.URLField( blank=True,null=True)
-    youtube_url = models.URLField( blank=True,null=True)
-    subscription_plan = models.CharField( max_length=50,default="FREE")
+    legal_name = models.CharField(max_length=255, blank=True, null=True)
+    registration_number = models.CharField(max_length=100, blank=True, null=True)
+    website_name = models.CharField(max_length=255, blank=True, null=True)
+    website_url = models.URLField(max_length=500, blank=True, null=True)
+    domain_name = models.CharField(max_length=255, unique=True, blank=True, null=True)
+    subdomain = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    industry = models.CharField(max_length=150, blank=True, null=True)
+    company_size = models.CharField(max_length=50, blank=True, null=True)
+    founded_year = models.PositiveIntegerField(blank=True, null=True)
+    email = models.EmailField(max_length=254, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    alternate_phone = models.CharField(max_length=20, blank=True, null=True)
+    address_line1 = models.CharField(max_length=255, blank=True, null=True)
+    address_line2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    postal_code = models.CharField(max_length=20, blank=True, null=True)
+    logo = models.ImageField(upload_to="companies/logos/", blank=True, null=True)
+    favicon = models.ImageField(upload_to="companies/favicons/", blank=True, null=True)
+    primary_color = models.CharField(max_length=20, default="#1976D2")
+    secondary_color = models.CharField(max_length=20, default="#FFFFFF")
+    linkedin_url = models.URLField(blank=True, null=True)
+    twitter_url = models.URLField(blank=True,  null=True)
+    facebook_url = models.URLField(blank=True, null=True)
+    instagram_url = models.URLField(blank=True, null=True)
+    youtube_url = models.URLField(blank=True, null=True)
+    subscription_plan = models.CharField(max_length=50, default="FREE")
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
         db_table = "companies"
-        ordering = ["company_name"]
 
-    def __str__(self):
-        return self.company_name
 
 class Employees(models.Model):
     company = models.ForeignKey(
@@ -276,14 +275,8 @@ class Employees(models.Model):
 
 class OTPValues(models.Model):
     company = models.ForeignKey(
-        "Company",
-        verbose_name="Company",
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True,
-        related_name="%(class)s_records",
+        "Company", verbose_name="Company", on_delete=models.PROTECT, null=True, blank=True, related_name="%(class)s_records"
     )
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name="Email", unique=True)
     otp = models.CharField(verbose_name="OTP", max_length=6)
@@ -295,13 +288,14 @@ class OTPValues(models.Model):
         blank=True,
         related_name="otp_created",
     )
+
     updatedBy = models.ForeignKey(
         User,
         verbose_name="Updated By",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="otp_updated",
+        related_name="otp_updated"
     )
     createdDate = models.DateTimeField(verbose_name="Created Date", auto_now_add=True)
     updatedDate = models.DateTimeField(verbose_name="Updated Date", auto_now=True)
@@ -312,72 +306,27 @@ class OTPValues(models.Model):
 
 class EmployeeSalary(models.Model):
     company = models.ForeignKey(
-        "Company",
-        verbose_name="Company",
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True,
-        related_name="%(class)s_records",
+        "Company", verbose_name="Company", on_delete=models.PROTECT, null=True, blank=True, related_name="%(class)s_records"
     )
-
-    SALARY_STATUS_CHOICES = [
-        ("ACTIVE", "Active"),
-        ("INACTIVE", "Inactive"),
-    ]
+    STATUS = [("ACTIVE", "Active"), ("INACTIVE", "Inactive"), ("TERMINATED", "Terminated")]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    employee = models.ForeignKey(
-        Employees,
-        verbose_name="Employee",
-        on_delete=models.PROTECT,
-        related_name="salary_details",
-    )
+    employee = models.ForeignKey(Employees, verbose_name="Employee", on_delete=models.PROTECT, related_name="salary_details",)
     effectiveFrom = models.DateField(verbose_name="Effective From")
     effectiveTo = models.DateField(verbose_name="Effective To", null=True, blank=True)
-    basicSalary = models.DecimalField(
-        verbose_name="Basic Salary", max_digits=14, decimal_places=2, default=0
-    )
-    hra = models.DecimalField(
-        verbose_name="HRA", max_digits=14, decimal_places=2, default=0
-    )
-    conveyanceAllowance = models.DecimalField(
-        verbose_name="Conveyance Allowance", max_digits=14, decimal_places=2, default=0
-    )
-    medicalAllowance = models.DecimalField(
-        verbose_name="Medical Allowance", max_digits=14, decimal_places=2, default=0
-    )
-    otherAllowance = models.DecimalField(
-        verbose_name="Other Allowance", max_digits=14, decimal_places=2, default=0
-    )
-    bonus = models.DecimalField(
-        verbose_name="Bonus", max_digits=14, decimal_places=2, default=0
-    )
-    grossSalary = models.DecimalField(
-        verbose_name="Gross Salary", max_digits=14, decimal_places=2, default=0
-    )
-    pfDeduction = models.DecimalField(
-        verbose_name="PF Deduction", max_digits=14, decimal_places=2, default=0
-    )
-    professionalTax = models.DecimalField(
-        verbose_name="Professional Tax", max_digits=14, decimal_places=2, default=0
-    )
-    incomeTax = models.DecimalField(
-        verbose_name="Income Tax", max_digits=14, decimal_places=2, default=0
-    )
-    otherDeduction = models.DecimalField(
-        verbose_name="Other Deduction", max_digits=14, decimal_places=2, default=0
-    )
-    totalDeduction = models.DecimalField(
-        verbose_name="Total Deduction", max_digits=14, decimal_places=2, default=0
-    )
-    netSalary = models.DecimalField(
-        verbose_name="Net Salary", max_digits=14, decimal_places=2, default=0
-    )
-    salaryStatus = models.CharField(
-        verbose_name="Salary Status",
-        max_length=20,
-        choices=SALARY_STATUS_CHOICES,
-        default="ACTIVE",
-    )
+    basicSalary = models.DecimalField(verbose_name="Basic Salary", max_digits=14, decimal_places=2, default=0)
+    hra = models.DecimalField(verbose_name="HRA", max_digits=14, decimal_places=2, default=0)
+    conveyanceAllowance = models.DecimalField(verbose_name="Conveyance Allowance", max_digits=14, decimal_places=2, default=0)
+    medicalAllowance = models.DecimalField(verbose_name="Medical Allowance", max_digits=14, decimal_places=2, default=0)
+    otherAllowance = models.DecimalField(verbose_name="Other Allowance", max_digits=14, decimal_places=2, default=0)
+    bonus = models.DecimalField(verbose_name="Bonus", max_digits=14, decimal_places=2, default=0)
+    grossSalary = models.DecimalField(verbose_name="Gross Salary", max_digits=14, decimal_places=2, default=0)
+    pfDeduction = models.DecimalField(verbose_name="PF Deduction", max_digits=14, decimal_places=2, default=0)
+    professionalTax = models.DecimalField(verbose_name="Professional Tax", max_digits=14, decimal_places=2, default=0)
+    incomeTax = models.DecimalField(verbose_name="Income Tax", max_digits=14, decimal_places=2, default=0)
+    otherDeduction = models.DecimalField(verbose_name="Other Deduction", max_digits=14, decimal_places=2, default=0)
+    totalDeduction = models.DecimalField(verbose_name="Total Deduction", max_digits=14, decimal_places=2, default=0)
+    netSalary = models.DecimalField(verbose_name="Net Salary", max_digits=14, decimal_places=2, default=0)
+    employeeStatus = models.CharField(verbose_name="Employee Status", max_length=10, choices=STATUS, default="ACTIVE")
     notes = models.TextField(verbose_name="Notes", blank=True)
     createdBy = models.ForeignKey(
         User,
@@ -646,9 +595,6 @@ class ProjectTeam(models.Model):
                 fields=["project", "employee"], name="unique_employee_project"
             )
         ]
-
-    def __str__(self):
-        return f"{self.project.projectCode} - {self.employee.employeeName}"
 
 
 class WorkItemType(models.Model):

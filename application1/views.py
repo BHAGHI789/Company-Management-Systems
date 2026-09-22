@@ -299,9 +299,10 @@ class Login(View):
 
 class EmployeeList(View):
     def get(self, request, *args, **kwargs):
-        dataRole = "DIRECTOR"    
+        dataRole = "DIRECTOR"
         context = {"dataRole": dataRole}
-        return render(request,"employeeList.html",context,)
+        return render(request, "employeeList.html", context)
+
 
 class Dashboard(View):
 
@@ -310,7 +311,5 @@ class Dashboard(View):
 
     def get(self, request, *args, **kwargs):
         dataRole = "DIRECTOR"
-        
         context = {"dataRole": dataRole}
         return render(request, "dashboard.html", context)
-    
